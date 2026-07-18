@@ -403,25 +403,26 @@ export default async function ClassPage(props: SlugProps) {
       />
 
       <ClassHero title={cls.h1} slug={cls.slug} />
-      <ClassIntro text={cls.intro} />
-      <BenefitsList items={cls.benefits} />
-      <AgeGroupTable groups={cls.ageGroups} />
 
-      {isComingSoon ? (
-        <ComingSoonBanner
-          note={cls.availabilityNote}
-          waLink={waLink}
-          ctaLabel="Ask About Class Availability"
-        />
-      ) : (
-        <>
-          {cls.schedule.length > 0 && <ScheduleTabs schedule={cls.schedule} />}
-          <CoachNote note={cls.coachesNote} />
-          <PriceNote note={cls.priceNote} />
-          <FaqAccordion items={cls.faq} />
-          <CtaButton label={cls.ctaLabel} waLink={waLink} />
-        </>
-      )}
+        <ClassIntro text={cls.intro} />
+        <BenefitsList items={cls.benefits} />
+        <AgeGroupTable groups={cls.ageGroups} />
+
+        {isComingSoon ? (
+          <ComingSoonBanner
+            note={cls.availabilityNote}
+            waLink={waLink}
+            ctaLabel="Ask About Class Availability"
+          />
+        ) : (
+          <>
+            {cls.schedule.length > 0 && <ScheduleTabs schedule={cls.schedule} />}
+            <CoachNote note={cls.coachesNote} />
+            <PriceNote note={cls.priceNote} />
+            <FaqAccordion items={cls.faq} />
+            <CtaButton label={cls.ctaLabel} waLink={waLink} />
+          </>
+        )}
     </main>
   );
 }

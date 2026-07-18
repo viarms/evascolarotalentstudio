@@ -1,5 +1,5 @@
 // src/components/classes/ClassHero.tsx
-// Fallback: solid brand-red background until per-class hero images are available.
+// Hero with immediate fade-in + slide-up on mount.
 
 type Props = {
   title: string;
@@ -9,24 +9,16 @@ type Props = {
 export default function ClassHero({ title }: Props) {
   return (
     <section
-      className="relative flex items-center justify-center min-h-[320px] bg-[var(--color-brand-red)]"
+      className="relative flex items-center justify-center min-h-[320px] bg-[#121212]"
       aria-label="Hero section"
     >
-      {/*
-        TODO (Phase 1 QA): replace solid background with next/image hero once
-        images are uploaded to WP Media. One image per slug recommended.
-        Example:
-          <Image
-            src={`/api/hero/${slug}`}
-            alt=""
-            fill
-            className="object-cover"
-            priority
-          />
-          <div className="absolute inset-0 bg-black/50" aria-hidden="true" />
-      */}
       <div className="relative z-10 px-6 py-12 text-center">
-        <h1 className="text-3xl md:text-5xl font-bold text-white leading-tight drop-shadow-md">
+        <h1
+          className="
+            text-3xl md:text-5xl font-normal text-white leading-tight drop-shadow-md
+            animate-[heroReveal_0.7s_cubic-bezier(0.22,1,0.36,1)_both]
+          "
+        >
           {title}
         </h1>
       </div>

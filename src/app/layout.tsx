@@ -48,7 +48,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="id" className={`${archivoBlack.variable} ${inter.variable}`}>
-      <body className="min-h-screen flex flex-col bg-[#121212] text-[#DDDDDD] antialiased">
+      <body className="min-h-screen flex flex-col text-[#DDDDDD] antialiased" style={{ background: "linear-gradient(to bottom, #121212 0%, #121212 33vh, #ffffff 33vh, #ffffff 100%)" }}>
         <Header />
         {/* Light content card — matches the WP site's secondary (#121212 page bg, white card) */}
         <div className="flex-1 w-full max-w-[960px] mx-auto my-6 md:my-10 px-4 sm:px-6">
