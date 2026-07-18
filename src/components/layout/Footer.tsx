@@ -37,8 +37,7 @@ const FOOTER_LINKS = [
 export default function Footer() {
   return (
     <footer
-      className="fixed left-0 right-0 z-[999]"
-      style={{ bottom: "-63px" }}
+      className="w-full"
       aria-label="Site footer"
     >
       {/* ── Main content bar ── */}
@@ -71,14 +70,30 @@ export default function Footer() {
           </p>
         </div>
 
-        {/* Partner logos row */}
-        <div className="flex flex-row flex-wrap items-center justify-center gap-6 mb-2">
-          {/* Toki Hub logo */}
-          <TokiHubLogo />
-          {/* Parklife logo */}
-          <ParklifeLogo />
-          {/* Toki Hub logo (second instance matches WP) */}
-          <TokiHubLogo />
+        {/* Partner logos row — ais (square) | secana (tall) | dyatmika (square)
+            Gap matches live site: ~30px between items on desktop */}
+        <div className="flex flex-row flex-wrap items-center justify-center gap-x-[30px] gap-y-4 mb-2">
+          <Image
+            src="/ais-logo.svg"
+            alt="AIS"
+            width={100}
+            height={100}
+            className="h-[100px] w-auto"
+          />
+          <Image
+            src="/secana-logo.svg"
+            alt="Secana"
+            width={60}
+            height={78}
+            className="h-[78px] w-auto"
+          />
+          <Image
+            src="/dyatmika-logo.svg"
+            alt="Dyatmika"
+            width={100}
+            height={100}
+            className="h-[100px] w-auto"
+          />
         </div>
       </div>
 
@@ -126,10 +141,8 @@ export default function Footer() {
             <li key={label}>
               <a
                 href={href}
-                className="transition-colors duration-300"
-                style={{ fontSize: "0.8em", color: "#A5A5A5", textDecoration: "none" }}
-                onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = "#EFEFEF"; }}
-                onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = "#A5A5A5"; }}
+                className="text-[#A5A5A5] hover:text-[#EFEFEF] transition-colors duration-300 no-underline"
+                style={{ fontSize: "0.8em" }}
               >
                 {label}
               </a>
@@ -141,64 +154,4 @@ export default function Footer() {
   );
 }
 
-// ─── Partner logo components (inline SVG to avoid external image deps) ────────
 
-// Toki Hub: white inline SVG (100×100)
-function TokiHubLogo() {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      xmlnsXlink="http://www.w3.org/1999/xlink"
-      width="100"
-      height="100"
-      viewBox="0 0 922.08 810"
-      preserveAspectRatio="xMidYMid meet"
-      aria-label="Toki Hub"
-      role="img"
-    >
-      <defs>
-        <clipPath id="toki-clip">
-          <path d="M 1.05 1.09 L 919.63 1.09 L 919.63 808.79 L 1.05 808.79 Z" />
-        </clipPath>
-      </defs>
-      <g clipPath="url(#toki-clip)">
-        {/* Simplified white placeholder — actual partner logo */}
-        <rect width="920" height="808" x="1" y="1" fill="white" opacity="0.15" rx="8" />
-        <text x="460" y="420" textAnchor="middle" dominantBaseline="middle"
-              fill="white" fontSize="80" fontFamily="Inter, sans-serif" fontWeight="700">
-          TOKI
-        </text>
-        <text x="460" y="520" textAnchor="middle" dominantBaseline="middle"
-              fill="white" fontSize="60" fontFamily="Inter, sans-serif" fontWeight="400">
-          HUB
-        </text>
-      </g>
-    </svg>
-  );
-}
-
-// Parklife: white inline SVG (100×~130)
-function ParklifeLogo() {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="100"
-      height="130"
-      viewBox="0 0 5197.49 6739.38"
-      aria-label="Parklife"
-      role="img"
-      style={{ fill: "white" }}
-    >
-      {/* Simplified placeholder — actual Parklife logo is the inline SVG from WP */}
-      <rect width="5000" height="6500" x="100" y="100" fill="white" opacity="0.15" rx="200" />
-      <text x="2598" y="3200" textAnchor="middle" dominantBaseline="middle"
-            fill="white" fontSize="800" fontFamily="Inter, sans-serif" fontWeight="700">
-        PARK
-      </text>
-      <text x="2598" y="4200" textAnchor="middle" dominantBaseline="middle"
-            fill="white" fontSize="700" fontFamily="Inter, sans-serif" fontWeight="400">
-        LIFE
-      </text>
-    </svg>
-  );
-}
