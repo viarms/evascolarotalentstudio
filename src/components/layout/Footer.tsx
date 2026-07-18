@@ -74,14 +74,16 @@ export default function Footer() {
             alt="AIS Indonesia"
             width={130}
             height={90}
-            className="h-[90px] w-auto"
+            className="h-[90px]"
+            style={{ width: "auto" }}
           />
           <Image
             src="/secana-logo.svg"
             alt="Secana Beachtown"
             width={70}
             height={90}
-            className="h-[90px] w-auto"
+            className="h-[90px]"
+            style={{ width: "auto" }}
           />
           <Image
             src="/dyatmika-logo.svg"
