@@ -70,22 +70,21 @@ export default function Footer() {
           </p>
         </div>
 
-        {/* Partner logos row — ais (square) | secana (tall) | dyatmika (square)
-            Gap matches live site: ~30px between items on desktop */}
-        <div className="flex flex-row flex-wrap items-center justify-center gap-x-[30px] gap-y-4 mb-2">
+        {/* Partner logos row — spread across full width like live site */}
+        <div className="w-full max-w-[900px] flex flex-row items-center justify-between px-8 mb-2">
           <Image
             src="/ais-logo.svg"
-            alt="AIS"
-            width={100}
+            alt="AIS Indonesia"
+            width={150}
             height={100}
             className="h-[100px] w-auto"
           />
           <Image
             src="/secana-logo.svg"
-            alt="Secana"
-            width={60}
-            height={78}
-            className="h-[78px] w-auto"
+            alt="Secana Beachtown"
+            width={80}
+            height={100}
+            className="h-[100px] w-auto"
           />
           <Image
             src="/dyatmika-logo.svg"
