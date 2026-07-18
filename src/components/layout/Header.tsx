@@ -17,15 +17,6 @@ import { useState } from "react";
 const NAV_LINKS = [
   { label: "Home",      href: "/" },
   { label: "Price",     href: "/#pricing" },
-  { label: "Timetable", href: "/#timetable" },
-  {
-    label: "Gallery",
-    href: "/#",
-    children: [
-      { label: "Photo",                 href: "/gallery/" },
-      { label: "Concerts Documentary",  href: "/concerts-documentary/" },
-    ],
-  },
   {
     label: "Classes",
     href: "/#",
@@ -39,6 +30,15 @@ const NAV_LINKS = [
       { label: "Modeling",              href: "/classes/modeling/" },
       { label: "Breakdance",            href: "/classes/breakdance/" },
       { label: "Public Speaking",       href: "/classes/public-speaking/" },
+    ],
+  },
+  { label: "Timetable", href: "/#timetable" },
+  {
+    label: "Gallery",
+    href: "/#",
+    children: [
+      { label: "Photo",                 href: "/gallery/" },
+      { label: "Concerts Documentary",  href: "/concerts-documentary/" },
     ],
   },
   { label: "Practice",  href: "/practice/" },

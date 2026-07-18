@@ -69,7 +69,7 @@ const STATIC_CONTENT: Record<ClassSlug, StaticContent> = {
       { level: "Junior", ageRange: "6–9 years",   focus: "More complex choreography, teamwork" },
       { level: "Teen",   ageRange: "10–16 years", focus: "Advanced technique, personal style, performance preparation" },
     ],
-    coachesNote: "Novie, Faith, Tya — our hip-hop coaches have experience teaching children across all age groups and regularly choreograph end-of-term concert routines.",
+    coachesNote: "We believe every child carries rhythm inside them — our job is simply to bring it out. In this class, there's no such thing as 'not a dancer.' We start from where your child is, build their confidence step by step, and by the end of term you'll see them own the stage in a way that will give you chills. Hip-hop isn't just a dance style — it's a way of expressing who you are, and we can't wait to help your child discover that.",
     priceNote: "Starting from Rp110,000/class (30-class/3-style package). See the full pricing page for all package options.",
     faq: [
       { question: "Does my child need prior dance experience?", answer: "No, the Tots & Junior classes are designed for beginners." },
@@ -96,7 +96,7 @@ const STATIC_CONTENT: Record<ClassSlug, StaticContent> = {
       { level: "Tots",        ageRange: "3–5 years",  focus: "Basic movement, flexibility, listening to music" },
       { level: "Junior/Teen", ageRange: "6–16 years", focus: "Foot & hand position technique, movement combinations, expression" },
     ],
-    coachesNote: "Vivian (Sanur), Rahma (Canggu) — focused on safe, age-appropriate foundational ballet technique.",
+    coachesNote: "Ballet gives children something that lasts a lifetime — not just technique, but the discipline to keep going when something is hard, and the grace to make it look effortless. We teach this class with patience and warmth, because we know that the little one who struggles with their first plié today will be the one who stands tallest on stage. Every child who walks through our door belongs here.",
     priceNote: "Starting from Rp110,000/class — packages include the option of a Tutu Ballet uniform.",
     faq: [
       { question: "What age can children start ballet?", answer: "Tots classes accept children from around age 3." },
@@ -123,7 +123,7 @@ const STATIC_CONTENT: Record<ClassSlug, StaticContent> = {
       { level: "Junior", ageRange: "6–9 years",   focus: "Basic vocal technique, simple song practice" },
       { level: "Teen",   ageRange: "10–16 years", focus: "Advanced voice control, solo performance preparation" },
     ],
-    coachesNote: "Kuna, Andini — teaching foundational vocal technique through to stage performance preparation.",
+    coachesNote: "Every child has a voice worth hearing — and this class is the place where they learn to trust it. We've seen children come in barely willing to hum, and leave term after term singing solos in front of a full audience. The transformation isn't magic; it's consistent encouragement, the right technique, and a safe space to be imperfect while growing. If your child loves music, this is where they belong.",
     priceNote: "Starting from Rp110,000/class.",
     faq: [
       { question: "My child has never had vocal lessons — can they join?", answer: "Yes, the Tots & Junior classes are designed for complete beginners." },
@@ -149,7 +149,7 @@ const STATIC_CONTENT: Record<ClassSlug, StaticContent> = {
       { level: "Junior", ageRange: "6–9 years",   focus: "Basic formation movement, following K-Pop song rhythms" },
       { level: "Teen",   ageRange: "10–16 years", focus: "Complex choreography, idol-style stage expression" },
     ],
-    coachesNote: "Faith — stays up to date with the latest K-Pop choreography to keep content relevant to what kids love.",
+    coachesNote: "K-Pop is more than a trend — it's a full performance art that demands precision, energy, and teamwork. We keep the choreography fresh each term so students are always learning something they're genuinely excited about. But beyond the moves, what we're really building is presence: the ability to walk into any room and light it up. When your child performs at the concert, you'll see exactly what we mean.",
     priceNote: "Starting from Rp110,000/class.",
     faq: [
       { question: "Do you have to be a K-Pop fan to join?", answer: "Not required, but it's most fun for kids who already enjoy K-Pop music." },
@@ -175,7 +175,7 @@ const STATIC_CONTENT: Record<ClassSlug, StaticContent> = {
       { level: "Tots",   ageRange: "3–5 years", focus: "Basic movement, facial & body expression" },
       { level: "Junior", ageRange: "6–9 years", focus: "Movement combinations, basic jazz technique" },
     ],
-    coachesNote: "Putri — brings an energetic jazz style that's easy and fun for kids to follow.",
+    coachesNote: "Jazz dance teaches children to feel the music in their whole body — and once they feel it, you can't stop them. This class is joyful, expressive, and alive. We push technique because it matters, but we never let it get in the way of the fun. Our goal is for every child to leave each session feeling more confident and more themselves than when they walked in.",
     priceNote: "Starting from Rp110,000/class.",
     faq: [
       { question: "What's the difference between Jazz Dance and Hip-Hop?", answer: "Jazz places greater emphasis on technique, musicality, and body expression; Hip-Hop leans more toward urban rhythm and freestyle." },
@@ -200,7 +200,7 @@ const STATIC_CONTENT: Record<ClassSlug, StaticContent> = {
       { level: "Junior", ageRange: "6–9 years",   focus: "Basic acting exercises, role play" },
       { level: "Teen",   ageRange: "10–16 years", focus: "Musical theatre, character acting, stage vocal work" },
     ],
-    coachesNote: "Andini, Putri — experienced in guiding children through acting and musical theatre for stage performances.",
+    coachesNote: "Theatre taught us that the most powerful thing a person can do is stand in front of others and tell the truth through a character. That's what we teach here — not just how to act or sing, but how to be brave enough to be seen. Some of our most transformative students started as the quietest kids in the room. Drama and musical theatre have a way of finding the performer hiding inside every child.",
     priceNote: "Starting from Rp110,000/class.",
     faq: [
       { question: "Can shy children join this class?", answer: "This class is designed specifically to help shy children build confidence gradually." },
@@ -226,7 +226,7 @@ const STATIC_CONTENT: Record<ClassSlug, StaticContent> = {
       { level: "Tots/Junior", ageRange: "3–9 years",   focus: "Posture introduction, basic walking, confidence in front of others" },
       { level: "Teen",        ageRange: "10–16 years", focus: "Catwalk technique, posing, camera expression" },
     ],
-    coachesNote: "Cintya — guides age-appropriate modeling fundamentals with an emphasis on confidence, not appearance pressure.",
+    coachesNote: "Confidence isn't something you're born with — it's something you practice. That's the real lesson in this class. We use posture, movement, and presence as tools to help children discover how powerful they already are. It has nothing to do with looks and everything to do with how you carry yourself. The students who come through this program walk differently — and not just on the catwalk.",
     priceNote: "Starting from Rp110,000/class.",
     faq: [
       { question: "Does this class guarantee my child becomes a professional model?", answer: "The primary goal of the class is to build self-confidence and good posture — not to promise a modeling career." },
@@ -251,7 +251,7 @@ const STATIC_CONTENT: Record<ClassSlug, StaticContent> = {
     ageGroups: [
       { level: "Junior/Teen", ageRange: "6–16 years", focus: "Basic breaking movements, footwork, freezes, freestyle" },
     ],
-    coachesNote: "Faith.",
+    coachesNote: "Breakdance is one of the most honest art forms there is — it rewards hard work, creativity, and the courage to keep trying after you fall. And you will fall. That's part of it. What we build in this class goes way beyond dance: grit, physical strength, and the kind of self-belief that comes from mastering something genuinely difficult. Every freeze landed, every freeze stuck — that's your child proving to themselves what they're made of.",
     priceNote: "Starting from Rp110,000/class. Currently only available at Canggu Studio — contact us via WhatsApp if you're in Sanur.",
     faq: [
       { question: "Does my child need to be flexible before joining?", answer: "No, classes start from basic movements and progress gradually according to each child's ability." },
@@ -274,7 +274,7 @@ const STATIC_CONTENT: Record<ClassSlug, StaticContent> = {
     ageGroups: [
       { level: "Teen", ageRange: "10–16 years", focus: "Speech structure, intonation, confidence speaking in public" },
     ],
-    coachesNote: "Andini.",
+    coachesNote: "The ability to speak clearly, think on your feet, and hold a room's attention is one of the most valuable skills a young person can develop — and it's entirely learnable. We work on structure, voice, and body language, but most importantly we work on the belief that what you have to say matters. Students who complete this program don't just speak better; they show up differently in school, in friendships, and in life.",
     priceNote: "",
     faq: [],
     ctaLabel: "Enquire About Class Availability",
