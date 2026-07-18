@@ -10,7 +10,7 @@
 // Gallery has dropdown: Photo | Concerts Documentary.
 // Classes has dropdown: all 9 class pages.
 
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
@@ -95,17 +95,6 @@ type NavLinkItem = {
 
 function NavItem({ item }: { item: NavLinkItem }) {
   const [open, setOpen] = useState(false);
-  const ref = useRef<HTMLLIElement>(null);
-
-  // Close on outside click
-  useEffect(() => {
-    if (!open) return;
-    function handler(e: MouseEvent) {
-      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
-    }
-    document.addEventListener("mousedown", handler);
-    return () => document.removeEventListener("mousedown", handler);
-  }, [open]);
 
   if (!item.children) {
     return (
@@ -126,10 +115,14 @@ function NavItem({ item }: { item: NavLinkItem }) {
   }
 
   return (
-    <li ref={ref} className="relative">
-      <button
-        type="button"
-        onClick={() => setOpen((v) => !v)}
+    <li
+      className="relative"
+      onMouseEnter={() => setOpen(true)}
+      onMouseLeave={() => setOpen(false)}
+    >
+      {/* Render as <a> so it's still a valid link target, not a button */}
+      <a
+        href={item.href}
         aria-expanded={open}
         aria-haspopup="true"
         className="
@@ -137,7 +130,6 @@ function NavItem({ item }: { item: NavLinkItem }) {
           text-[#DDDDDD] hover:text-[#B20001]
           transition-colors duration-300
           [font-family:var(--font-display)]
-          bg-transparent border-none cursor-pointer
         "
       >
         {item.label}
@@ -145,7 +137,7 @@ function NavItem({ item }: { item: NavLinkItem }) {
              className="w-[0.6em] h-[0.6em] fill-current ml-0.5" aria-hidden="true">
           <path d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z" />
         </svg>
-      </button>
+      </a>
 
       {open && (
         <ul
@@ -299,7 +291,7 @@ export default function Header() {
           >
             <ul className="flex items-center list-none m-0 p-0">
               {(NAV_LINKS as readonly NavLinkItem[]).map((item) => (
-                <NavItem key={item.href} item={item} />
+                <NavItem key={item.label} item={item} />
               ))}
             </ul>
           </nav>
@@ -382,7 +374,7 @@ export default function Header() {
             <ul className="list-none m-0 p-0 py-2">
               {NAV_LINKS.map((item) => (
                 <MobileNavItem
-                  key={item.href}
+                  key={item.label}
                   item={item as NavLinkItem}
                   onClose={() => setMenuOpen(false)}
                 />
