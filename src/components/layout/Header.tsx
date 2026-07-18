@@ -8,6 +8,7 @@
 // Social icons: IG + FB + YT, white fill, 17px, accent on hover.
 // Join Us button: semi-transparent black, Archivo Black 1.2em, thin border.
 // Gallery has dropdown: Photo | Concerts Documentary.
+// Classes has dropdown: all 9 class pages.
 
 import { useState, useRef, useEffect } from "react";
 
@@ -23,6 +24,21 @@ const NAV_LINKS = [
     children: [
       { label: "Photo",                 href: "/gallery/" },
       { label: "Concerts Documentary",  href: "/concerts-documentary/" },
+    ],
+  },
+  {
+    label: "Classes",
+    href: "/#",
+    children: [
+      { label: "Hip-Hop",               href: "/classes/hip-hop/" },
+      { label: "Ballet",                href: "/classes/ballet/" },
+      { label: "Singing",               href: "/classes/singing/" },
+      { label: "K-Pop Dance",           href: "/classes/kpop-dance/" },
+      { label: "Jazz Dance",            href: "/classes/jazz-dance/" },
+      { label: "Drama & Musical Theatre", href: "/classes/drama-musical-theatre/" },
+      { label: "Modeling",              href: "/classes/modeling/" },
+      { label: "Breakdance",            href: "/classes/breakdance/" },
+      { label: "Public Speaking",       href: "/classes/public-speaking/" },
     ],
   },
   { label: "Practice",  href: "/practice/" },
@@ -161,6 +177,77 @@ function NavItem({ item }: { item: NavLinkItem }) {
   );
 }
 
+// ─── MobileNavItem (collapsible dropdown for mobile drawer) ──────────────────
+
+function MobileNavItem({ item, onClose }: { item: NavLinkItem; onClose: () => void }) {
+  const [open, setOpen] = useState(false);
+
+  if (!item.children) {
+    return (
+      <li>
+        <a
+          href={item.href}
+          onClick={onClose}
+          className="
+            block px-6 py-2 text-[0.9em] uppercase tracking-[1px]
+            text-[#DDDDDD] hover:text-[#B20001]
+            transition-colors [font-family:var(--font-display)]
+          "
+        >
+          {item.label}
+        </a>
+      </li>
+    );
+  }
+
+  return (
+    <li>
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        aria-expanded={open}
+        aria-haspopup="true"
+        className="
+          flex items-center justify-between w-full
+          px-6 py-2 text-[0.9em] uppercase tracking-[1px]
+          text-[#DDDDDD] hover:text-[#B20001]
+          transition-colors [font-family:var(--font-display)]
+          bg-transparent border-none cursor-pointer
+        "
+      >
+        {item.label}
+        <svg viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"
+             className="w-[0.7em] h-[0.7em] fill-current" aria-hidden="true">
+          {open
+            ? /* minus */ <path d="M416 208H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h384c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z" />
+            : /* plus  */ <path d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z" />
+          }
+        </svg>
+      </button>
+
+      {open && (
+        <ul className="list-none m-0 p-0 border-t border-[#1a1a1a]">
+          {item.children.map((child) => (
+            <li key={child.href}>
+              <a
+                href={child.href}
+                onClick={onClose}
+                className="
+                  block pl-10 pr-6 py-2 text-[0.85em] uppercase tracking-[1px]
+                  text-[#A5A5A5] hover:text-[#B20001]
+                  transition-colors [font-family:var(--font-display)]
+                "
+              >
+                {child.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      )}
+    </li>
+  );
+}
+
 // ─── Header ───────────────────────────────────────────────────────────────────
 
 export default function Header() {
@@ -172,14 +259,14 @@ export default function Header() {
       <header
         className="
           fixed top-0 left-0 right-0 z-50
-          hidden md:flex items-center justify-center
+          hidden md:flex items-center
           py-[1em] px-0
           transition-colors duration-[250ms]
           bg-black/50 hover:bg-black
         "
-        style={{ width: "100%" }}
       >
-        <div className="w-full max-w-[1424px] flex items-center">
+        {/* ── Inner content container: max-width 1140px, centered ── */}
+        <div className="w-full max-w-[1140px] mx-auto flex items-center">
 
           {/* ── Col 1: Social icons (15%) ── */}
           <div className="flex items-center" style={{ width: "15%" }}>
@@ -294,38 +381,11 @@ export default function Header() {
                className="bg-black border-t border-[#222222]">
             <ul className="list-none m-0 p-0 py-2">
               {NAV_LINKS.map((item) => (
-                <li key={item.href}>
-                  <a
-                    href={item.href}
-                    onClick={() => setMenuOpen(false)}
-                    className="
-                      block px-6 py-2 text-[0.9em] uppercase tracking-[1px]
-                      text-[#DDDDDD] hover:text-[#B20001]
-                      transition-colors [font-family:var(--font-display)]
-                    "
-                  >
-                    {item.label}
-                  </a>
-                  {"children" in item && item.children && (
-                    <ul className="list-none m-0 p-0">
-                      {item.children.map((child) => (
-                        <li key={child.href}>
-                          <a
-                            href={child.href}
-                            onClick={() => setMenuOpen(false)}
-                            className="
-                              block pl-10 pr-6 py-1.5 text-[0.85em] uppercase
-                              text-[#A5A5A5] hover:text-[#B20001]
-                              transition-colors [font-family:var(--font-display)]
-                            "
-                          >
-                            {child.label}
-                          </a>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </li>
+                <MobileNavItem
+                  key={item.href}
+                  item={item as NavLinkItem}
+                  onClose={() => setMenuOpen(false)}
+                />
               ))}
               <li className="px-6 pt-3 pb-2">
                 <a
