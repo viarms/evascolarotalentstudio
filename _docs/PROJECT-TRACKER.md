@@ -1,5 +1,5 @@
 # Project Tracker — Eva Scolaro Talent Studio
-**Last updated:** 18 July 2026
+**Last updated:** 18 July 2026 (rev 2)
 **Phase:** Phase 1 — Class Pages (Next.js pilot)
 
 ---
@@ -7,7 +7,7 @@
 ## Overall Status
 
 ```
-Phase 1 (9 class pages)  ████████████░░░░░░░░  ~60% done
+Phase 1 (9 class pages)  ████████████████░░░░  ~80% done
 Phase 2 (Studio + blog)  ░░░░░░░░░░░░░░░░░░░░  not started
 Full migration           ░░░░░░░░░░░░░░░░░░░░  not started
 ```
@@ -25,9 +25,9 @@ Full migration           ░░░░░░░░░░░░░░░░░░�
 - [x] ISR configured globally (`revalidate = 3600`, 1h)
 
 ### Components (all in `src/components/`)
-- [x] `layout/Header.tsx` — sticky header, nav links, Join Us / Book Free Trial WA CTAs, mobile hamburger menu
-- [x] `layout/Footer.tsx` — nav links, social icons (IG, FB, YT, Spotify, WA), contact columns
-- [x] `classes/ClassHero.tsx` — H1 on brand-red background (placeholder until hero images)
+- [x] `layout/Header.tsx` — sticky header, nav links, Join Us WA CTA, mobile hamburger menu; social icons (IG, FB, YT); no logo in header (matches live WP design)
+- [x] `layout/Footer.tsx` — ESTS white logo, "Trusted by" partner logos (AIS, Secana, Dyatmika), real address (Jl. Bypass Ngurah Rai No.88A), phone/WA, company name, footer links
+- [x] `classes/ClassHero.tsx` — dark `#121212` fallback; shows WP featured image as full-bleed background with dark overlay when available
 - [x] `classes/ClassIntro.tsx`
 - [x] `classes/BenefitsList.tsx`
 - [x] `classes/AgeGroupTable.tsx`
@@ -40,8 +40,8 @@ Full migration           ░░░░░░░░░░░░░░░░░░�
 
 ### Data layer
 - [x] `src/lib/types/class.ts` — full TypeScript types matching intended ACF structure
-- [x] `src/lib/queries/classQueries.ts` — WP REST API fetcher for live schedule data (`/wp/v2/event` CPT), Yoast SEO meta fetcher
-- [x] `src/lib/mock/classMock.ts` — dev mock data (Ballet + Public Speaking); superseded by real data in `page.tsx`
+- [x] `src/lib/queries/classQueries.ts` — WP REST API fetcher for live schedule data (`/wp/v2/event` CPT), Yoast SEO meta fetcher, `fetchFeaturedImage()` for hero images
+- [x] `src/lib/mock/classMock.ts` — dev mock data (superseded by real data in `page.tsx`; kept as dev reference)
 - [x] `src/lib/apollo-client.ts` — Apollo client (ready for when WPGraphQL is preferred over REST)
 
 ### Class pages
@@ -53,9 +53,24 @@ Full migration           ░░░░░░░░░░░░░░░░░░�
   - [x] Schema.org `Course` JSON-LD on every page
   - [x] `public-speaking` renders `ComingSoonBanner` correctly
   - [x] All 8 active classes render full layout
+  - [x] `fetchFeaturedImage()` called per page — hero image shown if WP Media is uploaded
+
+### SEO files
+- [x] `src/app/sitemap.ts` — covers all 9 `/classes/*` slugs; `public-speaking` at 0.6 priority, rest at 0.8
+- [x] `src/app/robots.ts` — allows `/classes/`; points to sitemap URL
+
+### Public assets
+- [x] `public/logo.svg` — main ESTS logo
+- [x] `public/logo-white.svg` — white ESTS logo (used in Footer)
+- [x] `public/ests-logo-white.svg` — alternate white logo variant
+- [x] `public/ais-logo.svg`, `public/secana-logo.svg`, `public/dyatmika-logo.svg` — partner logos in Footer
 
 ### Tooling
 - [x] `scripts/seed-classes.mjs` — idempotent script to create/update 9 WP class CPT posts + Yoast SEO meta (`npm run seed:classes`)
+
+### Completed milestones
+- [x] **18 Jul 2026** — Run `npm run seed:classes`: all 9 class CPT posts exist (IDs 7102–7110). Yoast custom title write blocked by WP (see P1 #12) — fallback in `page.tsx` handles this correctly.
+- [x] **18 Jul 2026** — Verify live schedule: all 8 active classes show correct Sanur/Canggu data. Toki Hub/Parklife tabs filtered out. One WP data entry error found (see below).
 
 ---
 
@@ -65,23 +80,23 @@ Full migration           ░░░░░░░░░░░░░░░░░░�
 
 | # | Task | Where | Notes |
 |---|---|---|---|
-| **1** | ~~Run `npm run seed:classes`~~ | ~~WordPress~~ | ✅ Done 18 Jul 2026. All 9 class CPT posts exist (IDs 7102–7110). Yoast custom title write is blocked (see note below) — fallback logic in `page.tsx` handles this correctly. |
-| **2** | ~~Verify live schedule data~~ | ~~Browser / WP Admin~~ | ✅ Done 18 Jul 2026. All 8 active classes show correct Sanur/Canggu data. Partner school tabs (Toki Hub, Parklife) filtered out via `PUBLIC_LOCATIONS` in `classQueries.ts`. One WP data entry error found: Tots Ballet Canggu Saturday `Time_End` shows `22:45` — should be `10:45`. Fix in WP Admin. |
-| **3** | Pixel-perfect Header/Footer QA | `Header.tsx`, `Footer.tsx` | Both have TODO comments: replace text logo with actual SVG/PNG (`public/logo.svg`), match exact colors/font sizes from live WP site. Actual social profile URLs need confirming (YouTube, Spotify currently use guesses). |
-| **4** | Hero images | `ClassHero.tsx` | Currently solid brand-red placeholder. Upload 1 image per class to WP Media, then uncomment the `next/image` block (TODO is already in `ClassHero.tsx`). |
-| **5** | Add sitemap.ts + robots.ts | `src/app/` | Neither file exists yet. Needed for SEO before go-live. See template below. |
-| **6** | Staging test: rewrite proxy | Vercel preview | Deploy to Vercel preview URL, set `WP_ORIGIN` to live WP server, verify `/` homepage and other WP pages still load correctly through the proxy before flipping DNS. |
+| **1** | ~~Seed WordPress~~ | ~~WordPress~~ | ✅ Done 18 Jul 2026 |
+| **2** | ~~Verify live schedule data~~ | ~~Browser / WP Admin~~ | ✅ Done 18 Jul 2026 |
+| **3** | ~~sitemap.ts + robots.ts~~ | ~~`src/app/`~~ | ✅ Both files exist and are correct |
+| **4** | ~~Logo + Header/Footer assets~~ | ~~`public/`~~ | ✅ `logo.svg`, `logo-white.svg`, partner logos all in `public/`. Footer uses real address + company name. |
+| **5** | ~~Fix WP data entry error~~ | ~~WP Admin~~ | ✅ Done 18 Jul 2026. TOTS BALLET Canggu Saturday: `10:00–10:45`. JUNIOR BALLET Canggu Saturday: `11:00–12:00`. Both verified via REST API. |
+| **6** | ~~Upload hero images to WP Media~~ | ~~WP Admin~~ | ✅ Done 18 Jul 2026. All 9 class posts have featured images assigned (verified via REST API). |
+| **7** | ~~Confirm YouTube channel URL in Header~~ | ~~`Header.tsx`~~ | ✅ Confirmed correct: `https://www.youtube.com/@evascolarotalentstudio8290` |
+| **8** | Staging test: rewrite proxy | Vercel preview | Deploy to Vercel preview, set `WP_ORIGIN` env var to live WP server. Walk through: homepage, price, timetable, gallery (proxy), then all 9 class pages (Next.js). If clean → DNS cutover is safe. |
 
 ### P1 — Important but not hard blockers
 
 | # | Task | Notes |
 |---|---|---|
-| **7** | Business decision: Public Speaking | Keep `coming_soon` this term, or flip to `active`? One-line change in `page.tsx` to activate. |
-| **8** | Confirm Spotify profile URL in Footer | Currently `https://open.spotify.com` (generic). Update `SOCIAL_LINKS` in `Footer.tsx` with the real URL. |
-| **9** | Studio addresses in Footer | `Footer.tsx` has placeholder text "Sanur, Denpasar, Bali" and "Canggu, Badung, Bali". Fill in the real street addresses. |
+| **9** | Business decision: Public Speaking | Keep `coming_soon` this term, or flip to `active`? One-line change in `STATIC_CONTENT` in `page.tsx` (`status: "active"`). |
 | **10** | Mobile QA | Test at 375px, 390px, 428px. Focus on ScheduleTabs horizontal scroll on small screens. |
 | **11** | Lighthouse audit | Target ≥ 90 mobile for each class page. Run after hero images are added. |
-| **12** | Enable Yoast custom title write on `class` CPT | Yoast's `_yoast_wpseo_title` meta key is not REST-writable on custom post types by default. Until fixed, `page.tsx` detects the auto-generated title pattern and falls back to static — all 9 pages render correct SEO titles regardless. To fix permanently, add this to a must-use plugin or `functions.php`: |
+| **12** | Enable Yoast custom title write on `class` CPT | Until fixed, `page.tsx` auto-detects Yoast's fallback title and uses the static SEO title instead — all 9 pages render correct titles. To fix permanently, add this to a must-use plugin or `functions.php`: |
 
 ```php
 // Allow Yoast SEO meta fields to be written via REST API on the 'class' CPT.
@@ -105,12 +120,12 @@ After adding this, re-run `npm run seed:classes` — titles will write correctly
 
 | # | Task | Doc reference |
 |---|---|---|
-| **12** | Studio location pages — `/studio/canggu/` and `/studio/sanur/` | `PRD-SEO-Eva-Scolaro-Talent-Studio.md` §10 |
-| **13** | ACF field group for static content | Migrate `STATIC_CONTENT` from `page.tsx` into WP ACF so client can edit without a developer |
-| **14** | Blog / educational content (min. 8 articles) | `PRD-SEO-Eva-Scolaro-Talent-Studio.md` §6 Phase 2 |
-| **15** | School Partnerships page (`/school-partnerships/`) | Social proof + E-E-A-T signal for SEO |
-| **16** | Breakdance Sanur — open if demand grows | Add events in WP `event` CPT; no frontend code change needed |
-| **17** | `classMock.ts` cleanup | File is now superseded by `STATIC_CONTENT` in `page.tsx`; can be deleted or kept as dev reference |
+| **13** | Studio location pages — `/studio/canggu/` and `/studio/sanur/` | `PRD-SEO-Eva-Scolaro-Talent-Studio.md` §10 |
+| **14** | ACF field group for static content | Migrate `STATIC_CONTENT` from `page.tsx` into WP ACF so client can edit without a developer |
+| **15** | Blog / educational content (min. 8 articles) | `PRD-SEO-Eva-Scolaro-Talent-Studio.md` §6 Phase 2 |
+| **16** | School Partnerships page (`/school-partnerships/`) | Social proof + E-E-A-T signal for SEO |
+| **17** | Breakdance Sanur — open if demand grows | Add events in WP `event` CPT; no frontend code change needed |
+| **18** | `classMock.ts` cleanup | File is superseded by `STATIC_CONTENT` in `page.tsx`; can be deleted or kept as dev reference |
 
 ---
 
@@ -118,59 +133,16 @@ After adding this, re-run `npm run seed:classes` — titles will write correctly
 
 In order — do these before touching anything else:
 
-**~~Step 1 — Seed WordPress~~** ✅ Done
-All 9 class CPT posts seeded (IDs 7102–7110). Custom Yoast title write silently blocked by WP (see P1 task #12 for the PHP fix) — `page.tsx` handles this correctly via auto-title detection fallback. All 9 pages render the correct full SEO titles.
+**Step 1 — Fix WP data entry error** ⚠️
+WP Admin → Events → find "Tots Ballet Canggu Saturday" → change `Time_End` from `22:45` to `10:45`.
 
-**~~Step 2 — Verify schedule data on each class page~~** ✅ Done
-All 9 class pages verified:
-- All 8 active classes show correct schedule data from live WP API
-- All pages show only Sanur Studio / Canggu Studio tabs (Toki Hub, Parklife filtered out — fix applied to `classQueries.ts`)
-- Breakdance correctly shows only Canggu Studio (single tab)
-- Public Speaking correctly shows ComingSoonBanner (no schedule)
-- ⚠️ **WP data entry error to fix**: Tots Ballet Canggu Saturday has `Time_End: 22:45` (should be `10:45`). Fix directly in WP Admin → Events → Tots Ballet Canggu Saturday.
+**Step 2 — Upload hero images to WP Media**
+For each of the 9 class CPT posts (IDs 7102–7110), upload a suitable hero image in WP Admin → Media, then set it as the featured image on the class post. The Next.js code (`fetchFeaturedImage()` in `classQueries.ts` → `ClassHero.tsx`) is already wired up — no code changes needed. After uploading, ISR will pick up the new images within 1 hour (or force a revalidation).
 
-**Step 3 — Add sitemap.ts and robots.ts**
-Neither file exists. Template (two files, ~30 lines total):
+**Step 3 — Confirm YouTube URL**
+Check `Header.tsx` line with `https://www.youtube.com/@evascolarotalentstudio8290` — verify this is the correct channel handle. If wrong, update `SOCIAL_LINKS` in `Header.tsx`.
 
-```ts
-// src/app/sitemap.ts
-import type { MetadataRoute } from "next";
-
-const SLUGS = [
-  "hip-hop", "ballet", "singing", "kpop-dance",
-  "jazz-dance", "drama-musical-theatre",
-  "modeling", "breakdance", "public-speaking",
-];
-const BASE = "https://www.evascolarotalentstudio.com";
-
-export default function sitemap(): MetadataRoute.Sitemap {
-  return SLUGS.map((slug) => ({
-    url: `${BASE}/classes/${slug}`,
-    changeFrequency: "monthly" as const,
-    priority: 0.8,
-    lastModified: new Date(),
-  }));
-}
-```
-
-```ts
-// src/app/robots.ts
-import type { MetadataRoute } from "next";
-
-export default function robots(): MetadataRoute.Robots {
-  return {
-    rules: { userAgent: "*", allow: "/classes/" },
-    sitemap: "https://www.evascolarotalentstudio.com/sitemap.xml",
-  };
-}
-```
-
-**Step 4 — Logo + Header/Footer polish**
-- Drop `logo.svg` (and `logo-white.svg` for footer) into `public/`
-- Update `ClassHero.tsx` and both layout components (TODO comments already mark exact locations)
-- Confirm real social profile URLs
-
-**Step 5 — Staging test on Vercel preview**
+**Step 4 — Staging test on Vercel preview**
 - Deploy branch to Vercel
 - Set `WP_ORIGIN` env var to live WP server
 - Walk through homepage, price, timetable, gallery (all should proxy through)
@@ -187,14 +159,14 @@ src/
 │   ├── classes/[slug]/page.tsx    ← all 9 class pages, STATIC_CONTENT, fetchScheduleForClass
 │   ├── layout.tsx                 ← fonts, Header, Footer
 │   ├── globals.css
-│   ├── sitemap.ts                 ← ❌ missing — create in Step 3
-│   └── robots.ts                  ← ❌ missing — create in Step 3
+│   ├── sitemap.ts                 ← ✅ done
+│   └── robots.ts                  ← ✅ done
 ├── components/
 │   ├── layout/
-│   │   ├── Header.tsx             ← ⚠️ logo TODO, social URLs to confirm
-│   │   └── Footer.tsx             ← ⚠️ logo TODO, addresses + Spotify URL to fill
+│   │   ├── Header.tsx             ← ✅ complete (social icons, nav, Join Us, mobile menu)
+│   │   └── Footer.tsx             ← ✅ complete (logo, partners, address, links)
 │   └── classes/
-│       ├── ClassHero.tsx          ← ⚠️ hero image TODO
+│       ├── ClassHero.tsx          ← ✅ WP featured image support wired (images need uploading in WP)
 │       ├── ClassIntro.tsx         ← ✅
 │       ├── BenefitsList.tsx       ← ✅
 │       ├── AgeGroupTable.tsx      ← ✅
@@ -206,9 +178,16 @@ src/
 │       └── ComingSoonBanner.tsx   ← ✅
 ├── lib/
 │   ├── apollo-client.ts           ← ✅ (ready for WPGraphQL if/when needed)
-│   ├── queries/classQueries.ts    ← ✅ REST API fetcher + Yoast meta
+│   ├── queries/classQueries.ts    ← ✅ REST API fetcher + Yoast meta + fetchFeaturedImage
 │   ├── mock/classMock.ts          ← superseded, keep for dev reference
 │   └── types/class.ts             ← ✅
+public/
+│   ├── logo.svg                   ← ✅
+│   ├── logo-white.svg             ← ✅
+│   ├── ests-logo-white.svg        ← ✅
+│   ├── ais-logo.svg               ← ✅
+│   ├── secana-logo.svg            ← ✅
+│   └── dyatmika-logo.svg          ← ✅
 scripts/
 └── seed-classes.mjs               ← ✅ run once per environment
 _docs/
