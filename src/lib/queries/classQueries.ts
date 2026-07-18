@@ -128,7 +128,31 @@ export async function fetchYoastMeta(slug: string): Promise<YoastMeta | null> {
   };
 }
 
-// ─── Fetch ────────────────────────────────────────────────────────────────────
+/**
+ * Fetches the featured image URL for a class post by slug.
+ * Returns null if no featured image is set.
+ */
+export async function fetchFeaturedImage(slug: string): Promise<string | null> {
+  const res = await fetch(
+    `${WP_BASE}/class?slug=${encodeURIComponent(slug)}&_embed`,
+    { next: { revalidate: 3600 } }
+  );
+  if (!res.ok) return null;
+
+  const data = await res.json();
+  const post = data?.[0];
+  if (!post) return null;
+
+  const media = post._embedded?.["wp:featuredmedia"]?.[0];
+  if (!media || media.code === "rest_post_invalid_id") return null;
+
+  return (
+    media.media_details?.sizes?.full?.source_url ??
+    media.source_url ??
+    null
+  );
+}
+
 
 /**
  * Fetches all events from the WP REST API and returns a schedule grouped

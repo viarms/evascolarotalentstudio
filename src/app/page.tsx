@@ -8,7 +8,7 @@
 export default function HomePage() {
   return (
     <main className="flex flex-col items-center justify-center min-h-[60vh] px-4 text-center">
-      <h1 className="text-3xl font-bold text-gray-900 mb-4">
+      <h1 className="text-3xl font-normal text-gray-900 mb-4">
         Eva Scolaro Talent Studio
       </h1>
       <p className="text-gray-500 max-w-md">

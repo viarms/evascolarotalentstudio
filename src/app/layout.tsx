@@ -36,6 +36,15 @@ export const metadata: Metadata = {
   description:
     "Dance and performing arts classes for children in Sanur and Canggu, Bali. Ballet, Hip-Hop, Contemporary, Acrobatics and more.",
   metadataBase: new URL("https://www.evascolarotalentstudio.com"),
+  icons: {
+    icon: [
+      { url: "/favicon-16.png", sizes: "16x16", type: "image/png" },
+      { url: "/favicon-32.png", sizes: "32x32", type: "image/png" },
+    ],
+    apple: [
+      { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+    ],
+  },
   openGraph: {
     siteName: "Eva Scolaro Talent Studio",
     locale: "id_ID",

@@ -13,7 +13,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 
 import type { ClassData } from "@/lib/types/class";
-import { fetchScheduleForClass, fetchYoastMeta } from "@/lib/queries/classQueries";
+import { fetchScheduleForClass, fetchYoastMeta, fetchFeaturedImage } from "@/lib/queries/classQueries";
 
 // ─── Components ──────────────────────────────────────────────────────────────
 import ClassHero from "@/components/classes/ClassHero";
@@ -376,6 +376,8 @@ export default async function ClassPage(props: SlugProps) {
 
   const isComingSoon = cls.status === "coming_soon";
 
+  const [featuredImage] = await Promise.all([fetchFeaturedImage(slug)]);
+
   const waMessage = encodeURIComponent(
     `Hi, I'd like to know more about the ${cls.h1} class`
   );
@@ -402,7 +404,7 @@ export default async function ClassPage(props: SlugProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      <ClassHero title={cls.h1} slug={cls.slug} />
+      <ClassHero title={cls.h1} slug={cls.slug} featuredImage={featuredImage} />
 
         <ClassIntro text={cls.intro} />
         <BenefitsList items={cls.benefits} />

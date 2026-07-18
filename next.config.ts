@@ -7,7 +7,11 @@ const WP_ORIGIN = process.env.WP_ORIGIN;
 const nextConfig: NextConfig = {
   images: {
     remotePatterns: WP_ORIGIN
-      ? [{ protocol: "https", hostname: new URL(WP_ORIGIN).hostname }]
+      ? [
+          { protocol: "https", hostname: new URL(WP_ORIGIN).hostname },
+          // Also allow www subdomain (WP may serve media from either)
+          { protocol: "https", hostname: `www.${new URL(WP_ORIGIN).hostname}` },
+        ]
       : [],
   },
 

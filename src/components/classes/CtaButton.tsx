@@ -33,9 +33,9 @@ export default function CtaButton({ label, waLink }: Props) {
         "
         style={{
           opacity: visible ? 1 : 0,
-          transform: visible ? "translateY(0) scale(1)" : "translateY(20px) scale(0.97)",
-          transition: "opacity 0.6s ease-out, transform 0.6s cubic-bezier(0.22,1,0.36,1), background-color 0.2s, box-shadow 0.2s",
-          animation: visible ? "ctaPulse 3s ease-in-out 1.5s infinite" : "none",
+          transform: visible ? "scale(1)" : "translateY(20px) scale(0.97)",
+          transition: "opacity 0.6s ease-out, transform 0.6s cubic-bezier(0.22,1,0.36,1), background-color 0.2s",
+          animation: visible ? "ctaPulse 5s ease-in-out 2s infinite" : "none",
         }}
       >
         {label}
