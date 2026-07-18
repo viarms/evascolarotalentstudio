@@ -1,10 +1,6 @@
 // src/components/layout/Footer.tsx
-//
-// Shell footer — structure, nav links, and social icons are in place.
-// Pixel-perfect styling requires the live WP site for exact colors/fonts.
-//
-// Social links: update the href values once the studio's actual profile URLs
-// are confirmed (currently using placeholder # where unknown).
+
+import Image from "next/image";
 
 const WA_NUMBER = process.env.NEXT_PUBLIC_WA_NUMBER ?? "6282146284464";
 
@@ -21,7 +17,7 @@ const NAV_LINKS = [
 const SOCIAL_LINKS = [
   {
     label: "Instagram",
-    href: "https://instagram.com/evascolarotalentstudio",
+    href: "https://www.instagram.com/evascolaro_talent_studio/",
     icon: (
       <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5" aria-hidden="true">
         <path d="M12 2.163c3.204 0 3.584.012 4.85.07 1.366.062 2.633.336 3.608 1.311.975.975 1.249 2.242 1.311 3.608.058 1.266.07 1.646.07 4.85s-.012 3.584-.07 4.85c-.062 1.366-.336 2.633-1.311 3.608-.975.975-2.242 1.249-3.608 1.311-1.266.058-1.646.07-4.85.07s-3.584-.012-4.85-.07c-1.366-.062-2.633-.336-3.608-1.311-.975-.975-1.249-2.242-1.311-3.608C2.175 15.584 2.163 15.204 2.163 12s.012-3.584.07-4.85c.062-1.366.336-2.633 1.311-3.608.975-.975 2.242-1.249 3.608-1.311C8.416 2.175 8.796 2.163 12 2.163zm0-2.163C8.741 0 8.333.014 7.053.072 5.197.157 3.355.673 2.014 2.014.673 3.355.157 5.197.072 7.053.014 8.333 0 8.741 0 12c0 3.259.014 3.667.072 4.947.085 1.856.601 3.698 1.942 5.039 1.341 1.341 3.183 1.857 5.039 1.942C8.333 23.986 8.741 24 12 24s3.667-.014 4.947-.072c1.856-.085 3.698-.601 5.039-1.942 1.341-1.341 1.857-3.183 1.942-5.039.058-1.28.072-1.688.072-4.947 0-3.259-.014-3.667-.072-4.947-.085-1.856-.601-3.698-1.942-5.039C20.645.673 18.803.157 16.947.072 15.667.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zm0 10.162a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z" />
@@ -39,7 +35,7 @@ const SOCIAL_LINKS = [
   },
   {
     label: "YouTube",
-    href: "https://youtube.com/@evascolarotalentstudio",
+    href: "https://www.youtube.com/@evascolarotalentstudio8290",
     icon: (
       <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5" aria-hidden="true">
         <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
@@ -48,7 +44,7 @@ const SOCIAL_LINKS = [
   },
   {
     label: "Spotify",
-    href: "https://open.spotify.com",
+    href: "https://open.spotify.com/artist/1Cnhz3VFCwxhAgrvrCOXlT?si=YW5CRx18SCCOkJ-TphkHPg",
     icon: (
       <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5" aria-hidden="true">
         <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z" />
@@ -76,14 +72,13 @@ export default function Footer() {
 
           {/* ── Brand column ── */}
           <div className="space-y-4">
-            {/*
-              TODO (Phase 1 QA): replace text logo with actual image once available.
-              <Image src="/logo-white.svg" alt="Eva Scolaro Talent Studio" width={160} height={40} />
-            */}
-            <p className="text-[var(--color-brand-red)] font-bold text-lg leading-tight">
-              Eva Scolaro<br />
-              <span className="text-gray-400 font-medium text-sm">Talent Studio</span>
-            </p>
+            <Image
+              src="/logo-white.svg"
+              alt="Eva Scolaro Talent Studio"
+              width={160}
+              height={44}
+              className="h-10 w-auto"
+            />
             <p className="text-sm text-gray-400 leading-relaxed max-w-xs">
               Dance and performing arts classes for children in Sanur and Canggu, Bali.
             </p>

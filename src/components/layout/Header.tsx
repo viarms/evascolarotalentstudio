@@ -1,14 +1,11 @@
 "use client";
 // src/components/layout/Header.tsx
 //
-// Shell header — structure and nav links are in place.
-// Pixel-perfect styling (exact colors, font sizes, logo file) requires
-// screenshots from the live WP site (Phase 1 QA checklist item).
-//
 // All nav links point to the existing WordPress paths — they are served by
 // the WP origin via the rewrite proxy in next.config.ts, NOT as Next.js routes.
 
 import { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 
 const NAV_LINKS = [
@@ -29,21 +26,20 @@ export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 bg-white border-b border-gray-100 shadow-sm">
+    <header className="sticky top-0 z-50 bg-black border-b border-gray-800 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 md:h-20">
 
           {/* ── Logo ── */}
-          <Link href="/" className="flex-shrink-0 flex items-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-brand-red)] rounded">
-            {/*
-              TODO (Phase 1 QA): replace with the actual SVG/PNG logo from WP.
-              Place the file at public/logo.svg and update this to:
-                <Image src="/logo.svg" alt="Eva Scolaro Talent Studio" width={160} height={40} priority />
-            */}
-            <span className="text-[var(--color-brand-red)] text-lg leading-tight [font-family:var(--font-display)]">
-              Eva Scolaro<br />
-              <span className="text-gray-700 text-sm [font-family:var(--font-sans)]">Talent Studio</span>
-            </span>
+          <Link href="/" className="flex-shrink-0 flex items-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-brand-red)] rounded">
+            <Image
+              src="/logo-white.svg"
+              alt="Eva Scolaro Talent Studio"
+              width={160}
+              height={44}
+              priority
+              className="h-10 w-auto"
+            />
           </Link>
 
           {/* ── Desktop nav ── */}
@@ -52,7 +48,7 @@ export default function Header() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="text-sm text-gray-700 hover:text-[var(--color-brand-red)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-brand-red)] rounded [font-family:var(--font-display)]"
+                className="text-sm text-gray-200 hover:text-[var(--color-brand-red)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-brand-red)] rounded [font-family:var(--font-display)]"
               >
                 {link.label}
               </Link>
@@ -102,14 +98,14 @@ export default function Header() {
 
       {/* ── Mobile menu ── */}
       {menuOpen && (
-        <div id="mobile-menu" className="md:hidden border-t border-gray-100 bg-white">
+        <div id="mobile-menu" className="md:hidden border-t border-gray-800 bg-black">
           <nav className="px-4 pt-2 pb-4 flex flex-col gap-1" aria-label="Mobile navigation">
             {NAV_LINKS.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
                 onClick={() => setMenuOpen(false)}
-                className="block px-3 py-2 rounded-md text-sm text-gray-700 hover:text-[var(--color-brand-red)] hover:bg-gray-50 transition-colors [font-family:var(--font-display)]"
+                className="block px-3 py-2 rounded-md text-sm text-gray-200 hover:text-[var(--color-brand-red)] hover:bg-gray-900 transition-colors [font-family:var(--font-display)]"
               >
                 {link.label}
               </Link>
