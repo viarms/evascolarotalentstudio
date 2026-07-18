@@ -21,8 +21,8 @@ const CLASS_SLUGS = [
 export default function sitemap(): MetadataRoute.Sitemap {
   return CLASS_SLUGS.map((slug) => ({
     url: `${BASE}/classes/${slug}`,
+    lastModified: new Date(),
     changeFrequency: "monthly" as const,
     priority: slug === "public-speaking" ? 0.6 : 0.8,
-    lastModified: new Date(),
   }));
 }

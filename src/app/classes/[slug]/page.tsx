@@ -322,7 +322,7 @@ export async function generateMetadata(props: SlugProps): Promise<Metadata> {
   const YOAST_AUTO_TITLE_RE = /^[^|–—]+\s[-–—]\s+Eva Scolaro Talent Studio\s*$/;
   const yoastTitleIsCustom = yoast?.title && !YOAST_AUTO_TITLE_RE.test(yoast.title);
 
-  const title       = yoastTitleIsCustom ? yoast!.title : cls.seoTitle;
+  const title       = (yoastTitleIsCustom ? yoast!.title : cls.seoTitle) ?? cls.h1;
   const description = yoast?.description ?? cls.metaDescription;
   const ogTitle     = (yoastTitleIsCustom ? yoast?.og_title : null) ?? title;
   const ogImage     = yoast?.og_image?.[0];
