@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "seed:classes": "node scripts/seed-classes.mjs"
   },
   "dependencies": {
     "@apollo/client": "^4.2.7",

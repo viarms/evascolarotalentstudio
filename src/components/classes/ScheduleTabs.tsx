@@ -1,7 +1,7 @@
 "use client";
 // src/components/classes/ScheduleTabs.tsx
-// Sanur / Canggu location tabs. If a class has only one location
-// (e.g. Breakdance: Canggu only) a single tab is shown.
+// Location tabs — one tab per active studio location returned from the API.
+// Works with any number of locations; no hardcoded location keys.
 
 import { useState } from "react";
 import type { StudioSchedule } from "@/lib/types/class";
@@ -10,13 +10,8 @@ type Props = {
   schedule: StudioSchedule[];
 };
 
-const LOCATION_LABEL: Record<string, string> = {
-  sanur: "Sanur Studio",
-  canggu: "Canggu Studio",
-};
-
 export default function ScheduleTabs({ schedule }: Props) {
-  const [active, setActive] = useState<string>(schedule[0]?.location ?? "sanur");
+  const [active, setActive] = useState<string>(schedule[0]?.location ?? "");
   const current = schedule.find((s) => s.location === active);
 
   return (
@@ -42,7 +37,7 @@ export default function ScheduleTabs({ schedule }: Props) {
                   : "bg-gray-100 text-gray-700 hover:bg-gray-200",
               ].join(" ")}
             >
-              {LOCATION_LABEL[s.location] ?? s.location}
+              {s.location}
             </button>
           );
         })}

@@ -27,7 +27,7 @@ export const MOCK_BALLET: ClassData = {
   ],
   schedule: [
     {
-      location: "sanur",
+      location: "Sanur Studio",
       items: [
         { day: "Monday", className: "Tots Ballet", timeStart: "15:00", timeEnd: "15:45", coach: "Ms. Eva" },
         { day: "Wednesday", className: "Junior Ballet", timeStart: "16:00", timeEnd: "17:00", coach: "Ms. Eva" },
@@ -35,7 +35,7 @@ export const MOCK_BALLET: ClassData = {
       ],
     },
     {
-      location: "canggu",
+      location: "Canggu Studio",
       items: [
         { day: "Tuesday", className: "Tots Ballet", timeStart: "14:30", timeEnd: "15:15", coach: "Ms. Sari" },
         { day: "Thursday", className: "Junior Ballet", timeStart: "15:30", timeEnd: "16:30", coach: "Ms. Sari" },

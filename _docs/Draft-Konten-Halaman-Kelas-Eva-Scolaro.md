@@ -1,61 +1,62 @@
-# Draft Konten Halaman Kelas — Eva Scolaro Talent Studio
-**Catatan:** Draft ini siap dipakai sebagai brief/isi CMS untuk 9 halaman kelas. Jadwal ditarik dari timetable publik Sanur & Canggu Studio (jadwal sekolah partner AIS/Dyatmika/Toki Hub tidak dimasukkan ke halaman publik karena sifatnya CCA/ECA khusus siswa sekolah tsb — cukup disebut sebagai social proof di halaman "School Partnerships"). Cek ulang jam & coach terbaru sebelum publish, karena jadwal bisa berubah per term.
+# Class Page Content Draft — Eva Scolaro Talent Studio
+
+**Note:** This draft is ready to use as a brief/CMS content guide for 9 class pages. Schedules are drawn from the public timetable for Sanur & Canggu Studios (partner school schedules for AIS/Dyatmika/Toki Hub are not included on public pages, as those are CCA/ECA programs exclusively for enrolled students — they are mentioned as social proof on the "School Partnerships" page only). Double-check current times and coaches before publishing, as schedules may change each term.
 
 ---
 
 ## 1. Hip-Hop
 
 **URL:** `/classes/hip-hop/`
-**SEO Title:** Kelas Hip-Hop untuk Anak di Bali (Sanur & Canggu) | Eva Scolaro Talent Studio
-**Meta Description:** Kelas hip-hop untuk anak usia 4–16 tahun di Sanur & Canggu. Coach berpengalaman, kelas Tots/Junior/Teen. Trial gratis, tanpa biaya pendaftaran!
+**SEO Title:** Hip-Hop Classes for Kids in Bali (Sanur & Canggu) | Eva Scolaro Talent Studio
+**Meta Description:** Hip-hop classes for children aged 4–16 in Sanur & Canggu. Experienced coaches, Tots/Junior/Teen levels. Free trial, no registration fee!
 
-**H1:** Kelas Hip-Hop untuk Anak di Sanur & Canggu
+**H1:** Hip-Hop Classes for Kids in Sanur & Canggu
 
 **Intro:**
-Hip-hop adalah salah satu kelas paling diminati di Eva Scolaro Talent Studio. Anak-anak belajar koreografi energik, ritme musik, dan gaya urban dance dalam suasana yang seru dan suportif — cocok untuk yang baru mulai maupun yang sudah percaya diri di atas panggung.
+Hip-hop is one of the most popular classes at Eva Scolaro Talent Studio. Kids learn energetic choreography, musical rhythm, and urban dance style in a fun and supportive environment — perfect for beginners and confident performers alike.
 
-**Kenapa ikut kelas ini:**
-- Membangun koordinasi, ritme, dan kekuatan fisik
-- Meningkatkan rasa percaya diri lewat penampilan panggung tiap akhir term
-- Kelas dipisah per kelompok usia agar materi sesuai kemampuan
-- Bagian dari konser tahunan studio
+**Why join this class:**
+- Builds coordination, rhythm, and physical strength
+- Boosts self-confidence through end-of-term stage performances
+- Classes are grouped by age so content matches ability
+- Part of the studio's annual concert
 
-**Kelompok usia:**
-| Level | Usia (perkiraan) | Fokus |
+**Age Groups:**
+| Level | Approx. Age | Focus |
 |---|---|---|
-| Tots | 3–5 tahun | Pengenalan gerak dasar, ritme, kepercayaan diri di depan cermin |
-| Junior | 6–9 tahun | Koreografi lebih kompleks, kerja sama tim |
-| Teen | 10–16 tahun | Teknik lanjutan, gaya personal, persiapan performance |
+| Tots | 3–5 years | Introduction to basic movement, rhythm, confidence in front of the mirror |
+| Junior | 6–9 years | More complex choreography, teamwork |
+| Teen | 10–16 years | Advanced technique, personal style, performance preparation |
 
-**Jadwal & Lokasi:**
+**Schedule & Location:**
 
 *Sanur Studio*
-| Hari | Kelas | Jam | Coach |
+| Day | Class | Time | Coach |
 |---|---|---|---|
-| Senin | Tots Hip-Hop | 14:30–15:15 | Novie |
-| Senin | Junior Hip-Hop | 15:30–16:30 | Novie |
-| Senin | Teen Hip-Hop | 16:30–17:30 | Novie |
-| Kamis | Tots Hip-Hop | 14:30–15:15 | Faith |
-| Kamis | Junior Hip-Hop | 15:30–16:30 | Faith |
-| Kamis | Teen Hip-Hop | 16:30–17:30 | Faith |
+| Monday | Tots Hip-Hop | 14:30–15:15 | Novie |
+| Monday | Junior Hip-Hop | 15:30–16:30 | Novie |
+| Monday | Teen Hip-Hop | 16:30–17:30 | Novie |
+| Thursday | Tots Hip-Hop | 14:30–15:15 | Faith |
+| Thursday | Junior Hip-Hop | 15:30–16:30 | Faith |
+| Thursday | Teen Hip-Hop | 16:30–17:30 | Faith |
 
 *Canggu Studio*
-| Hari | Kelas | Jam | Coach |
+| Day | Class | Time | Coach |
 |---|---|---|---|
-| Selasa | Tots Hip-Hop | 15:30–16:15 | Tya |
-| Rabu | Junior Hip-Hop | 15:30–16:30 | Novie |
-| Rabu | Junior/Teen Hip-Hop | 16:30–17:30 | Novie |
-| Kamis | Tots Hip-Hop | 15:30–16:15 | Tya |
-| Sabtu | Tots Hip-Hop | 12:00–12:45 | Faith |
+| Tuesday | Tots Hip-Hop | 15:30–16:15 | Tya |
+| Wednesday | Junior Hip-Hop | 15:30–16:30 | Novie |
+| Wednesday | Junior/Teen Hip-Hop | 16:30–17:30 | Novie |
+| Thursday | Tots Hip-Hop | 15:30–16:15 | Tya |
+| Saturday | Tots Hip-Hop | 12:00–12:45 | Faith |
 
-**Coach:** Novie, Faith, Tya — coach hip-hop kami memiliki pengalaman mengajar anak lintas usia dan rutin melatih koreografi konser akhir term.
+**Coaches:** Novie, Faith, Tya — our hip-hop coaches have experience teaching children across all age groups and regularly choreograph end-of-term concert routines.
 
-**Harga:** Mulai dari Rp110.000/kelas (paket 30 kelas/3 style) — lihat [halaman pricing lengkap](#) untuk semua opsi paket.
+**Pricing:** Starting from Rp110,000/class (30-class/3-style package) — see the [full pricing page](#) for all package options.
 
 **FAQ:**
-- *Apakah anak perlu pengalaman dance sebelumnya?* Tidak, kelas Tots & Junior dirancang untuk pemula.
-- *Kostum apa yang dibutuhkan?* Seragam kaos studio (termasuk dalam paket); kostum konser terpisah (+Rp200.000/kelas saat term concert).
-- *Bisa coba kelas dulu sebelum daftar?* Bisa, kami sediakan trial class gratis tanpa biaya pendaftaran.
+- *Does my child need prior dance experience?* No, the Tots & Junior classes are designed for beginners.
+- *What uniform is required?* Studio t-shirt uniform (included in the package); concert costume is separate (+Rp200,000/class during term concert).
+- *Can we try a class before enrolling?* Yes, we offer a free trial class with no registration fee.
 
 **CTA:** Book Free Trial Class — WhatsApp +62 821 4628 4464
 
@@ -64,50 +65,50 @@ Hip-hop adalah salah satu kelas paling diminati di Eva Scolaro Talent Studio. An
 ## 2. Ballet
 
 **URL:** `/classes/ballet/`
-**SEO Title:** Kelas Ballet Anak di Bali — Sanur & Canggu | Eva Scolaro Talent Studio
-**Meta Description:** Kelas ballet untuk anak usia 3+ di Sanur & Canggu, dibimbing coach berpengalaman. Kelas Tots hingga Junior/Teen. Daftar trial gratis sekarang!
+**SEO Title:** Children's Ballet Classes in Bali — Sanur & Canggu | Eva Scolaro Talent Studio
+**Meta Description:** Ballet classes for children aged 3+ in Sanur & Canggu, guided by experienced coaches. Tots through Junior/Teen levels. Book a free trial now!
 
-**H1:** Kelas Ballet untuk Anak di Sanur & Canggu
+**H1:** Ballet Classes for Kids in Sanur & Canggu
 
 **Intro:**
-Kelas ballet kami memperkenalkan dasar-dasar teknik klasik dengan cara yang menyenangkan — membangun postur, kelenturan, disiplin, dan keanggunan gerak sejak usia dini.
+Our ballet classes introduce the fundamentals of classical technique in a fun and engaging way — building posture, flexibility, discipline, and graceful movement from an early age.
 
-**Kenapa ikut kelas ini:**
-- Fondasi teknik dance yang kuat untuk gaya apa pun ke depannya
-- Melatih postur tubuh, kelenturan, dan disiplin
-- Suasana kelas lembut dan suportif untuk anak usia dini
-- Kesempatan tampil di konser akhir term dengan kostum tutu
+**Why join this class:**
+- A strong technical dance foundation applicable to any style later on
+- Trains posture, flexibility, and discipline
+- A gentle and supportive class environment for young children
+- Opportunity to perform in the end-of-term concert in a tutu costume
 
-**Kelompok usia:**
-| Level | Usia (perkiraan) | Fokus |
+**Age Groups:**
+| Level | Approx. Age | Focus |
 |---|---|---|
-| Tots | 3–5 tahun | Gerak dasar, kelenturan, mendengarkan musik |
-| Junior/Teen | 6–16 tahun | Teknik posisi kaki & tangan, kombinasi gerak, ekspresi |
+| Tots | 3–5 years | Basic movement, flexibility, listening to music |
+| Junior/Teen | 6–16 years | Foot & hand position technique, movement combinations, expression |
 
-**Jadwal & Lokasi:**
+**Schedule & Location:**
 
 *Sanur Studio*
-| Hari | Kelas | Jam | Coach |
+| Day | Class | Time | Coach |
 |---|---|---|---|
-| Selasa | Tots Ballet 1 | 15:00–15:45 | Vivian |
-| Selasa | Tots Ballet 2 | 15:45–16:30 | Vivian |
-| Selasa | Junior/Teen Ballet | 16:30–17:30 | Vivian |
+| Tuesday | Tots Ballet 1 | 15:00–15:45 | Vivian |
+| Tuesday | Tots Ballet 2 | 15:45–16:30 | Vivian |
+| Tuesday | Junior/Teen Ballet | 16:30–17:30 | Vivian |
 
 *Canggu Studio*
-| Hari | Kelas | Jam | Coach |
+| Day | Class | Time | Coach |
 |---|---|---|---|
-| Jumat | Tots Ballet | 15:30–16:15 | Rahma |
-| Jumat | Junior Ballet | 16:15–17:15 | Rahma |
-| Sabtu | Tots Ballet | 10:00–10:45 | Rahma |
-| Sabtu | Junior Ballet | 11:00–12:00 | Rahma |
+| Friday | Tots Ballet | 15:30–16:15 | Rahma |
+| Friday | Junior Ballet | 16:15–17:15 | Rahma |
+| Saturday | Tots Ballet | 10:00–10:45 | Rahma |
+| Saturday | Junior Ballet | 11:00–12:00 | Rahma |
 
-**Coach:** Vivian (Sanur), Rahma (Canggu) — fokus pada teknik dasar ballet yang aman dan sesuai tahap tumbuh kembang anak.
+**Coaches:** Vivian (Sanur), Rahma (Canggu) — focused on safe, age-appropriate foundational ballet technique.
 
-**Harga:** Mulai dari Rp110.000/kelas — paket termasuk opsi seragam Tutu Ballet.
+**Pricing:** Starting from Rp110,000/class — packages include the option of a Tutu Ballet uniform.
 
 **FAQ:**
-- *Usia berapa anak bisa mulai ballet?* Kelas Tots menerima anak mulai usia sekitar 3 tahun.
-- *Perlu sepatu ballet khusus?* Ya, disarankan; detail dapat ditanyakan saat trial class atau lihat [halaman dancewear](#).
+- *What age can children start ballet?* Tots classes accept children from around age 3.
+- *Are special ballet shoes required?* Yes, they are recommended; ask for details at the trial class or see the [dancewear page](#).
 
 **CTA:** Book Free Trial Class — WhatsApp +62 821 4628 4464
 
@@ -116,51 +117,51 @@ Kelas ballet kami memperkenalkan dasar-dasar teknik klasik dengan cara yang meny
 ## 3. Singing
 
 **URL:** `/classes/singing/`
-**SEO Title:** Kelas Vokal / Singing untuk Anak di Bali | Eva Scolaro Talent Studio
-**Meta Description:** Kelas singing untuk anak & remaja di Sanur & Canggu. Latihan vokal, teknik bernyanyi, dan panggung konser akhir term. Trial gratis!
+**SEO Title:** Vocal / Singing Classes for Kids in Bali | Eva Scolaro Talent Studio
+**Meta Description:** Singing classes for children and teens in Sanur & Canggu. Vocal training, singing technique, and end-of-term concert performances. Free trial!
 
-**H1:** Kelas Singing (Vokal) untuk Anak di Sanur & Canggu
+**H1:** Singing (Vocal) Classes for Kids in Sanur & Canggu
 
 **Intro:**
-Kelas singing membantu anak menemukan suara mereka — secara harfiah maupun kiasan. Dari teknik pernapasan dasar hingga penampilan solo di atas panggung, anak belajar bernyanyi dengan percaya diri.
+Singing classes help children find their voice — literally and figuratively. From basic breathing technique to solo performances on stage, kids learn to sing with confidence.
 
-**Kenapa ikut kelas ini:**
-- Melatih teknik vokal dasar (pernapasan, pitch, kontrol suara)
-- Membangun kepercayaan diri tampil solo maupun grup
-- Cocok untuk anak yang suka menyanyi maupun yang ingin lebih berani tampil
-- Tampil di konser akhir term studio
+**Why join this class:**
+- Trains foundational vocal technique (breathing, pitch, voice control)
+- Builds confidence performing solo and in groups
+- Great for kids who love singing and those who want to be braver on stage
+- Perform at the studio's end-of-term concert
 
-**Kelompok usia:**
-| Level | Usia (perkiraan) | Fokus |
+**Age Groups:**
+| Level | Approx. Age | Focus |
 |---|---|---|
-| Tots | 3–5 tahun | Pengenalan nada, bernyanyi bersama, keberanian tampil |
-| Junior | 6–9 tahun | Teknik vokal dasar, latihan lagu sederhana |
-| Teen | 10–16 tahun | Kontrol vokal lanjutan, persiapan solo performance |
+| Tots | 3–5 years | Pitch introduction, singing together, performance courage |
+| Junior | 6–9 years | Basic vocal technique, simple song practice |
+| Teen | 10–16 years | Advanced voice control, solo performance preparation |
 
-**Jadwal & Lokasi:**
+**Schedule & Location:**
 
 *Sanur Studio*
-| Hari | Kelas | Jam | Coach |
+| Day | Class | Time | Coach |
 |---|---|---|---|
-| Jumat | Tots Singing | 14:30–15:15 | Kuna |
-| Jumat | Junior Singing | 15:30–16:30 | Kuna |
-| Jumat | Teen Singing | 16:30–17:30 | Kuna |
+| Friday | Tots Singing | 14:30–15:15 | Kuna |
+| Friday | Junior Singing | 15:30–16:30 | Kuna |
+| Friday | Teen Singing | 16:30–17:30 | Kuna |
 
 *Canggu Studio*
-| Hari | Kelas | Jam | Coach |
+| Day | Class | Time | Coach |
 |---|---|---|---|
-| Senin | Tots Singing 1 | 15:15–16:00 | Kuna |
-| Senin | Tots Singing 2 | 16:00–16:45 | Kuna |
-| Senin | Junior Singing | 16:45–17:45 | Kuna |
-| Senin | Teen Singing | 17:45–18:45 | Andini |
+| Monday | Tots Singing 1 | 15:15–16:00 | Kuna |
+| Monday | Tots Singing 2 | 16:00–16:45 | Kuna |
+| Monday | Junior Singing | 16:45–17:45 | Kuna |
+| Monday | Teen Singing | 17:45–18:45 | Andini |
 
-**Coach:** Kuna, Andini — mengajar teknik vokal dasar hingga persiapan performance panggung.
+**Coaches:** Kuna, Andini — teaching foundational vocal technique through to stage performance preparation.
 
-**Harga:** Mulai dari Rp110.000/kelas.
+**Pricing:** Starting from Rp110,000/class.
 
 **FAQ:**
-- *Anak saya belum pernah les vokal, apakah bisa ikut?* Bisa, kelas Tots & Junior dirancang untuk pemula total.
-- *Apakah ada penampilan solo?* Ada kesempatan tampil solo/grup saat konser akhir term.
+- *My child has never had vocal lessons — can they join?* Yes, the Tots & Junior classes are designed for complete beginners.
+- *Are there solo performances?* There are opportunities to perform solo or in groups at the end-of-term concert.
 
 **CTA:** Book Free Trial Class — WhatsApp +62 821 4628 4464
 
@@ -169,46 +170,46 @@ Kelas singing membantu anak menemukan suara mereka — secara harfiah maupun kia
 ## 4. K-Pop Dance
 
 **URL:** `/classes/kpop-dance/`
-**SEO Title:** Kelas K-Pop Dance untuk Anak & Remaja di Bali | Eva Scolaro Talent Studio
-**Meta Description:** Kelas K-Pop dance untuk anak & remaja di Sanur & Canggu. Koreografi trending, kelas Junior & Teen. Daftar trial gratis sekarang!
+**SEO Title:** K-Pop Dance Classes for Kids & Teens in Bali | Eva Scolaro Talent Studio
+**Meta Description:** K-Pop dance classes for children and teens in Sanur & Canggu. Trending choreography, Junior & Teen levels. Book a free trial now!
 
-**H1:** Kelas K-Pop Dance untuk Anak & Remaja di Sanur & Canggu
+**H1:** K-Pop Dance Classes for Kids & Teens in Sanur & Canggu
 
 **Intro:**
-Kelas favorit para penggemar K-Pop! Anak-anak dan remaja belajar koreografi bergaya K-Pop terkini, melatih stamina, kekompakan tim, dan gaya panggung ala idol.
+The favorite class for K-Pop fans! Children and teenagers learn the latest K-Pop-style choreography, training their stamina, formation teamwork, and idol-worthy stage presence.
 
-**Kenapa ikut kelas ini:**
-- Koreografi mengikuti tren lagu K-Pop terkini
-- Melatih stamina, kekompakan formasi, dan gaya panggung
-- Sangat diminati anak usia sekolah dasar hingga remaja
-- Tampil grup di konser akhir term
+**Why join this class:**
+- Choreography follows the latest K-Pop song trends
+- Trains stamina, formation coordination, and stage presence
+- Hugely popular among primary school-aged children and teens
+- Group performance at the end-of-term concert
 
-**Kelompok usia:**
-| Level | Usia (perkiraan) | Fokus |
+**Age Groups:**
+| Level | Approx. Age | Focus |
 |---|---|---|
-| Junior | 6–9 tahun | Gerakan dasar formasi, mengikuti irama lagu K-Pop |
-| Teen | 10–16 tahun | Koreografi kompleks, ekspresi panggung ala idol |
+| Junior | 6–9 years | Basic formation movement, following K-Pop song rhythms |
+| Teen | 10–16 years | Complex choreography, idol-style stage expression |
 
-**Jadwal & Lokasi:**
+**Schedule & Location:**
 
 *Sanur Studio*
-| Hari | Kelas | Jam | Coach |
+| Day | Class | Time | Coach |
 |---|---|---|---|
-| Senin | Junior K-Pop | 16:30–17:30 | Faith |
-| Senin | Teen K-Pop | 17:30–18:30 | Faith |
+| Monday | Junior K-Pop | 16:30–17:30 | Faith |
+| Monday | Teen K-Pop | 17:30–18:30 | Faith |
 
 *Canggu Studio*
-| Hari | Kelas | Jam | Coach |
+| Day | Class | Time | Coach |
 |---|---|---|---|
-| Selasa | K-Pop Dance | 17:30–18:30 | Faith |
+| Tuesday | K-Pop Dance | 17:30–18:30 | Faith |
 
-**Coach:** Faith — mengikuti perkembangan koreografi K-Pop terkini agar materi selalu relevan dengan tren yang disukai anak-anak.
+**Coach:** Faith — stays up to date with the latest K-Pop choreography to keep content relevant to what kids love.
 
-**Harga:** Mulai dari Rp110.000/kelas.
+**Pricing:** Starting from Rp110,000/class.
 
 **FAQ:**
-- *Apakah harus suka K-Pop dulu untuk ikut kelas ini?* Tidak wajib, tapi memang paling seru untuk anak yang sudah suka lagu-lagu K-Pop.
-- *Apakah ada kelas khusus untuk Tots (balita)?* Saat ini K-Pop Dance dibuka mulai level Junior; hubungi kami via WhatsApp untuk cek ketersediaan kelas Tots K-Pop di term berjalan.
+- *Do you have to be a K-Pop fan to join?* Not required, but it's most fun for kids who already enjoy K-Pop music.
+- *Is there a Tots (toddler) class?* K-Pop Dance currently starts at the Junior level; contact us via WhatsApp to check availability of a Tots K-Pop class in the current term.
 
 **CTA:** Book Free Trial Class — WhatsApp +62 821 4628 4464
 
@@ -217,45 +218,45 @@ Kelas favorit para penggemar K-Pop! Anak-anak dan remaja belajar koreografi berg
 ## 5. Jazz Dance
 
 **URL:** `/classes/jazz-dance/`
-**SEO Title:** Kelas Jazz Dance untuk Anak di Bali | Eva Scolaro Talent Studio
-**Meta Description:** Kelas jazz dance untuk anak di Sanur & Canggu. Melatih ekspresi, teknik, dan kepercayaan diri di atas panggung. Trial gratis, tanpa biaya daftar.
+**SEO Title:** Jazz Dance Classes for Kids in Bali | Eva Scolaro Talent Studio
+**Meta Description:** Jazz dance classes for kids in Sanur & Canggu. Trains expression, technique, and stage confidence. Free trial, no registration fee.
 
-**H1:** Kelas Jazz Dance untuk Anak di Sanur & Canggu
+**H1:** Jazz Dance Classes for Kids in Sanur & Canggu
 
 **Intro:**
-Jazz dance memadukan teknik, musikalitas, dan ekspresi diri. Kelas ini cocok untuk anak yang senang bergerak dinamis dan ingin mengeksplorasi gaya dance yang lebih ekspresif.
+Jazz dance blends technique, musicality, and self-expression. This class is perfect for kids who love dynamic movement and want to explore a more expressive style of dance.
 
-**Kenapa ikut kelas ini:**
-- Melatih fleksibilitas, kekuatan inti, dan musikalitas
-- Gaya dance yang ekspresif dan menyenangkan
-- Fondasi baik untuk anak yang tertarik musical theatre
-- Tampil di konser akhir term
+**Why join this class:**
+- Trains flexibility, core strength, and musicality
+- An expressive and enjoyable dance style
+- A solid foundation for children interested in musical theatre
+- Perform at the end-of-term concert
 
-**Kelompok usia:**
-| Level | Usia (perkiraan) | Fokus |
+**Age Groups:**
+| Level | Approx. Age | Focus |
 |---|---|---|
-| Tots | 3–5 tahun | Gerak dasar, ekspresi wajah & tubuh |
-| Junior | 6–9 tahun | Kombinasi gerak, teknik dasar jazz |
+| Tots | 3–5 years | Basic movement, facial & body expression |
+| Junior | 6–9 years | Movement combinations, basic jazz technique |
 
-**Jadwal & Lokasi:**
+**Schedule & Location:**
 
 *Sanur Studio*
-| Hari | Kelas | Jam | Coach |
+| Day | Class | Time | Coach |
 |---|---|---|---|
-| Rabu | Tots Jazz Dance | 15:00–15:45 | Putri |
-| Rabu | Junior Jazz Dance | 15:45–16:45 | Putri |
+| Wednesday | Tots Jazz Dance | 15:00–15:45 | Putri |
+| Wednesday | Junior Jazz Dance | 15:45–16:45 | Putri |
 
 *Canggu Studio*
-| Hari | Kelas | Jam | Coach |
+| Day | Class | Time | Coach |
 |---|---|---|---|
-| Selasa | Jazz Dance | 16:15–17:15 | Putri |
+| Tuesday | Jazz Dance | 16:15–17:15 | Putri |
 
-**Coach:** Putri — membawa gaya jazz yang energik dan mudah diikuti anak-anak.
+**Coach:** Putri — brings an energetic jazz style that's easy and fun for kids to follow.
 
-**Harga:** Mulai dari Rp110.000/kelas.
+**Pricing:** Starting from Rp110,000/class.
 
 **FAQ:**
-- *Apa beda Jazz Dance dengan Hip-Hop?* Jazz lebih menekankan teknik, musikalitas, dan ekspresi tubuh; Hip-Hop lebih ke ritme urban dan gaya bebas.
+- *What's the difference between Jazz Dance and Hip-Hop?* Jazz places greater emphasis on technique, musicality, and body expression; Hip-Hop leans more toward urban rhythm and freestyle.
 
 **CTA:** Book Free Trial Class — WhatsApp +62 821 4628 4464
 
@@ -264,47 +265,47 @@ Jazz dance memadukan teknik, musikalitas, dan ekspresi diri. Kelas ini cocok unt
 ## 6. Drama & Musical Theatre
 
 **URL:** `/classes/drama-musical-theatre/`
-**SEO Title:** Kelas Drama & Musical Theatre untuk Anak di Bali | Eva Scolaro Talent Studio
-**Meta Description:** Kelas drama & musical theatre untuk anak dan remaja di Sanur & Canggu. Melatih akting, ekspresi, dan kepercayaan diri panggung. Trial gratis!
+**SEO Title:** Drama & Musical Theatre Classes for Kids in Bali | Eva Scolaro Talent Studio
+**Meta Description:** Drama & musical theatre classes for children and teens in Sanur & Canggu. Trains acting, expression, and stage confidence. Free trial!
 
-**H1:** Kelas Drama & Musical Theatre untuk Anak di Sanur & Canggu
+**H1:** Drama & Musical Theatre Classes for Kids in Sanur & Canggu
 
 **Intro:**
-Kelas ini memadukan seni peran (drama) dan pertunjukan musikal, membantu anak mengekspresikan diri, membangun empati lewat karakter, dan tampil percaya diri di depan penonton.
+This class combines acting (drama) and musical performance, helping children express themselves, build empathy through character work, and perform with confidence in front of an audience.
 
-**Kenapa ikut kelas ini:**
-- Melatih ekspresi, olah vokal, dan gerak tubuh sekaligus
-- Membangun kepercayaan diri bicara & tampil di depan umum
-- Mengembangkan imajinasi dan kemampuan bercerita
-- Persiapan pertunjukan musikal di konser akhir term
+**Why join this class:**
+- Trains expression, vocal delivery, and physical movement all at once
+- Builds confidence speaking and performing in public
+- Develops imagination and storytelling skills
+- Preparation for a musical theatre performance at the end-of-term concert
 
-**Kelompok usia:**
-| Level | Usia (perkiraan) | Fokus |
+**Age Groups:**
+| Level | Approx. Age | Focus |
 |---|---|---|
-| Junior | 6–9 tahun | Latihan akting dasar, permainan peran |
-| Teen | 10–16 tahun | Musical theatre, akting karakter, olah vokal untuk panggung |
+| Junior | 6–9 years | Basic acting exercises, role play |
+| Teen | 10–16 years | Musical theatre, character acting, stage vocal work |
 
-**Jadwal & Lokasi:**
+**Schedule & Location:**
 
 *Sanur Studio*
-| Hari | Kelas | Jam | Coach |
+| Day | Class | Time | Coach |
 |---|---|---|---|
-| Rabu | Teen Drama | 16:45–17:45 | Andini |
-| Kamis | Junior Drama | 16:30–17:30 | Andini |
+| Wednesday | Teen Drama | 16:45–17:45 | Andini |
+| Thursday | Junior Drama | 16:30–17:30 | Andini |
 
 *Canggu Studio*
-| Hari | Kelas | Jam | Coach |
+| Day | Class | Time | Coach |
 |---|---|---|---|
-| Kamis | Musical Theatre | 16:15–17:15 | Putri |
-| Jumat | Junior/Teen Drama | 17:30–18:30 | Andini |
+| Thursday | Musical Theatre | 16:15–17:15 | Putri |
+| Friday | Junior/Teen Drama | 17:30–18:30 | Andini |
 
-**Coach:** Andini, Putri — berpengalaman membimbing anak dalam olah peran dan musical theatre untuk pertunjukan panggung.
+**Coaches:** Andini, Putri — experienced in guiding children through acting and musical theatre for stage performances.
 
-**Harga:** Mulai dari Rp110.000/kelas.
+**Pricing:** Starting from Rp110,000/class.
 
 **FAQ:**
-- *Apakah anak pemalu bisa ikut kelas ini?* Justru kelas ini dirancang untuk membantu anak yang pemalu membangun kepercayaan diri secara bertahap.
-- *Apa bedanya Drama dan Musical Theatre?* Drama fokus ke akting & dialog; Musical Theatre menggabungkan akting, nyanyi, dan gerak/dance dalam satu pertunjukan.
+- *Can shy children join this class?* This class is designed specifically to help shy children build confidence gradually.
+- *What's the difference between Drama and Musical Theatre?* Drama focuses on acting & dialogue; Musical Theatre combines acting, singing, and movement/dance in a single production.
 
 **CTA:** Book Free Trial Class — WhatsApp +62 821 4628 4464
 
@@ -313,47 +314,47 @@ Kelas ini memadukan seni peran (drama) dan pertunjukan musikal, membantu anak me
 ## 7. Modeling
 
 **URL:** `/classes/modeling/`
-**SEO Title:** Kelas Modeling untuk Anak & Remaja di Bali | Eva Scolaro Talent Studio
-**Meta Description:** Kelas modeling untuk anak & remaja di Sanur & Canggu. Melatih catwalk, posture, dan kepercayaan diri di depan kamera. Trial gratis!
+**SEO Title:** Modeling Classes for Kids & Teens in Bali | Eva Scolaro Talent Studio
+**Meta Description:** Modeling classes for children and teens in Sanur & Canggu. Trains catwalk, posture, and confidence in front of the camera. Free trial!
 
-**H1:** Kelas Modeling untuk Anak & Remaja di Sanur & Canggu
+**H1:** Modeling Classes for Kids & Teens in Sanur & Canggu
 
 **Intro:**
-Kelas modeling melatih anak dan remaja tentang postur tubuh, teknik catwalk, dan kepercayaan diri di depan kamera maupun panggung — dasar yang berguna jauh melampaui dunia modeling itu sendiri.
+Modeling classes train children and teens in posture, catwalk technique, and confidence in front of the camera and on stage — skills that are useful far beyond the modeling world itself.
 
-**Kenapa ikut kelas ini:**
-- Melatih postur tubuh dan cara berjalan yang percaya diri
-- Membangun kenyamanan tampil di depan kamera/panggung
-- Melatih ekspresi wajah dan bahasa tubuh
-- Kesempatan tampil di konser & sesi foto/dokumentasi studio
+**Why join this class:**
+- Trains posture and confident walking
+- Builds comfort performing in front of a camera/on stage
+- Trains facial expression and body language
+- Opportunity to appear at studio concerts & photo/documentation sessions
 
-**Kelompok usia:**
-| Level | Usia (perkiraan) | Fokus |
+**Age Groups:**
+| Level | Approx. Age | Focus |
 |---|---|---|
-| Tots/Junior | 3–9 tahun | Pengenalan postur, jalan dasar, percaya diri di depan orang lain |
-| Teen | 10–16 tahun | Teknik catwalk, pose, ekspresi kamera |
+| Tots/Junior | 3–9 years | Posture introduction, basic walking, confidence in front of others |
+| Teen | 10–16 years | Catwalk technique, posing, camera expression |
 
-**Jadwal & Lokasi:**
+**Schedule & Location:**
 
 *Sanur Studio*
-| Hari | Kelas | Jam | Coach |
+| Day | Class | Time | Coach |
 |---|---|---|---|
-| Jumat | Junior/Tots Modeling | 16:30–17:30 | Cintya |
-| Jumat | Teen Modeling | 15:30–16:30 | Cintya |
+| Friday | Junior/Tots Modeling | 16:30–17:30 | Cintya |
+| Friday | Teen Modeling | 15:30–16:30 | Cintya |
 
 *Canggu Studio*
-| Hari | Kelas | Jam | Coach |
+| Day | Class | Time | Coach |
 |---|---|---|---|
-| Kamis | Tots Modeling | 14:30–15:15 | Cintya |
-| Kamis | Junior/Teen Modeling | 17:30–18:30 | Cintya |
+| Thursday | Tots Modeling | 14:30–15:15 | Cintya |
+| Thursday | Junior/Teen Modeling | 17:30–18:30 | Cintya |
 
-**Coach:** Cintya — membimbing dasar-dasar modeling yang sesuai usia, dengan penekanan pada kepercayaan diri, bukan tekanan penampilan.
+**Coach:** Cintya — guides age-appropriate modeling fundamentals with an emphasis on confidence, not appearance pressure.
 
-**Harga:** Mulai dari Rp110.000/kelas.
+**Pricing:** Starting from Rp110,000/class.
 
 **FAQ:**
-- *Apakah kelas ini menjamin anak jadi model profesional?* Tujuan utama kelas adalah membangun rasa percaya diri dan postur yang baik — bukan janji karier modeling.
-- *Apakah ada sesi foto?* Studio mendokumentasikan momen pertunjukan & kegiatan; untuk sesi foto formal, tanyakan detail lebih lanjut via WhatsApp.
+- *Does this class guarantee my child becomes a professional model?* The primary goal of the class is to build self-confidence and good posture — not to promise a modeling career.
+- *Are there photo sessions?* The studio documents performance moments and activities; for formal photo sessions, ask for more details via WhatsApp.
 
 **CTA:** Book Free Trial Class — WhatsApp +62 821 4628 4464
 
@@ -362,40 +363,40 @@ Kelas modeling melatih anak dan remaja tentang postur tubuh, teknik catwalk, dan
 ## 8. Breakdance (RnB Breakdance)
 
 **URL:** `/classes/breakdance/`
-**SEO Title:** Kelas Breakdance untuk Anak & Remaja di Bali | Eva Scolaro Talent Studio
-**Meta Description:** Kelas breakdance untuk anak & remaja di Canggu. Melatih kekuatan, kelincahan, dan gaya freestyle. Trial gratis, tanpa biaya pendaftaran!
+**SEO Title:** Breakdance Classes for Kids & Teens in Bali | Eva Scolaro Talent Studio
+**Meta Description:** Breakdance classes for children and teens in Canggu. Trains strength, agility, and freestyle style. Free trial, no registration fee!
 
-**H1:** Kelas Breakdance untuk Anak & Remaja di Canggu
+**H1:** Breakdance Classes for Kids & Teens in Canggu
 
 **Intro:**
-Kelas breakdance mengenalkan gerakan dasar breaking — dari footwork hingga freeze — dalam suasana yang aman dan terstruktur, membangun kekuatan fisik sekaligus gaya personal.
+Breakdance classes introduce the foundational movements of breaking — from footwork to freezes — in a safe and structured environment, building physical strength alongside personal style.
 
-**Kenapa ikut kelas ini:**
-- Melatih kekuatan otot, kelincahan, dan keseimbangan
-- Mengembangkan gaya freestyle dan kepercayaan diri personal
-- Cocok untuk anak yang energik dan suka tantangan fisik
-- Tampil di konser akhir term
+**Why join this class:**
+- Trains muscle strength, agility, and balance
+- Develops freestyle style and personal confidence
+- Great for energetic kids who enjoy physical challenges
+- Perform at the end-of-term concert
 
-**Kelompok usia:**
-| Level | Usia (perkiraan) | Fokus |
+**Age Groups:**
+| Level | Approx. Age | Focus |
 |---|---|---|
-| Junior/Teen | 6–16 tahun | Gerakan dasar breaking, footwork, freeze, freestyle |
+| Junior/Teen | 6–16 years | Basic breaking movements, footwork, freezes, freestyle |
 
-**Jadwal & Lokasi:**
+**Schedule & Location:**
 
 *Canggu Studio*
-| Hari | Kelas | Jam | Coach |
+| Day | Class | Time | Coach |
 |---|---|---|---|
-| Sabtu | Junior/Teen Breakdance | 13:00–14:00 | Faith |
+| Saturday | Junior/Teen Breakdance | 13:00–14:00 | Faith |
 
-> Catatan: Saat ini Breakdance hanya tersedia di Canggu Studio. Untuk peminat di Sanur, hubungi kami via WhatsApp — kelas tambahan bisa dibuka jika ada cukup peminat.
+> Note: Breakdance is currently only available at Canggu Studio. If you're based in Sanur, contact us via WhatsApp — an additional class can be opened if there is enough interest.
 
 **Coach:** Faith.
 
-**Harga:** Mulai dari Rp110.000/kelas.
+**Pricing:** Starting from Rp110,000/class.
 
 **FAQ:**
-- *Apakah anak perlu kelenturan khusus sebelum ikut?* Tidak, kelas dimulai dari gerakan dasar dan berkembang bertahap sesuai kemampuan anak.
+- *Does my child need to be flexible before joining?* No, classes start from basic movements and progress gradually according to each child's ability.
 
 **CTA:** Book Free Trial Class — WhatsApp +62 821 4628 4464
 
@@ -404,36 +405,36 @@ Kelas breakdance mengenalkan gerakan dasar breaking — dari footwork hingga fre
 ## 9. Public Speaking (Teen)
 
 **URL:** `/classes/public-speaking/`
-**SEO Title:** Kelas Public Speaking untuk Remaja di Bali | Eva Scolaro Talent Studio
-**Meta Description:** Kelas public speaking untuk remaja — melatih kepercayaan diri bicara di depan umum. Bagian dari program performing arts Eva Scolaro Talent Studio.
+**SEO Title:** Public Speaking Classes for Teens in Bali | Eva Scolaro Talent Studio
+**Meta Description:** Public speaking classes for teenagers — builds confidence speaking in public. Part of the Eva Scolaro Talent Studio performing arts program.
 
-**H1:** Kelas Public Speaking untuk Remaja
+**H1:** Public Speaking Classes for Teens
 
 **Intro:**
-Kelas public speaking membantu remaja membangun kepercayaan diri berbicara di depan umum — keterampilan yang bermanfaat jauh melampaui panggung, mulai dari presentasi sekolah hingga kehidupan sehari-hari.
+Public speaking classes help teenagers build the confidence to speak in front of others — a skill that reaches far beyond the stage, from school presentations to everyday life.
 
-**Kenapa ikut kelas ini:**
-- Melatih struktur bicara, intonasi, dan bahasa tubuh
-- Mengurangi rasa gugup tampil di depan umum
-- Melengkapi kemampuan performing arts lain (drama, modeling)
+**Why join this class:**
+- Trains speech structure, intonation, and body language
+- Reduces nerves when performing or speaking in public
+- Complements other performing arts skills (drama, modeling)
 
-**Kelompok usia:**
-| Level | Usia (perkiraan) | Fokus |
+**Age Groups:**
+| Level | Approx. Age | Focus |
 |---|---|---|
-| Teen | 10–16 tahun | Struktur bicara, intonasi, kepercayaan diri berbicara di depan umum |
+| Teen | 10–16 years | Speech structure, intonation, confidence speaking in public |
 
-**Status ketersediaan saat ini:**
-> Kelas Public Speaking saat ini berjalan sebagai program ECA (Extracurricular Activity) khusus di sekolah partner kami. Untuk pendaftaran umum di Sanur atau Canggu Studio, silakan hubungi kami via WhatsApp — kami akan menginformasikan jadwal begitu kelas reguler dibuka untuk publik.
+**Current availability:**
+> Public Speaking is currently running as an ECA (Extracurricular Activity) program exclusively at our partner schools. For general enrollment at Sanur or Canggu Studio, please contact us via WhatsApp — we will notify you as soon as regular classes open to the public.
 
 **Coach:** Andini.
 
-**CTA:** Tanyakan Ketersediaan Kelas — WhatsApp +62 821 4628 4464
+**CTA:** Enquire About Class Availability — WhatsApp +62 821 4628 4464
 
 ---
 
-## Catatan Implementasi
+## Implementation Notes
 
-1. **Validasi jadwal sebelum publish** — jadwal di atas ditarik dari timetable yang tampil di website saat audit (17 Juli 2026); jadwal bisa berubah tiap term, jadi sebaiknya halaman kelas menarik data jadwal secara otomatis dari sumber yang sama dengan section Timetable di homepage (bukan hardcode teks statis), supaya selalu update.
-2. **Kelas Public Speaking** perlu keputusan bisnis: apakah akan dibuka untuk publik di Sanur/Canggu, atau tetap eksklusif sekolah partner. Ini akan menentukan apakah halaman ini tetap sebagai "coming soon" atau dihapus dari struktur 9 halaman kelas fase 1.
-3. **Breakdance** hanya ada di Canggu — pertimbangkan menambahkan kelas ini di Sanur jika ada demand, agar halaman punya jadwal 2 lokasi seperti kelas lain.
-4. Semua tabel jadwal di atas siap dipakai sebagai starting point untuk task prompt ke kiro-cli — tinggal disesuaikan dengan struktur komponen jadwal yang sudah ada di CMS (kemungkinan bisa reuse komponen Timetable yang sudah ada di homepage, difilter per kelas).
+1. **Validate schedules before publishing** — the schedules above were drawn from the timetable displayed on the website at the time of the audit (17 July 2026); schedules may change each term, so class pages should ideally pull schedule data automatically from the same source as the Timetable section on the homepage (rather than hardcoded static text), to stay current at all times.
+2. **Public Speaking** requires a business decision: will it be opened to the public at Sanur/Canggu, or remain exclusive to partner schools? This will determine whether the page stays as a "coming soon" or is removed from the Phase 1 9-class structure.
+3. **Breakdance** is only available in Canggu — consider adding classes in Sanur if demand grows, so the page has a two-location schedule like the other class pages.
+4. All schedule tables above are ready to use as a starting point for kiro-cli task prompts — just align them with the existing schedule component structure in the CMS (the existing Timetable component on the homepage could likely be reused, filtered per class).

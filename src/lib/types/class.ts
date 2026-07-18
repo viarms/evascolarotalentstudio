@@ -1,7 +1,6 @@
 // ─── Eva Scolaro — Class data types ───────────────────────────────────────────
 // These mirror the ACF field structure exposed via WPGraphQL.
-// Field names here must match what is configured in ACF + WPGraphQL (see
-// Section 3 of Migration-Plan-Fase1-Halaman-Kelas.md).
+// Field names here must match what is configured in ACF + WPGraphQL.
 
 export type AgeGroup = {
   /** e.g. "Tots" | "Junior" | "Teen" */
@@ -21,12 +20,14 @@ export type ScheduleItem = {
   timeStart: string;
   /** 24-hour format, e.g. "15:15" */
   timeEnd: string;
+  /** Coach name, e.g. "Novie" */
   coach: string;
 };
 
-export type StudioLocation = "sanur" | "canggu";
+export type StudioLocation = string;
 
 export type StudioSchedule = {
+  /** Location name exactly as it appears in WordPress, e.g. "Sanur Studio", "Toki Hub" */
   location: StudioLocation;
   items: ScheduleItem[];
 };
