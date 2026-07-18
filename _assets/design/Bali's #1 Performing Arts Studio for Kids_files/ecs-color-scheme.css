@@ -1,0 +1,106 @@
+/* ============================================================
+   ECS Color Scheme Module
+   ============================================================
+   CSS custom properties define both the default and the
+   alternative (alt) scheme.  Switching is done by setting
+   data-ecs-scheme="alt" on <html>.
+   ============================================================ */
+
+/* ── Default scheme variables ─────────────────────────────── */
+:root {
+	--ecs-color-primary:    #2271b1;
+	--ecs-color-secondary:  #135e96;
+	--ecs-color-text:       #1e1e1e;
+	--ecs-color-accent:     #d63638;
+	--ecs-color-bg:         #ffffff;
+	--ecs-color-bg-alt:     #f6f6f6;
+}
+
+/* ── Alternative scheme overrides ────────────────────────────
+   These only apply when <html data-ecs-scheme="alt">
+   ──────────────────────────────────────────────────────────── */
+[data-ecs-scheme="alt"] {
+	--ecs-color-primary:    #3a9ad4;
+	--ecs-color-secondary:  #1e6fa0;
+	--ecs-color-text:       #f0f0f0;
+	--ecs-color-accent:     #ff6b6b;
+	--ecs-color-bg:         #1a1a2e;
+	--ecs-color-bg-alt:     #16213e;
+}
+
+/* ── Dark Mode Switcher Widget ────────────────────────────── */
+
+/* Wrapper is a flex row; justify-content is set by Elementor controls */
+.ecs-dms-wrap {
+	display: flex;
+	align-items: center;
+}
+
+/* ── Icon container ───────────────────────────────────────── */
+
+.ecs-dms-icon {
+	display: inline-flex;
+	align-items: center;
+	flex-shrink: 0;
+}
+
+.ecs-dms-icon i,
+.ecs-dms-icon svg {
+	display: block;
+}
+
+/* ── Button base ──────────────────────────────────────────── */
+
+.ecs-dms-btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 6px;
+	padding: 8px 16px;
+	background: transparent;
+	color: inherit;
+	border: 1px solid currentColor;
+	border-radius: 4px;
+	cursor: pointer;
+	font: inherit;
+	line-height: 1;
+	transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.ecs-dms-btn:focus-visible {
+	outline: 2px solid currentColor;
+	outline-offset: 2px;
+}
+
+/* ── Toggle: state spans ──────────────────────────────────── */
+
+/* Hidden by default; made layout-transparent when visible */
+.ecs-dms-state {
+	display: none;
+}
+
+/* Default scheme: show light state */
+.ecs-dms-type-toggle .ecs-dms-state-light {
+	display: contents;
+}
+
+/* Alt scheme: swap to dark state */
+.ecs-dms-type-toggle.is-alt .ecs-dms-state-light {
+	display: none;
+}
+
+.ecs-dms-type-toggle.is-alt .ecs-dms-state-dark {
+	display: contents;
+}
+
+/* ── Dropdown ─────────────────────────────────────────────── */
+
+.ecs-dms-select {
+	padding: 8px 12px;
+	border: 1px solid currentColor;
+	border-radius: 4px;
+	background: transparent;
+	color: inherit;
+	font: inherit;
+	cursor: pointer;
+}

@@ -1,0 +1,214 @@
+/* ============================================================
+   ECS Mobile Menu — WordPress Menu Responsive Layout Controls
+   ============================================================
+
+   HOW IT WORKS
+   ─────────────────────────────────────────────────────────
+   Elementor PHP does NOT add breakpoint prefixes (tablet-/mobile-)
+   to prefix_class values. All breakpoint values of the `layout`
+   responsive control are added as ecs-nav-layout-{value} without
+   any device prefix, meaning the same class appears multiple times
+   when multiple breakpoints share a value.
+
+   To handle responsive behaviour correctly, we use CSS Custom
+   Properties (--ecs-nav-main-display, etc.) that are set by
+   Elementor's dynamic CSS engine via the `selectors` configuration
+   in upgrade_layout(). Elementor generates:
+     • @media max-width rules for frontend
+     • body.elementor-device-* rules for editor device preview
+
+   The presence of any ecs-nav-layout-* class on the wrapper
+   indicates ECS layout is active for that widget, scoping our
+   CSS variable rules so they never affect other nav-menu widgets.
+
+   ALIGNMENT: justify-content is set via direct Elementor selectors
+   (per-element scoped CSS) rather than a global CSS variable rule.
+   This avoids a flex-start fallback overriding the user's existing
+   alignment when the CSS cache is stale.
+   ============================================================ */
+
+/* Apply CSS variables to nav-menu elements when ECS layout is active.
+   Fallbacks = default "horizontal" behaviour.                        */
+
+.ecs-nav-layout-horizontal .elementor-nav-menu--main,
+.ecs-nav-layout-vertical   .elementor-nav-menu--main,
+.ecs-nav-layout-dropdown   .elementor-nav-menu--main {
+	display: var( --ecs-nav-main-display, flex ) !important;
+}
+
+/* flex-direction must target the inner <ul>, not the <nav> wrapper */
+.ecs-nav-layout-horizontal .elementor-nav-menu--main .elementor-nav-menu,
+.ecs-nav-layout-vertical   .elementor-nav-menu--main .elementor-nav-menu,
+.ecs-nav-layout-dropdown   .elementor-nav-menu--main .elementor-nav-menu {
+	flex-direction: var( --ecs-nav-main-dir, row ) !important;
+}
+
+.ecs-nav-layout-horizontal .elementor-menu-toggle,
+.ecs-nav-layout-vertical   .elementor-menu-toggle,
+.ecs-nav-layout-dropdown   .elementor-menu-toggle {
+	display: var( --ecs-nav-toggle-display, none ) !important;
+}
+
+/* Pointer visibility — reads --ecs-nav-ptr-vis set by the ecs_pointer_hide responsive
+   control. visibility:hidden preserves layout space and does not block hover animations. */
+.ecs-nav-layout-horizontal .elementor-nav-menu--main .elementor-item::before,
+.ecs-nav-layout-horizontal .elementor-nav-menu--main .elementor-item::after,
+.ecs-nav-layout-vertical   .elementor-nav-menu--main .elementor-item::before,
+.ecs-nav-layout-vertical   .elementor-nav-menu--main .elementor-item::after {
+	visibility: var( --ecs-nav-ptr-vis, visible );
+}
+
+/* Stretch/Justify alignment: grow each item to fill equal width.
+   --ecs-nav-li-grow is set to 1 by the align_items selectors_dictionary
+   when "Stretch" (space-between) is selected; defaults to 0 otherwise. */
+.ecs-nav-layout-horizontal .elementor-nav-menu--main .elementor-nav-menu > li,
+.ecs-nav-layout-vertical   .elementor-nav-menu--main .elementor-nav-menu > li {
+	flex-grow: var( --ecs-nav-li-grow, 0 );
+}
+
+/* ═══════════════════════════════════════════════════════════
+   DROPDOWN ALIGNMENT — follows Toggle Button align
+   Uses prefix_class ecs-toggle-align-{left|center|right} set
+   by the Toggle Align CHOOSE control.
+
+   NOTE: Elementor only sets position:absolute on the dropdown
+   when Full Width (stretch) is ON. For non-stretch dropdowns,
+   the panel is position:static, so left/right have no effect.
+   We add position:absolute here when any ecs-toggle-align-*
+   class is present. The widget wrapper is position:relative,
+   so absolute positioning is correct.
+
+   Skipped when Full Width is ON (:not(.elementor-nav-menu--stretch))
+   to avoid conflict with the stretch rules below.
+
+   IMPORTANT: These rules require .ecs-nav-layout-dropdown on the
+   widget wrapper, which is only added when the ECS layout control
+   is explicitly set to 'dropdown' for at least one breakpoint.
+   This prevents overriding Smartmenus.js position calculations for
+   nav menus using the native Elementor Breakpoint control (those
+   have ecs-nav-layout-horizontal/vertical, not ecs-nav-layout-dropdown)
+   — Smartmenus sets left/top inline and CSS !important would win,
+   misplacing the dropdown panel.
+   ═══════════════════════════════════════════════════════════ */
+
+/* Base: make dropdown absolutely positioned when ECS align is active.
+   top: 100% places it immediately below the widget (same as Full Width). */
+.ecs-nav-layout-dropdown.ecs-toggle-align-left:not(.elementor-nav-menu--stretch)
+	.elementor-nav-menu--dropdown.elementor-nav-menu__container,
+.ecs-nav-layout-dropdown.ecs-toggle-align-center:not(.elementor-nav-menu--stretch)
+	.elementor-nav-menu--dropdown.elementor-nav-menu__container,
+.ecs-nav-layout-dropdown.ecs-toggle-align-right:not(.elementor-nav-menu--stretch)
+	.elementor-nav-menu--dropdown.elementor-nav-menu__container {
+	position:  absolute    !important;
+	top:       100%        !important;
+	width:     auto        !important;
+	min-width: max-content;
+}
+
+.ecs-nav-layout-dropdown.ecs-toggle-align-left:not(.elementor-nav-menu--stretch)
+	.elementor-nav-menu--dropdown.elementor-nav-menu__container {
+	left:  0    !important;
+	right: auto !important;
+}
+
+.ecs-nav-layout-dropdown.ecs-toggle-align-center:not(.elementor-nav-menu--stretch)
+	.elementor-nav-menu--dropdown.elementor-nav-menu__container {
+	left:      50%                !important;
+	right:     auto               !important;
+	transform: translateX( -50% ) !important;
+}
+
+.ecs-nav-layout-dropdown.ecs-toggle-align-right:not(.elementor-nav-menu--stretch)
+	.elementor-nav-menu--dropdown.elementor-nav-menu__container {
+	right: 0    !important;
+	left:  auto !important;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   FIX: Dropdown panel width (Fill Width ON)
+   ═══════════════════════════════════════════════════════════ */
+
+/* Fill Width ON → full width, only when ECS dropdown layout is active.
+   Gated on ecs-nav-layout-dropdown so it never fires on menus using the
+   native Elementor Breakpoint (ecs-nav-layout-horizontal/vertical), where
+   Smartmenus.js owns positioning and width: 100% collapses the dropdown
+   to the toggle's narrow flex-item width instead of the viewport width. */
+.ecs-nav-layout-dropdown.elementor-nav-menu--stretch
+	.elementor-nav-menu--dropdown.elementor-nav-menu__container {
+	width: 100% !important;
+	left:  0    !important;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   AUTO-RESPECT ELEMENTOR NATIVE BREAKPOINT
+   When no ECS layout is explicitly set for mobile/tablet, the
+   Elementor native Breakpoint control should still trigger
+   dropdown mode. These selectors have specificity 0,3,0 which
+   beats the base variable rules (0,2,0) even at equal !important,
+   so they override the inherited --ecs-nav-toggle-display:none.
+   Only targets horizontal/vertical — dropdown already works.
+   ═══════════════════════════════════════════════════════════ */
+
+@media (max-width: 767px) {
+	.ecs-nav-layout-horizontal.elementor-nav-menu--dropdown-mobile .elementor-nav-menu--main,
+	.ecs-nav-layout-vertical.elementor-nav-menu--dropdown-mobile   .elementor-nav-menu--main {
+		display: none !important;
+	}
+	.ecs-nav-layout-horizontal.elementor-nav-menu--dropdown-mobile .elementor-menu-toggle,
+	.ecs-nav-layout-vertical.elementor-nav-menu--dropdown-mobile   .elementor-menu-toggle {
+		display: flex !important;
+	}
+}
+
+@media (max-width: 1024px) {
+	.ecs-nav-layout-horizontal.elementor-nav-menu--dropdown-tablet .elementor-nav-menu--main,
+	.ecs-nav-layout-vertical.elementor-nav-menu--dropdown-tablet   .elementor-nav-menu--main {
+		display: none !important;
+	}
+	.ecs-nav-layout-horizontal.elementor-nav-menu--dropdown-tablet .elementor-menu-toggle,
+	.ecs-nav-layout-vertical.elementor-nav-menu--dropdown-tablet   .elementor-menu-toggle {
+		display: flex !important;
+	}
+}
+
+/* ═══════════════════════════════════════════════════════════
+   FORCE BREAKPOINT
+   When "Force Breakpoint" is ON, the menu switches to dropdown
+   mode at the Elementor native breakpoint regardless of the ECS
+   Layout setting.
+
+   Combines .ecs-force-breakpoint (ECS prefix_class) with
+   .elementor-nav-menu--dropdown-{mobile|tablet} (Elementor's own
+   prefix_class for the Breakpoint control) to target exactly the
+   right viewport without needing JS.
+
+   CSS custom properties use !important to override the inline
+   variables set by ecs-mobile-menu-editor.js in the editor.
+   ═══════════════════════════════════════════════════════════ */
+
+/* Frontend: Mobile breakpoint (≤ 767px) */
+@media (max-width: 767px) {
+	.ecs-force-breakpoint.elementor-nav-menu--dropdown-mobile {
+		--ecs-nav-main-display:   none !important;
+		--ecs-nav-main-dir:       row  !important;
+		--ecs-nav-toggle-display: flex !important;
+	}
+}
+
+/* Frontend: Tablet breakpoint (≤ 1024px, covers mobile too) */
+@media (max-width: 1024px) {
+	.ecs-force-breakpoint.elementor-nav-menu--dropdown-tablet {
+		--ecs-nav-main-display:   none !important;
+		--ecs-nav-main-dir:       row  !important;
+		--ecs-nav-toggle-display: flex !important;
+	}
+}
+
+/* Editor device preview */
+body.elementor-device-mobile .ecs-force-breakpoint.elementor-nav-menu--dropdown-mobile,
+body.elementor-device-mobile .ecs-force-breakpoint.elementor-nav-menu--dropdown-tablet,
+body.elementor-device-tablet .ecs-force-breakpoint.elementor-nav-menu--dropdown-tablet {
+	--ecs-nav-main-display:   none !important;
+	--ecs-nav-main-dir:       row  !important;
+	--ecs-nav-toggle-display: flex !important;
+}

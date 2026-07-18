@@ -1,0 +1,288 @@
+/* ============================================================
+   ECS Editorial Text Module
+   ============================================================ */
+
+/* ── Figure ───────────────────────────────────────────────── */
+
+.ecs-et-figure {
+	margin: 0;      /* Reset browser default <figure> margin */
+	line-height: 0; /* Prevents inline-block gap below img */
+}
+
+.ecs-et-figure img {
+	display: block;
+	max-width: 100%;
+	height: auto;
+}
+
+/* ── Text ─────────────────────────────────────────────────── */
+
+.ecs-et-text > *:first-child { margin-top: 0; }
+.ecs-et-text > *:last-child  { margin-bottom: 0; }
+
+/* ============================================================
+   Image Position — desktop base rules
+   Classes are added to the Elementor widget wrapper via prefix_class.
+
+   Gap margin specificity note
+   ───────────────────────────
+   Elementor's frontend.min.css contains:
+     .elementor .elementor-widget:not(...):not(...) figure { margin: 0 }
+   which has specificity (0,4,1) and resets all figure margins.
+
+   Rules that only set float / display / order use short selectors
+   (no conflict). Rules that set the gap margin use the longer form
+     .elementor-widget.elementor-widget-ecs_editorial_text.e-et-flow-X figure.ecs-et-figure
+   which also reaches (0,4,1) and wins by source order (our stylesheet
+   is enqueued after Elementor's frontend CSS).
+   ============================================================ */
+
+/* none / before — layout */
+.e-et-flow-none .ecs-et-figure,
+.e-et-flow-before .ecs-et-figure { display: block; }
+
+/* none / before — gap */
+.elementor-widget.elementor-widget-ecs_editorial_text.e-et-flow-none figure.ecs-et-figure,
+.elementor-widget.elementor-widget-ecs_editorial_text.e-et-flow-before figure.ecs-et-figure {
+	margin-bottom: var(--ecs-et-gap, 1em);
+}
+
+/* after — layout */
+.e-et-flow-after .ecs-editorial-text {
+	display: flex;
+	flex-direction: column;
+}
+.e-et-flow-after .ecs-et-figure { order: 2; }
+.e-et-flow-after .ecs-et-text   { order: 1; }
+
+/* after — gap */
+.elementor-widget.elementor-widget-ecs_editorial_text.e-et-flow-after figure.ecs-et-figure {
+	margin-top: var(--ecs-et-gap, 1em);
+}
+
+/* float_left — layout */
+.e-et-flow-float_left .ecs-et-figure { float: left; }
+
+/* float_left — gap */
+.elementor-widget.elementor-widget-ecs_editorial_text.e-et-flow-float_left figure.ecs-et-figure {
+	margin-right: var(--ecs-et-gap, 1.5em);
+}
+
+/* float_right — layout */
+.e-et-flow-float_right .ecs-et-figure { float: right; }
+
+/* float_right — gap */
+.elementor-widget.elementor-widget-ecs_editorial_text.e-et-flow-float_right figure.ecs-et-figure {
+	margin-left: var(--ecs-et-gap, 1.5em);
+}
+
+/* Clearfix — CSS ::after replaces the old <div class="ecs-et-clearfix"> */
+.e-et-flow-float_left .ecs-editorial-text::after,
+.e-et-flow-float_right .ecs-editorial-text::after {
+	content: '';
+	display: table;
+	clear: both;
+}
+
+/* ============================================================
+   Content Align — desktop base rules
+   ============================================================ */
+
+/*
+ * text-align cascades into .ecs-et-text.
+ * align-items activates only in 'after' flex mode.
+ * display:inline-block on the figure lets it respond to text-align
+ * in block layout; float overrides it in float modes.
+ */
+
+.e-et-align-left .ecs-editorial-text    { text-align: left;    align-items: flex-start; }
+
+.e-et-align-center .ecs-editorial-text { text-align: center;  align-items: center; }
+.e-et-align-center .ecs-et-figure      { display: inline-block; }
+
+.e-et-align-right .ecs-editorial-text  { text-align: right;   align-items: flex-end; }
+.e-et-align-right .ecs-et-figure       { display: inline-block; }
+
+.e-et-align-justify .ecs-editorial-text { text-align: justify; align-items: flex-start; }
+
+/* ============================================================
+   Tablet overrides  (≤ 1024px)
+   ============================================================ */
+
+@media (max-width: 1024px) {
+
+	/* none / before — layout */
+	.e-et-tablet-flow-none .ecs-et-figure,
+	.e-et-tablet-flow-before .ecs-et-figure {
+		float: none;
+		order: unset;
+	}
+	.e-et-tablet-flow-none .ecs-editorial-text,
+	.e-et-tablet-flow-before .ecs-editorial-text { display: block; }
+
+	/* none / before — gap */
+	.elementor-widget.elementor-widget-ecs_editorial_text.e-et-tablet-flow-none figure.ecs-et-figure,
+	.elementor-widget.elementor-widget-ecs_editorial_text.e-et-tablet-flow-before figure.ecs-et-figure {
+		margin-top: 0;
+		margin-right: 0;
+		margin-left: 0;
+		margin-bottom: var(--ecs-et-gap, 1em);
+	}
+
+	/* after — layout */
+	.e-et-tablet-flow-after .ecs-editorial-text {
+		display: flex;
+		flex-direction: column;
+	}
+	.e-et-tablet-flow-after .ecs-et-figure { float: none; order: 2; }
+	.e-et-tablet-flow-after .ecs-et-text   { order: 1; }
+
+	/* after — gap */
+	.elementor-widget.elementor-widget-ecs_editorial_text.e-et-tablet-flow-after figure.ecs-et-figure {
+		margin-bottom: 0;
+		margin-right: 0;
+		margin-left: 0;
+		margin-top: var(--ecs-et-gap, 1em);
+	}
+
+	/* float_left — layout */
+	.e-et-tablet-flow-float_left .ecs-et-figure { float: left; order: unset; }
+	.e-et-tablet-flow-float_left .ecs-editorial-text { display: block; }
+
+	/* float_left — gap */
+	.elementor-widget.elementor-widget-ecs_editorial_text.e-et-tablet-flow-float_left figure.ecs-et-figure {
+		margin-top: 0;
+		margin-bottom: 0;
+		margin-left: 0;
+		margin-right: var(--ecs-et-gap, 1.5em);
+	}
+
+	/* float_right — layout */
+	.e-et-tablet-flow-float_right .ecs-et-figure { float: right; order: unset; }
+	.e-et-tablet-flow-float_right .ecs-editorial-text { display: block; }
+
+	/* float_right — gap */
+	.elementor-widget.elementor-widget-ecs_editorial_text.e-et-tablet-flow-float_right figure.ecs-et-figure {
+		margin-top: 0;
+		margin-bottom: 0;
+		margin-right: 0;
+		margin-left: var(--ecs-et-gap, 1.5em);
+	}
+
+	/* Clearfix for tablet floats */
+	.e-et-tablet-flow-float_left .ecs-editorial-text::after,
+	.e-et-tablet-flow-float_right .ecs-editorial-text::after {
+		content: '';
+		display: table;
+		clear: both;
+	}
+
+	/* Remove clearfix for tablet non-float modes */
+	.e-et-tablet-flow-none .ecs-editorial-text::after,
+	.e-et-tablet-flow-before .ecs-editorial-text::after,
+	.e-et-tablet-flow-after .ecs-editorial-text::after {
+		content: none;
+	}
+
+	/* Content align — tablet */
+	.e-et-tablet-align-left .ecs-editorial-text    { text-align: left;    align-items: flex-start; }
+
+	.e-et-tablet-align-center .ecs-editorial-text  { text-align: center;  align-items: center; }
+	.e-et-tablet-align-center .ecs-et-figure       { display: inline-block; }
+
+	.e-et-tablet-align-right .ecs-editorial-text   { text-align: right;   align-items: flex-end; }
+	.e-et-tablet-align-right .ecs-et-figure        { display: inline-block; }
+
+	.e-et-tablet-align-justify .ecs-editorial-text { text-align: justify; align-items: flex-start; }
+}
+
+/* ============================================================
+   Mobile overrides  (≤ 767px)
+   ============================================================ */
+
+@media (max-width: 767px) {
+
+	/* none / before — layout */
+	.e-et-mobile-flow-none .ecs-et-figure,
+	.e-et-mobile-flow-before .ecs-et-figure {
+		float: none;
+		order: unset;
+	}
+	.e-et-mobile-flow-none .ecs-editorial-text,
+	.e-et-mobile-flow-before .ecs-editorial-text { display: block; }
+
+	/* none / before — gap */
+	.elementor-widget.elementor-widget-ecs_editorial_text.e-et-mobile-flow-none figure.ecs-et-figure,
+	.elementor-widget.elementor-widget-ecs_editorial_text.e-et-mobile-flow-before figure.ecs-et-figure {
+		margin-top: 0;
+		margin-right: 0;
+		margin-left: 0;
+		margin-bottom: var(--ecs-et-gap, 1em);
+	}
+
+	/* after — layout */
+	.e-et-mobile-flow-after .ecs-editorial-text {
+		display: flex;
+		flex-direction: column;
+	}
+	.e-et-mobile-flow-after .ecs-et-figure { float: none; order: 2; }
+	.e-et-mobile-flow-after .ecs-et-text   { order: 1; }
+
+	/* after — gap */
+	.elementor-widget.elementor-widget-ecs_editorial_text.e-et-mobile-flow-after figure.ecs-et-figure {
+		margin-bottom: 0;
+		margin-right: 0;
+		margin-left: 0;
+		margin-top: var(--ecs-et-gap, 1em);
+	}
+
+	/* float_left — layout */
+	.e-et-mobile-flow-float_left .ecs-et-figure { float: left; order: unset; }
+	.e-et-mobile-flow-float_left .ecs-editorial-text { display: block; }
+
+	/* float_left — gap */
+	.elementor-widget.elementor-widget-ecs_editorial_text.e-et-mobile-flow-float_left figure.ecs-et-figure {
+		margin-top: 0;
+		margin-bottom: 0;
+		margin-left: 0;
+		margin-right: var(--ecs-et-gap, 1.5em);
+	}
+
+	/* float_right — layout */
+	.e-et-mobile-flow-float_right .ecs-et-figure { float: right; order: unset; }
+	.e-et-mobile-flow-float_right .ecs-editorial-text { display: block; }
+
+	/* float_right — gap */
+	.elementor-widget.elementor-widget-ecs_editorial_text.e-et-mobile-flow-float_right figure.ecs-et-figure {
+		margin-top: 0;
+		margin-bottom: 0;
+		margin-right: 0;
+		margin-left: var(--ecs-et-gap, 1.5em);
+	}
+
+	/* Clearfix for mobile floats */
+	.e-et-mobile-flow-float_left .ecs-editorial-text::after,
+	.e-et-mobile-flow-float_right .ecs-editorial-text::after {
+		content: '';
+		display: table;
+		clear: both;
+	}
+
+	/* Remove clearfix for mobile non-float modes */
+	.e-et-mobile-flow-none .ecs-editorial-text::after,
+	.e-et-mobile-flow-before .ecs-editorial-text::after,
+	.e-et-mobile-flow-after .ecs-editorial-text::after {
+		content: none;
+	}
+
+	/* Content align — mobile */
+	.e-et-mobile-align-left .ecs-editorial-text    { text-align: left;    align-items: flex-start; }
+
+	.e-et-mobile-align-center .ecs-editorial-text  { text-align: center;  align-items: center; }
+	.e-et-mobile-align-center .ecs-et-figure       { display: inline-block; }
+
+	.e-et-mobile-align-right .ecs-editorial-text   { text-align: right;   align-items: flex-end; }
+	.e-et-mobile-align-right .ecs-et-figure        { display: inline-block; }
+
+	.e-et-mobile-align-justify .ecs-editorial-text { text-align: justify; align-items: flex-start; }
+}

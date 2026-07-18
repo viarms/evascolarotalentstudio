@@ -49,9 +49,8 @@ export default function Footer() {
           paddingBottom: "1em",
         }}
       >
-        {/* Logo + Trusted by */}
-        <div className="flex flex-col items-center gap-[10px] mb-4">
-          {/* ESTS White logo (SVG inline so we don't need a file for footer) */}
+        {/* Logo + Trusted by — ample gap between them */}
+        <div className="flex flex-col items-center gap-[20px] mb-8">
           <Image
             src="/logo-white.svg"
             alt="Eva Scolaro Talent Studio"
@@ -60,8 +59,6 @@ export default function Footer() {
             className="h-auto"
             style={{ width: "200px" }}
           />
-
-          {/* "Trusted by" */}
           <p
             className="text-center m-0"
             style={{ fontFamily: "Inter, sans-serif", fontSize: "13px", fontWeight: 400, color: "#DDDDDD" }}
@@ -70,28 +67,28 @@ export default function Footer() {
           </p>
         </div>
 
-        {/* Partner logos row — spread across full width like live site */}
-        <div className="w-full max-w-[900px] flex flex-row items-center justify-between px-8 mb-2">
+        {/* Partner logos row — narrower max-width, even spacing */}
+        <div className="w-full max-w-[600px] flex flex-row items-center justify-between px-8 mb-10">
           <Image
             src="/ais-logo.svg"
             alt="AIS Indonesia"
-            width={150}
-            height={100}
-            className="h-[100px] w-auto"
+            width={130}
+            height={90}
+            className="h-[90px] w-auto"
           />
           <Image
             src="/secana-logo.svg"
             alt="Secana Beachtown"
-            width={80}
-            height={100}
-            className="h-[100px] w-auto"
+            width={70}
+            height={90}
+            className="h-[90px] w-auto"
           />
           <Image
             src="/dyatmika-logo.svg"
             alt="Dyatmika"
-            width={100}
-            height={100}
-            className="h-[100px] w-auto"
+            width={90}
+            height={90}
+            className="h-[90px] w-auto"
           />
         </div>
       </div>
@@ -103,7 +100,7 @@ export default function Footer() {
           backgroundColor: "rgba(0, 0, 0, 0.85)",
           borderBottom: "5px solid #000000",
           paddingBottom: "3em",
-          paddingTop: "0",
+          paddingTop: "2em",
         }}
       >
         {/* Address & phone */}
