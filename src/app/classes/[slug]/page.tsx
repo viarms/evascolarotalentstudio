@@ -312,10 +312,19 @@ export async function generateMetadata(props: SlugProps): Promise<Metadata> {
   // Canonical always points to the Next.js URL, not the WP /class/ URL
   const canonical = `https://www.evascolarotalentstudio.com/classes/${cls.slug}`;
 
-  // Yoast values take precedence; fall back to hardcoded static content
-  const title       = yoast?.title       ?? cls.seoTitle;
+  // Yoast values take precedence; fall back to hardcoded static content.
+  //
+  // Title: Yoast generates a fallback title even when no custom title has been
+  // set (pattern: "{Post Title} - {Site Name}"). We detect that pattern and
+  // ignore it so our descriptive static SEO title is used instead.
+  // Once Yoast's _yoast_wpseo_title meta is writable on this CPT (requires
+  // register_meta() in WP — see _docs/PROJECT-TRACKER.md), this guard can be removed.
+  const YOAST_AUTO_TITLE_RE = /^[^|–—]+\s[-–—]\s+Eva Scolaro Talent Studio\s*$/;
+  const yoastTitleIsCustom = yoast?.title && !YOAST_AUTO_TITLE_RE.test(yoast.title);
+
+  const title       = yoastTitleIsCustom ? yoast!.title : cls.seoTitle;
   const description = yoast?.description ?? cls.metaDescription;
-  const ogTitle     = yoast?.og_title    ?? title;
+  const ogTitle     = (yoastTitleIsCustom ? yoast?.og_title : null) ?? title;
   const ogImage     = yoast?.og_image?.[0];
 
   // Respect Yoast robots directives; default to index/follow
@@ -323,7 +332,9 @@ export async function generateMetadata(props: SlugProps): Promise<Metadata> {
   const robotsFollow = yoast?.robots?.follow ?? "follow";
 
   return {
-    title,
+    // Use `absolute` so the layout template ("%s | Eva Scolaro Talent Studio")
+    // is not applied — our seoTitle already contains the studio name.
+    title: { absolute: title },
     description,
     robots: {
       index:  robotsIndex  === "index",

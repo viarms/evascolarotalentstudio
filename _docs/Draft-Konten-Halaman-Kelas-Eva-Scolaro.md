@@ -1,6 +1,20 @@
 # Class Page Content Draft — Eva Scolaro Talent Studio
 
-**Note:** This draft is ready to use as a brief/CMS content guide for 9 class pages. Schedules are drawn from the public timetable for Sanur & Canggu Studios (partner school schedules for AIS/Dyatmika/Toki Hub are not included on public pages, as those are CCA/ECA programs exclusively for enrolled students — they are mentioned as social proof on the "School Partnerships" page only). Double-check current times and coaches before publishing, as schedules may change each term.
+**Last updated:** 18 July 2026
+**Project status as of this update:**
+
+All 9 class pages are implemented and build successfully. Content status by layer:
+
+| Layer | Status | Source |
+|---|---|---|
+| Static content (intro, benefits, age groups, FAQ, CTA) | ✅ Live in code | `src/app/classes/[slug]/page.tsx` → `STATIC_CONTENT` |
+| Schedule data | ✅ Fetched live from WP REST API | `/wp/v2/event` CPT, ISR 1h |
+| SEO metadata (title, description) | ✅ In code; Yoast override ready | `STATIC_CONTENT` → `generateMetadata()`, overridden by `fetchYoastMeta()` |
+| WP class CPT posts + Yoast seed | ⏳ Run `npm run seed:classes` | `scripts/seed-classes.mjs` |
+| Hero images | ⚠️ Placeholder | Solid brand-red background — needs per-class images uploaded to WP Media |
+| Static content in ACF/WP CMS | ⏳ Not yet | Intro, benefits, FAQ still hardcoded in `page.tsx` |
+
+**Schedule note:** Schedules shown below were drawn from the timetable displayed on the website at the time of the audit (17 July 2026). The live site now fetches schedule data automatically from the WordPress `event` CPT — so schedule tables below are reference only, not the source of truth. Double-check coaches and times before each term.
 
 ---
 
@@ -28,7 +42,7 @@ Hip-hop is one of the most popular classes at Eva Scolaro Talent Studio. Kids le
 | Junior | 6–9 years | More complex choreography, teamwork |
 | Teen | 10–16 years | Advanced technique, personal style, performance preparation |
 
-**Schedule & Location:**
+**Schedule & Location (reference — live data from WP):**
 
 *Sanur Studio*
 | Day | Class | Time | Coach |
@@ -85,7 +99,7 @@ Our ballet classes introduce the fundamentals of classical technique in a fun an
 | Tots | 3–5 years | Basic movement, flexibility, listening to music |
 | Junior/Teen | 6–16 years | Foot & hand position technique, movement combinations, expression |
 
-**Schedule & Location:**
+**Schedule & Location (reference — live data from WP):**
 
 *Sanur Studio*
 | Day | Class | Time | Coach |
@@ -138,7 +152,7 @@ Singing classes help children find their voice — literally and figuratively. F
 | Junior | 6–9 years | Basic vocal technique, simple song practice |
 | Teen | 10–16 years | Advanced voice control, solo performance preparation |
 
-**Schedule & Location:**
+**Schedule & Location (reference — live data from WP):**
 
 *Sanur Studio*
 | Day | Class | Time | Coach |
@@ -190,7 +204,7 @@ The favorite class for K-Pop fans! Children and teenagers learn the latest K-Pop
 | Junior | 6–9 years | Basic formation movement, following K-Pop song rhythms |
 | Teen | 10–16 years | Complex choreography, idol-style stage expression |
 
-**Schedule & Location:**
+**Schedule & Location (reference — live data from WP):**
 
 *Sanur Studio*
 | Day | Class | Time | Coach |
@@ -238,7 +252,7 @@ Jazz dance blends technique, musicality, and self-expression. This class is perf
 | Tots | 3–5 years | Basic movement, facial & body expression |
 | Junior | 6–9 years | Movement combinations, basic jazz technique |
 
-**Schedule & Location:**
+**Schedule & Location (reference — live data from WP):**
 
 *Sanur Studio*
 | Day | Class | Time | Coach |
@@ -285,7 +299,7 @@ This class combines acting (drama) and musical performance, helping children exp
 | Junior | 6–9 years | Basic acting exercises, role play |
 | Teen | 10–16 years | Musical theatre, character acting, stage vocal work |
 
-**Schedule & Location:**
+**Schedule & Location (reference — live data from WP):**
 
 *Sanur Studio*
 | Day | Class | Time | Coach |
@@ -334,13 +348,13 @@ Modeling classes train children and teens in posture, catwalk technique, and con
 | Tots/Junior | 3–9 years | Posture introduction, basic walking, confidence in front of others |
 | Teen | 10–16 years | Catwalk technique, posing, camera expression |
 
-**Schedule & Location:**
+**Schedule & Location (reference — live data from WP):**
 
 *Sanur Studio*
 | Day | Class | Time | Coach |
 |---|---|---|---|
-| Friday | Junior/Tots Modeling | 16:30–17:30 | Cintya |
 | Friday | Teen Modeling | 15:30–16:30 | Cintya |
+| Friday | Junior/Tots Modeling | 16:30–17:30 | Cintya |
 
 *Canggu Studio*
 | Day | Class | Time | Coach |
@@ -382,14 +396,14 @@ Breakdance classes introduce the foundational movements of breaking — from foo
 |---|---|---|
 | Junior/Teen | 6–16 years | Basic breaking movements, footwork, freezes, freestyle |
 
-**Schedule & Location:**
+**Schedule & Location (reference — live data from WP):**
 
 *Canggu Studio*
 | Day | Class | Time | Coach |
 |---|---|---|---|
 | Saturday | Junior/Teen Breakdance | 13:00–14:00 | Faith |
 
-> Note: Breakdance is currently only available at Canggu Studio. If you're based in Sanur, contact us via WhatsApp — an additional class can be opened if there is enough interest.
+> Note: Breakdance is currently only available at Canggu Studio. The page `priceNote` already mentions this. If Sanur demand grows, add classes there and the live schedule will update automatically.
 
 **Coach:** Faith.
 
@@ -409,6 +423,8 @@ Breakdance classes introduce the foundational movements of breaking — from foo
 **Meta Description:** Public speaking classes for teenagers — builds confidence speaking in public. Part of the Eva Scolaro Talent Studio performing arts program.
 
 **H1:** Public Speaking Classes for Teens
+
+**Status:** `coming_soon` — page renders `ComingSoonBanner` instead of schedule/price/FAQ.
 
 **Intro:**
 Public speaking classes help teenagers build the confidence to speak in front of others — a skill that reaches far beyond the stage, from school presentations to everyday life.
@@ -430,11 +446,34 @@ Public speaking classes help teenagers build the confidence to speak in front of
 
 **CTA:** Enquire About Class Availability — WhatsApp +62 821 4628 4464
 
+**To activate:** Change `status: "coming_soon"` → `"active"` in the `STATIC_CONTENT` map in `src/app/classes/[slug]/page.tsx`. Add schedule entries to the WP `event` CPT and they will appear automatically.
+
 ---
 
-## Implementation Notes
+## Implementation Status & Remaining Tasks
 
-1. **Validate schedules before publishing** — the schedules above were drawn from the timetable displayed on the website at the time of the audit (17 July 2026); schedules may change each term, so class pages should ideally pull schedule data automatically from the same source as the Timetable section on the homepage (rather than hardcoded static text), to stay current at all times.
-2. **Public Speaking** requires a business decision: will it be opened to the public at Sanur/Canggu, or remain exclusive to partner schools? This will determine whether the page stays as a "coming soon" or is removed from the Phase 1 9-class structure.
-3. **Breakdance** is only available in Canggu — consider adding classes in Sanur if demand grows, so the page has a two-location schedule like the other class pages.
-4. All schedule tables above are ready to use as a starting point for kiro-cli task prompts — just align them with the existing schedule component structure in the CMS (the existing Timetable component on the homepage could likely be reused, filtered per class).
+### ✅ Done
+- All 9 class pages implemented at `/classes/[slug]` with ISR (1h revalidation)
+- Schedule data auto-fetched from WP REST API `/wp/v2/event` — no hardcoded tables in frontend
+- ScheduleTabs component: dynamic tabs per location (Sanur / Canggu / any future location)
+- Static content (intro, benefits, age groups, FAQ, CTA) in `STATIC_CONTENT` map
+- SEO metadata via `generateMetadata()` — Yoast values override static content when available
+- Schema.org `Course` JSON-LD on every class page
+- `seed-classes.mjs` script ready to push WP class CPT posts + Yoast SEO (`npm run seed:classes`)
+- `public-speaking` renders `ComingSoonBanner` correctly
+- All other 8 classes render active layout
+- Proxy rewrite: all non-`/classes/*` routes fall back to WordPress origin
+
+### ⏳ Remaining before launch
+
+1. **Run seed script** — `npm run seed:classes` — requires `WP_ADMIN_USER` + `WP_ADMIN_PASS` (Application Password) in `.env.local`. Creates/updates 9 WP class CPT posts and sets Yoast SEO title + meta description on each.
+
+2. **Hero images** — `ClassHero` currently shows a solid brand-red background with a TODO comment. Upload one hero image per class to WP Media, then replace the placeholder in `ClassHero.tsx` with `next/image` (the TODO comment in the component shows exactly how).
+
+3. **Business decision: Public Speaking** — decide whether to open it to the public at Sanur/Canggu this term, or keep `coming_soon`. One line change in `page.tsx` to flip.
+
+4. **ACF field group (optional, Phase 2)** — intro, benefits, age groups, FAQ are hardcoded in `page.tsx`. If the client needs to edit content without a developer, set up the ACF `classFields` group in WordPress and migrate `STATIC_CONTENT` to WP GraphQL queries. The type definitions in `src/lib/types/class.ts` already mirror the intended ACF structure.
+
+5. **Validate live schedule data** — once the seed script has run, check each class page on the live site to confirm the WP `event` CPT entries are being matched correctly (keyword matching in `SLUG_TO_KEYWORDS` in `classQueries.ts`). In particular verify `DRAMA`, `MUSICAL THEATRE`, and `MODELING` keywords match the actual `event_name` values in the database.
+
+6. **Breakdance Sanur** — only one location currently. Add Sanur events in WP if demand grows; no frontend changes needed.

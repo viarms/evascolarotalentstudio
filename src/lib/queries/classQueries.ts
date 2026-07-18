@@ -59,6 +59,13 @@ const SCHEDULE_ID_TO_DAY: Record<number, string> = {
 const PLACEHOLDER_LOCATION = "Event Venue/Location, City";
 
 /**
+ * Only these two locations are shown on public class pages.
+ * Toki Hub, Parklife, AIS, Dyatmika etc. are school-partner CCA/ECA venues —
+ * they are excluded here and mentioned only on the School Partnerships page.
+ */
+const PUBLIC_LOCATIONS = new Set(["Sanur Studio", "Canggu Studio"]);
+
+/**
  * Maps a class page slug to keywords matched against `event_name` (case-insensitive).
  */
 const SLUG_TO_KEYWORDS: Record<string, string[]> = {
@@ -151,6 +158,7 @@ export async function fetchScheduleForClass(
   const relevant = events.filter((e) => {
     const loc = e.acf.event_location;
     if (!loc || loc === PLACEHOLDER_LOCATION) return false;
+    if (!PUBLIC_LOCATIONS.has(loc)) return false;        // exclude partner school venues
     const name = e.acf.event_name?.toUpperCase() ?? "";
     return keywordsUpper.some((kw) => name.includes(kw));
   });
@@ -184,8 +192,8 @@ export async function fetchScheduleForClass(
     });
   }
 
-  // Build result — preserve a consistent location order
-  const LOCATION_ORDER = ["Sanur Studio", "Canggu Studio", "Toki Hub", "Parklife"];
+  // Build result — Sanur Studio first, Canggu Studio second
+  const LOCATION_ORDER = ["Sanur Studio", "Canggu Studio"];
 
   const knownFirst = LOCATION_ORDER.filter((l) => grouped[l]);
   const rest = Object.keys(grouped).filter((l) => !LOCATION_ORDER.includes(l)).sort();
