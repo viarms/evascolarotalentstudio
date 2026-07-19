@@ -1,7 +1,6 @@
 "use client";
 // src/components/classes/CoachNote.tsx
 // Slides in from the left with the border-left accent leading the motion.
-// Coach name is stripped — only the description text is shown.
 
 import { useInView } from "@/hooks/useInView";
 
@@ -13,15 +12,6 @@ export default function CoachNote({ note }: Props) {
   const [ref, visible] = useInView();
 
   if (!note) return null;
-
-  // Strip leading coach name(s) — format is "Name — description" or "Name. description"
-  // Remove everything up to and including the first " — " or ". "
-  const text = note
-    .replace(/^[^—–.]+[—–]\s*/, "")   // "Name — rest"
-    .replace(/^[A-Za-z ,]+\.\s+/, ""); // "Name. rest" fallback
-
-  // If stripping didn't change anything meaningful, show the original
-  const display = text.trim() || note;
 
   return (
     <section
@@ -38,7 +28,7 @@ export default function CoachNote({ note }: Props) {
         }}
       >
         <h2 className="text-lg font-normal text-gray-900 mb-2">A Note from Our Coaches</h2>
-        <p className="text-gray-700 leading-relaxed">{display}</p>
+        <p className="text-gray-700 leading-relaxed">{note}</p>
       </div>
     </section>
   );
