@@ -14,7 +14,6 @@ import { GoogleTagManager, GoogleAnalytics } from "@next/third-parties/google";
 import "./globals.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
-import FeedbackModal from "@/components/layout/FeedbackModal";
 
 const archivoBlack = Archivo_Black({
   subsets: ["latin"],
@@ -69,7 +68,6 @@ export default function RootLayout({
           </div>
         </div>
         <Footer />
-        <FeedbackModal />
       </body>
       <GoogleAnalytics gaId="G-1JDY0MTPSV" />
     </html>

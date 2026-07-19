@@ -42,10 +42,20 @@ async function fetchWpTokens(): Promise<{
   token: string;
   tokenTime: string;
 }> {
-  const res = await fetch(CONTACT_URL, {
-    headers: { "User-Agent": "NextJS-FeedbackProxy/1.0" },
-    cache: "no-store",
-  });
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 10000); // 10s timeout
+
+  let res: Response;
+  try {
+    res = await fetch(CONTACT_URL, {
+      headers: { "User-Agent": "NextJS-FeedbackProxy/1.0" },
+      cache: "no-store",
+      signal: controller.signal,
+    });
+  } finally {
+    clearTimeout(timeout);
+  }
+
   if (!res.ok) throw new Error(`WP fetch failed: ${res.status}`);
 
   const html = await res.text();

@@ -1,28 +1,10 @@
 // src/components/layout/Footer.tsx
+// src/components/layout/Footer.tsx
 //
 // Pixel-perfect match of the live WP site footer (elementor-6804).
 //
-// Structure: fixed sticky bottom bar, mostly below viewport (bottom: -63px),
-// slides up naturally as the user scrolls to the bottom of the page.
-//
-// Outer bar background: #000000
-// Bottom strip: border-top none / border-bottom 5px solid #000; bg: #000000
-//
-// Content (top section, padding 3em top / 1em bottom):
-//   - ESTS logo (white SVG, 200px wide)
-//   - "Trusted by" heading (Inter 13px, #DDDDDD)
-//   - Partner logos row: Toki Hub | Parklife | Toki Hub (inline SVGs, 100px each)
-//
-// Bottom strip (padding-bottom 3em):
-//   - Address: Jl. Bypass Ngurah Rai No.88A, Sanur. Denpasar Selatan
-//   - Phone/WA: +62 821 4628 4464
-//   - PT EVA SCOLARO ENTERTAINMENT
-//   - Links: Terms & Conditions | Feedback | Contact
-//   - Link text color: #A5A5A5, hover: #EFEFEF
-//
-// "Feedback" opens FeedbackModal via a custom window event.
-
-"use client";
+// Bottom strip links: Terms & Conditions | Contact
+// Link text color: #A5A5A5, hover: #EFEFEF
 
 import Image from "next/image";
 
@@ -32,13 +14,8 @@ const WA_NUMBER = process.env.NEXT_PUBLIC_WA_NUMBER ?? "6282146284464";
 
 const FOOTER_LINKS = [
   { label: "Terms & Conditions", href: "https://www.evascolarotalentstudio.com/terms-conditions/" },
-  { label: "Feedback",           href: "modal" },
   { label: "Contact",            href: "/contact/" },
 ] as const;
-
-function openFeedbackModal() {
-  window.dispatchEvent(new Event("open-feedback-modal"));
-}
 
 // ─── Footer ───────────────────────────────────────────────────────────────────
 
@@ -145,24 +122,13 @@ export default function Footer() {
         <ul className="flex flex-row flex-wrap items-center justify-center gap-x-4 gap-y-1 list-none m-0 p-0">
           {FOOTER_LINKS.map(({ label, href }) => (
             <li key={label}>
-              {href === "modal" ? (
-                <button
-                  type="button"
-                  onClick={openFeedbackModal}
-                  className="text-[#A5A5A5] hover:text-[#EFEFEF] transition-colors duration-300 cursor-pointer bg-transparent border-0 p-0"
-                  style={{ fontSize: "0.8em", fontFamily: "inherit" }}
-                >
-                  {label}
-                </button>
-              ) : (
-                <a
-                  href={href}
-                  className="text-[#A5A5A5] hover:text-[#EFEFEF] transition-colors duration-300 no-underline"
-                  style={{ fontSize: "0.8em" }}
-                >
-                  {label}
-                </a>
-              )}
+              <a
+                href={href}
+                className="text-[#A5A5A5] hover:text-[#EFEFEF] transition-colors duration-300 no-underline"
+                style={{ fontSize: "0.8em" }}
+              >
+                {label}
+              </a>
             </li>
           ))}
         </ul>
