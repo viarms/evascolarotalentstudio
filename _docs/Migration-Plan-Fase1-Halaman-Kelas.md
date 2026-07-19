@@ -26,26 +26,35 @@ Ini adalah **plan terpisah dan lebih kecil** dari migration plan penuh sebelumny
 
 Karena WordPress tetap melayani domain utama, dibutuhkan mekanisme agar path `/classes/*` diarahkan ke Next.js sementara path lain tetap ke WordPress — semua di bawah domain yang sama (`www.evascolarotalentstudio.com`), tanpa terlihat pengunjung sebagai dua sistem berbeda.
 
-**Pendekatan yang direkomendasikan: Vercel Rewrites (reverse proxy)**
+**Pendekatan yang direkomendasikan: Cloudflare Worker + Vercel Rewrites**
 
 ```
-Pengunjung → www.evascolarotalentstudio.com (DNS → Vercel)
+Pengunjung → www.evascolarotalentstudio.com (DNS → Cloudflare)
                     │
-      ┌─────────────┴──────────────┐
-      ▼                             ▼
- path = /classes/*            path lainnya
-      │                             │
- Next.js render               Vercel rewrite (proxy)
- (ISR dari WP API)             ke WordPress origin
-                               (hosting saat ini, tidak berubah)
+      ┌─────────────┴──────────────────────────────────┐
+      │           Cloudflare Worker                     │
+      │  1. /class/* → /classes/* (301 redirect)        │
+      │  2. /classes/*, /_next/*, assets → Vercel       │
+      │  3. everything else → WordPress passthrough     │
+      └───────────────────┬────────────────────────────┘
+                          │
+          ┌───────────────┴──────────────┐
+          ▼                               ▼
+   Vercel (Next.js)               WordPress origin
+   /classes/* pages               (unchanged, serves
+   + static assets                all other paths)
 ```
 
-- DNS domain utama diarahkan ke Vercel.
-- Di `next.config.js`, semua path SELAIN `/classes/*` di-**rewrite** (proxy transparan) ke server WordPress yang ada sekarang. Bagi pengunjung, URL di address bar tetap `www.evascolarotalentstudio.com/...` — mereka tidak akan sadar ada dua sistem di baliknya.
-- Path `/classes/*` di-render native oleh Next.js.
-- **Keuntungan:** tidak perlu migrasi apa pun di luar 9 halaman ini, WordPress berjalan seperti biasa, dan proses ini bisa "dibongkar" tanpa risiko kalau ternyata pilot tidak dilanjutkan ke migrasi penuh.
+- DNS domain utama tetap di Cloudflare (tidak dipindah ke Vercel DNS).
+- **Cloudflare Worker** menangani semua routing sebelum request mencapai origin:
+  1. Redirect `/class/*` → `/classes/*` (301 permanent) — menangkap URL lama dari WP CPT.
+  2. Forward path Next.js (`/classes/*`, `/_next/*`, asset statis, `sitemap.xml`, `robots.txt`) ke Vercel.
+  3. Pass semua path lain langsung ke WordPress (Cloudflare passthrough normal).
+- **Vercel rewrites** (`next.config.ts`) berfungsi sebagai lapisan kedua: jika ada request yang lolos ke Vercel tanpa seharusnya (mis. di dev/preview langsung tanpa Worker), semua non-`/classes/*` di-proxy ke WordPress origin.
+- Bagi pengunjung, URL di address bar tetap `www.evascolarotalentstudio.com/...` — tidak ada yang berubah secara visual.
+- **Keuntungan Worker approach:** redirect `/class/*` ditangani di edge sebelum mencapai Next.js atau WP, tanpa overhead. Worker juga bisa di-rollback mudah dari Cloudflare dashboard.
 
-*(Alternatif jika tidak pakai Vercel: reverse proxy setara di level Nginx/Cloudflare Worker pada hosting yang menangani domain saat ini — prinsip sama.)*
+*(File referensi Worker: `_docs/cloudflare-worker.js` — deploy via Cloudflare dashboard → Workers → Create → paste kode.)*
 
 ---
 

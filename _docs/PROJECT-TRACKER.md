@@ -1,5 +1,5 @@
 # Project Tracker — Eva Scolaro Talent Studio
-**Last updated:** 19 July 2026 (rev 3)
+**Last updated:** 19 July 2026 (rev 4)
 **Phase:** Phase 1 — Class Pages (Next.js pilot)
 
 ---
@@ -32,6 +32,10 @@ Full migration           ░░░░░░░░░░░░░░░░░░�
 ### Infrastructure
 - [x] Next.js 16 + TypeScript + Tailwind v4 project scaffolded
 - [x] `next.config.ts` — rewrite proxy: all non-`/classes/*` paths forward to WordPress origin
+- [x] `_docs/cloudflare-worker.js` — Cloudflare Worker (production routing layer):
+  1. **Redirects `/class/*` → `/classes/*`** (301 permanent) — handles WP CPT URL pattern before Next.js sees the request
+  2. Forwards Next.js routes (`/classes/*`, `/_next/*`, static assets, `sitemap.xml`, `robots.txt`) to Vercel
+  3. Passes everything else through to WordPress unchanged
 - [x] Fonts loaded via `next/font/google` — Archivo Black (display, `--font-archivo-black`) + Inter (body, `--font-inter`); exposed as CSS variables in `globals.css @theme`
 - [x] Root layout (`app/layout.tsx`) with Header + Footer + Google Tag Manager + Google Analytics
 - [x] `.env.local.example` with all required variables documented
@@ -97,6 +101,7 @@ Full migration           ░░░░░░░░░░░░░░░░░░�
 - [x] **18 Jul 2026** — Hero images: all 9 class CPT posts have featured images assigned in WP Media. Verified via REST API.
 - [x] **18 Jul 2026** — YouTube channel URL confirmed correct in `Header.tsx`: `https://www.youtube.com/@evascolarotalentstudio8290`
 - [x] **19 Jul 2026** — `npm run build` clean. All 15 routes pre-render without errors or TypeScript warnings.
+- [x] **19 Jul 2026** — Cloudflare Worker (`_docs/cloudflare-worker.js`) updated: added `/class/* → /classes/*` 301 redirect (step 1 in routing order) so WP CPT canonical URLs auto-redirect to Next.js slugs. Routing order clarified: redirect → Vercel → WP passthrough.
 
 ---
 
@@ -106,7 +111,7 @@ Full migration           ░░░░░░░░░░░░░░░░░░�
 
 | # | Task | Where | Notes |
 |---|---|---|---|
-| **1** | **Staging test: rewrite proxy** | Vercel preview | Deploy branch to Vercel. Set `WP_ORIGIN` env var. Walk through: `/` (homepage proxy), `/gallery/`, `/practice/`, `/dancewear/`, `/announcement/` — all should return 200 from WP. Then walk all 9 `/classes/*` pages. If clean → DNS cutover is safe. |
+| **1** | **Staging test: rewrite proxy + Cloudflare Worker** | Vercel preview + CF Worker staging | Deploy branch to Vercel. Set `WP_ORIGIN` env var. Walk through: `/` (homepage proxy), `/gallery/`, `/practice/`, `/dancewear/`, `/announcement/` — all should return 200 from WP. Then walk all 9 `/classes/*` pages. Also verify Worker redirect: `https://www.evascolarotalentstudio.com/class/ballet/` should 301 → `/classes/ballet/` (once Worker is deployed to production). If clean → DNS cutover is safe. |
 
 That's the only remaining P0 blocker. Everything else is done or is a P1/P2 item.
 
@@ -171,7 +176,8 @@ After adding, re-run `npm run seed:classes` to write titles correctly. The auto-
    - `[preview-url]/classes/ballet/` → hero image appears ✓
    - `[preview-url]/classes/public-speaking/` → ComingSoonBanner shows, no schedule ✓
    - Check mobile (DevTools → 390px) for all 9 class pages
-4. If all proxy and class pages pass → proceed to DNS cutover (point `www` A record / CNAME to Vercel).
+4. Once Worker is deployed to Cloudflare: verify `https://www.evascolarotalentstudio.com/class/ballet/` returns a 301 redirect to `https://www.evascolarotalentstudio.com/classes/ballet/`
+5. If all proxy, class pages, and redirect pass → proceed to DNS cutover (point `www` A record / CNAME to Vercel).
 
 ### After go-live
 
@@ -188,6 +194,7 @@ Once DNS is live, run these in order:
 | Issue | Status | Detail |
 |---|---|---|
 | Yoast custom title write blocked on `class` CPT | ⚠️ Workaround active | `generateMetadata()` auto-detects Yoast's fallback title pattern and ignores it, using `STATIC_CONTENT.seoTitle` instead. All 9 pages render correct titles. Fix: add `mu-plugin` snippet above (P1 #5). |
+| Cloudflare Worker not yet deployed to production | ⏳ Pending | `_docs/cloudflare-worker.js` is the reference/source for the Worker. It still needs to be deployed via the Cloudflare dashboard (Workers → Create → paste code). The `/class/* → /classes/*` redirect will only be live once deployed. |
 | `layout.tsx` white card wraps `{children}` | ℹ️ By design | The `<div className="max-w-[960px] ... bg-white">` in `layout.tsx` clips the class page body sections inside a card. `ClassHero` is a sibling inside `<main>`, so it renders inside the card, not full-bleed across the viewport. This matches the current intended design (dark page bg + white content card). If truly full-bleed hero is wanted later, `ClassPage` would need to use a layout that breaks out of the card — defer to Phase 2 redesign if needed. |
 | `classMock.ts` is dead code | ℹ️ Low priority | Superseded by `STATIC_CONTENT` in `page.tsx`. No component imports it. Safe to delete in cleanup (P2 #11). |
 
@@ -241,6 +248,8 @@ scripts/
 └── seed-classes.mjs               ← ✅ run once per environment
 _docs/
 ├── PROJECT-TRACKER.md             ← this file
+├── cloudflare-worker.js           ← ✅ Cloudflare Worker: /class/* redirect + Vercel routing + WP passthrough
+├── class-pages-seo.md             ← SEO titles & meta descriptions for all 9 class pages
 ├── Draft-Konten-Halaman-Kelas-Eva-Scolaro.md
 ├── Frontend-Plan-Fase1-Halaman-Kelas.md
 ├── Migration-Plan-Fase1-Halaman-Kelas.md
