@@ -145,13 +145,15 @@ After adding, re-run `npm run seed:classes` to write titles correctly. The auto-
 
 | # | Task | Doc reference |
 |---|---|---|
-| **6** | Studio location pages — `/studio/canggu/` and `/studio/sanur/` | `PRD-SEO-Eva-Scolaro-Talent-Studio.md` §10 |
-| **7** | ACF field group for static content | Migrate `STATIC_CONTENT` from `page.tsx` into WP ACF so client can edit without a developer. Types in `class.ts` already mirror the intended structure. |
-| **8** | Blog / educational content (min. 8 articles) | `PRD-SEO-Eva-Scolaro-Talent-Studio.md` §6 Phase 2 |
-| **9** | School Partnerships page (`/school-partnerships/`) | Social proof + E-E-A-T signal for SEO |
-| **10** | Breakdance Sanur — open if demand grows | Add events in WP `event` CPT only; no frontend code change needed |
-| **11** | `classMock.ts` cleanup | Superseded by `STATIC_CONTENT` in `page.tsx`; can be deleted or kept as dev reference |
-| **12** | Full WordPress → Next.js migration | Migrate remaining pages (Home, Gallery, Practice, Dancewear, News, Contact, T&C); move WP to `cms.evascolarotalentstudio.com`; implement Resend forms. See `Migration-Plan-Nextjs-Eva-Scolaro.md`. |
+| **6** | **Homepage → Next.js** | `Plan-Homepage-Nextjs.md` — full plan. ~8–12h effort. Biggest performance win after class pages. Requires layout refactor (Step 0) + `fetchAllSchedules()` + 5 new components + Worker update. |
+| **7** | Studio location pages — `/studio/canggu/` and `/studio/sanur/` | `PRD-SEO-Eva-Scolaro-Talent-Studio.md` §10 |
+| **8** | ACF field group for static content | Migrate `STATIC_CONTENT` from `page.tsx` into WP ACF so client can edit without a developer. Types in `class.ts` already mirror the intended structure. |
+| **9** | Blog / educational content (min. 8 articles) | `PRD-SEO-Eva-Scolaro-Talent-Studio.md` §6 Phase 2 |
+| **10** | School Partnerships page (`/school-partnerships/`) | Social proof + E-E-A-T signal for SEO |
+| **11** | Breakdance Sanur — open if demand grows | Add events in WP `event` CPT only; no frontend code change needed |
+| **12** | `classMock.ts` cleanup | Superseded by `STATIC_CONTENT` in `page.tsx`; can be deleted or kept as dev reference |
+| **13** | Registration / Book Free Trial / Feedback forms in Next.js | Replace WA CTA fallback with real forms. React Hook Form + Zod + Resend. See `Migration-Plan-Nextjs-Eva-Scolaro.md` §5. |
+| **14** | Full WordPress → Next.js migration | Migrate remaining pages (Gallery, Practice, Dancewear, News, Contact, T&C); move WP to `cms.evascolarotalentstudio.com`. See `Migration-Plan-Nextjs-Eva-Scolaro.md`. |
 
 ---
 
@@ -251,6 +253,7 @@ _docs/
 ├── PROJECT-TRACKER.md             ← this file
 ├── cloudflare-worker.js           ← ✅ Cloudflare Worker: /class/* redirect + Vercel routing + WP passthrough
 ├── class-pages-seo.md             ← SEO titles & meta descriptions for all 9 class pages
+├── Plan-Homepage-Nextjs.md        ← 📋 Homepage migration plan (WP → Next.js, Phase 2)
 ├── Draft-Konten-Halaman-Kelas-Eva-Scolaro.md
 ├── Frontend-Plan-Fase1-Halaman-Kelas.md
 ├── Migration-Plan-Fase1-Halaman-Kelas.md
