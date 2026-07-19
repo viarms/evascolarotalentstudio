@@ -21,12 +21,21 @@ export default function AgeGroupTable({ groups }: Props) {
       aria-label="Age groups"
     >
       <h2
-        className="text-2xl font-normal text-gray-900 mb-6 transition-all duration-500 ease-out"
+        className="flex items-center gap-2 text-2xl font-normal text-gray-900 mb-6 transition-all duration-500 ease-out"
         style={{
           opacity: visible ? 1 : 0,
           transform: visible ? "translateY(0)" : "translateY(16px)",
         }}
       >
+        {/* Users / group icon */}
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             strokeWidth={1.75} strokeLinecap="round" strokeLinejoin="round"
+             className="w-6 h-6 text-[var(--color-brand-red)] flex-shrink-0">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+          <circle cx="9" cy="7" r="4" />
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+          <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+        </svg>
         Age Groups
       </h2>
 

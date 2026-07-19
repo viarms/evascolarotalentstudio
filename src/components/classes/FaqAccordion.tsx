@@ -24,12 +24,20 @@ export default function FaqAccordion({ items }: Props) {
       aria-label="Frequently asked questions"
     >
       <h2
-        className="text-2xl font-normal text-gray-900 mb-6 transition-all duration-500 ease-out"
+        className="flex items-center gap-2 text-2xl font-normal text-gray-900 mb-6 transition-all duration-500 ease-out"
         style={{
           opacity: visible ? 1 : 0,
           transform: visible ? "translateY(0)" : "translateY(16px)",
         }}
       >
+        {/* Help circle icon */}
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             strokeWidth={1.75} strokeLinecap="round" strokeLinejoin="round"
+             className="w-6 h-6 text-[var(--color-brand-red)] flex-shrink-0">
+          <circle cx="12" cy="12" r="10" />
+          <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+          <line x1="12" y1="17" x2="12.01" y2="17" />
+        </svg>
         FAQ
       </h2>
 

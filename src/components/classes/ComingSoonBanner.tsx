@@ -16,7 +16,14 @@ export default function ComingSoonBanner({ note, waLink, ctaLabel }: Props) {
     >
       <div className="bg-yellow-50 border border-yellow-200 rounded-2xl p-8 space-y-6">
         <div>
-          <span className="inline-block bg-yellow-100 text-yellow-800 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wide mb-3">
+          <span className="inline-flex items-center gap-1.5 bg-yellow-100 text-yellow-800 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wide mb-3">
+            {/* Clock icon */}
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"
+                 className="w-3.5 h-3.5 flex-shrink-0">
+              <circle cx="12" cy="12" r="10" />
+              <polyline points="12 6 12 12 16 14" />
+            </svg>
             Coming Soon
           </span>
           {note && (

@@ -28,12 +28,21 @@ export default function ScheduleTabs({ schedule }: Props) {
       aria-label="Class schedule"
     >
       <h2
-        className="text-2xl font-normal text-gray-900 mb-6 transition-all duration-500 ease-out"
+        className="flex items-center gap-2 text-2xl font-normal text-gray-900 mb-6 transition-all duration-500 ease-out"
         style={{
           opacity: visible ? 1 : 0,
           transform: visible ? "translateY(0)" : "translateY(16px)",
         }}
       >
+        {/* Calendar icon */}
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             strokeWidth={1.75} strokeLinecap="round" strokeLinejoin="round"
+             className="w-6 h-6 text-[var(--color-brand-red)] flex-shrink-0">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+          <line x1="16" y1="2" x2="16" y2="6" />
+          <line x1="8" y1="2" x2="8" y2="6" />
+          <line x1="3" y1="10" x2="21" y2="10" />
+        </svg>
         Class Schedule
       </h2>
 

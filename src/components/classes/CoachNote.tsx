@@ -27,7 +27,15 @@ export default function CoachNote({ note }: Props) {
           transitionDuration: "600ms",
         }}
       >
-        <h2 className="text-lg font-normal text-gray-900 mb-2">A Note from Our Coaches</h2>
+        <h2 className="flex items-center gap-2 text-lg font-normal text-gray-900 mb-2">
+          {/* Quote / speech bubble icon */}
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               strokeWidth={1.75} strokeLinecap="round" strokeLinejoin="round"
+               className="w-5 h-5 text-[var(--color-brand-red)] flex-shrink-0">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+          </svg>
+          A Note from Our Coaches
+        </h2>
         <p className="text-gray-700 leading-relaxed">{note}</p>
       </div>
     </section>

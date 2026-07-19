@@ -20,12 +20,18 @@ export default function BenefitsList({ items }: Props) {
       aria-label="Class benefits"
     >
       <h2
-        className="text-2xl font-normal text-gray-900 mb-6 transition-all duration-500 ease-out"
+        className="flex items-center gap-2 text-2xl font-normal text-gray-900 mb-6 transition-all duration-500 ease-out"
         style={{
           opacity: visible ? 1 : 0,
           transform: visible ? "translateY(0)" : "translateY(16px)",
         }}
       >
+        {/* Sparkle / star icon */}
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             strokeWidth={1.75} strokeLinecap="round" strokeLinejoin="round"
+             className="w-6 h-6 text-[var(--color-brand-red)] flex-shrink-0">
+          <path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z" />
+        </svg>
         Why Join This Class?
       </h2>
 
