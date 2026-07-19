@@ -18,6 +18,7 @@ import { buildClassPageSchema } from "@/lib/schema";
 
 // ─── Components ──────────────────────────────────────────────────────────────
 import ClassHero from "@/components/classes/ClassHero";
+import ClassBreadcrumb from "@/components/classes/ClassBreadcrumb";
 import ClassIntro from "@/components/classes/ClassIntro";
 import BenefitsList from "@/components/classes/BenefitsList";
 import AgeGroupTable from "@/components/classes/AgeGroupTable";
@@ -395,6 +396,7 @@ export default async function ClassPage(props: SlugProps) {
       />
 
       <ClassHero title={cls.h1} slug={cls.slug} featuredImage={featuredImage} />
+      <ClassBreadcrumb current={cls.h1} />
 
         <ClassIntro text={cls.intro} />
         <BenefitsList items={cls.benefits} />
