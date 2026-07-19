@@ -10,6 +10,7 @@
 
 import type { Metadata } from "next";
 import { Archivo_Black, Inter } from "next/font/google";
+import { GoogleTagManager, GoogleAnalytics } from "@next/third-parties/google";
 import "./globals.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
@@ -57,6 +58,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="id" className={`${archivoBlack.variable} ${inter.variable}`}>
+      <GoogleTagManager gtmId="GTM-NKCTQ2DW" />
       <body className="min-h-screen flex flex-col text-[#DDDDDD] antialiased" style={{ background: "linear-gradient(to bottom, #121212 0%, #121212 33vh, #ffffff 33vh, #ffffff 100%)" }}>
         <Header />
         {/* Light content card — matches the WP site's secondary (#121212 page bg, white card) */}
@@ -67,6 +69,7 @@ export default function RootLayout({
         </div>
         <Footer />
       </body>
+      <GoogleAnalytics gaId="G-1JDY0MTPSV" />
     </html>
   );
 }
