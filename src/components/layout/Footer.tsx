@@ -19,6 +19,10 @@
 //   - PT EVA SCOLARO ENTERTAINMENT
 //   - Links: Terms & Conditions | Feedback | Contact
 //   - Link text color: #A5A5A5, hover: #EFEFEF
+//
+// "Feedback" opens FeedbackModal via a custom window event.
+
+"use client";
 
 import Image from "next/image";
 
@@ -28,9 +32,13 @@ const WA_NUMBER = process.env.NEXT_PUBLIC_WA_NUMBER ?? "6282146284464";
 
 const FOOTER_LINKS = [
   { label: "Terms & Conditions", href: "https://www.evascolarotalentstudio.com/terms-conditions/" },
-  { label: "Feedback",           href: "/contact/" },
+  { label: "Feedback",           href: "modal" },
   { label: "Contact",            href: "/contact/" },
 ] as const;
+
+function openFeedbackModal() {
+  window.dispatchEvent(new Event("open-feedback-modal"));
+}
 
 // ─── Footer ───────────────────────────────────────────────────────────────────
 
@@ -137,13 +145,24 @@ export default function Footer() {
         <ul className="flex flex-row flex-wrap items-center justify-center gap-x-4 gap-y-1 list-none m-0 p-0">
           {FOOTER_LINKS.map(({ label, href }) => (
             <li key={label}>
-              <a
-                href={href}
-                className="text-[#A5A5A5] hover:text-[#EFEFEF] transition-colors duration-300 no-underline"
-                style={{ fontSize: "0.8em" }}
-              >
-                {label}
-              </a>
+              {href === "modal" ? (
+                <button
+                  type="button"
+                  onClick={openFeedbackModal}
+                  className="text-[#A5A5A5] hover:text-[#EFEFEF] transition-colors duration-300 cursor-pointer bg-transparent border-0 p-0"
+                  style={{ fontSize: "0.8em", fontFamily: "inherit" }}
+                >
+                  {label}
+                </button>
+              ) : (
+                <a
+                  href={href}
+                  className="text-[#A5A5A5] hover:text-[#EFEFEF] transition-colors duration-300 no-underline"
+                  style={{ fontSize: "0.8em" }}
+                >
+                  {label}
+                </a>
+              )}
             </li>
           ))}
         </ul>
@@ -174,5 +193,3 @@ export default function Footer() {
     </footer>
   );
 }
-
-
