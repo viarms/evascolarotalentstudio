@@ -5,8 +5,8 @@
 // Structure: fixed sticky bottom bar, mostly below viewport (bottom: -63px),
 // slides up naturally as the user scrolls to the bottom of the page.
 //
-// Outer bar background: rgba(0,0,0,0.85)
-// Bottom strip: border-top none / border-bottom 5px solid #000; bg: rgba(0,0,0,0.85)
+// Outer bar background: #000000
+// Bottom strip: border-top none / border-bottom 5px solid #000; bg: #000000
 //
 // Content (top section, padding 3em top / 1em bottom):
 //   - ESTS logo (white SVG, 200px wide)
@@ -44,7 +44,7 @@ export default function Footer() {
       <div
         className="w-full flex flex-col items-center justify-center"
         style={{
-          backgroundColor: "rgba(0, 0, 0, 0.85)",
+          backgroundColor: "#000000",
           paddingTop: "3em",
           paddingBottom: "1em",
         }}
@@ -99,7 +99,7 @@ export default function Footer() {
       <div
         className="w-full flex flex-col items-center gap-[10px]"
         style={{
-          backgroundColor: "rgba(0, 0, 0, 0.85)",
+          backgroundColor: "#000000",
           borderBottom: "5px solid #000000",
           paddingBottom: "3em",
           paddingTop: "2em",
@@ -148,12 +148,12 @@ export default function Footer() {
           ))}
         </ul>
 
-        {/* Made with love credit */}
+        {/* Handcrafted with love credit */}
         <p
           className="flex items-center justify-center gap-1.5 m-0 mt-4"
           style={{ fontFamily: "Inter, sans-serif", fontSize: "0.75em", color: "#666666" }}
         >
-          Made with
+          Handcrafted with
           <svg aria-label="love" role="img" viewBox="0 0 24 24" fill="currentColor"
                className="w-3.5 h-3.5 flex-shrink-0" style={{ color: "#666666" }}>
             <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
