@@ -5,6 +5,7 @@
  *
  * 2. Routes to Vercel (evascolarotalentstudio.vercel.app):
  *   - /classes/*         Next.js class pages
+ *   - /api/*             Next.js API route handlers
  *   - /_next/*           Next.js JS/CSS/font assets
  *   - /favicon*          Favicons served by Next.js
  *   - /*.svg             Root-level SVG assets from Next.js /public (no subdirectory)
@@ -32,6 +33,7 @@ function isRootLevelFile(pathname, ext) {
 function shouldRouteToVercel(pathname) {
   return (
     pathname.startsWith("/classes") ||
+    pathname.startsWith("/api/") ||
     pathname.startsWith("/_next/") ||
     pathname.startsWith("/favicon") ||
     isRootLevelFile(pathname, ".svg") ||
