@@ -14,6 +14,7 @@ import type { Metadata } from "next";
 
 import type { ClassData } from "@/lib/types/class";
 import { fetchScheduleForClass, fetchYoastMeta, fetchFeaturedImage } from "@/lib/queries/classQueries";
+import { buildClassPageSchema } from "@/lib/schema";
 
 // ─── Components ──────────────────────────────────────────────────────────────
 import ClassHero from "@/components/classes/ClassHero";
@@ -384,18 +385,7 @@ export default async function ClassPage(props: SlugProps) {
   const waNumber = process.env.NEXT_PUBLIC_WA_NUMBER ?? "6282146284464";
   const waLink = `https://wa.me/${waNumber}?text=${waMessage}`;
 
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "Course",
-    name: cls.h1,
-    description: cls.metaDescription,
-    provider: {
-      "@type": "Organization",
-      name: "Eva Scolaro Talent Studio",
-      url: "https://www.evascolarotalentstudio.com",
-    },
-    url: `https://www.evascolarotalentstudio.com/classes/${cls.slug}`,
-  };
+  const jsonLd = buildClassPageSchema(cls);
 
   return (
     <main>
