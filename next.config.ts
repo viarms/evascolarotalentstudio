@@ -8,11 +8,16 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: WP_ORIGIN
       ? [
+          // Direct origin server (IP or hostname from WP_ORIGIN env var)
           { protocol: "https", hostname: new URL(WP_ORIGIN).hostname },
-          // Also allow www subdomain (WP may serve media from either)
-          { protocol: "https", hostname: `www.${new URL(WP_ORIGIN).hostname}` },
+          // WP media URLs always reference the public domain regardless of WP_ORIGIN
+          { protocol: "https", hostname: "www.evascolarotalentstudio.com" },
+          { protocol: "https", hostname: "evascolarotalentstudio.com" },
         ]
-      : [],
+      : [
+          { protocol: "https", hostname: "www.evascolarotalentstudio.com" },
+          { protocol: "https", hostname: "evascolarotalentstudio.com" },
+        ],
   },
 
   async rewrites() {

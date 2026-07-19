@@ -1,5 +1,5 @@
 # Project Tracker — Eva Scolaro Talent Studio
-**Last updated:** 18 July 2026 (rev 2)
+**Last updated:** 19 July 2026 (rev 3)
 **Phase:** Phase 1 — Class Pages (Next.js pilot)
 
 ---
@@ -7,9 +7,22 @@
 ## Overall Status
 
 ```
-Phase 1 (9 class pages)  ████████████████░░░░  ~80% done
+Phase 1 (9 class pages)  ██████████████████░░  ~90% done
 Phase 2 (Studio + blog)  ░░░░░░░░░░░░░░░░░░░░  not started
 Full migration           ░░░░░░░░░░░░░░░░░░░░  not started
+```
+
+---
+
+## Build Status
+
+✅ `npm run build` — clean. All 15 routes compile and pre-render successfully (Next.js 16.2.10 / Turbopack).
+
+```
+/classes/[slug]   ISR (revalidate 1h / expire 1y)
+/                 Static (WP proxy placeholder)
+/robots.txt       Static
+/sitemap.xml      Static
 ```
 
 ---
@@ -19,58 +32,71 @@ Full migration           ░░░░░░░░░░░░░░░░░░�
 ### Infrastructure
 - [x] Next.js 16 + TypeScript + Tailwind v4 project scaffolded
 - [x] `next.config.ts` — rewrite proxy: all non-`/classes/*` paths forward to WordPress origin
-- [x] Fonts loaded via `next/font/google` — Archivo Black (display) + Inter (body)
-- [x] Root layout with Header + Footer wired in `app/layout.tsx`
-- [x] `.env.local.example` with required variables documented
+- [x] Fonts loaded via `next/font/google` — Archivo Black (display, `--font-archivo-black`) + Inter (body, `--font-inter`); exposed as CSS variables in `globals.css @theme`
+- [x] Root layout (`app/layout.tsx`) with Header + Footer + Google Tag Manager + Google Analytics
+- [x] `.env.local.example` with all required variables documented
 - [x] ISR configured globally (`revalidate = 3600`, 1h)
+- [x] Favicon assets in `public/`: `favicon-16.png`, `favicon-32.png`, `apple-touch-icon.png`
+- [x] Brand color tokens in `globals.css`: `--color-brand-red: #B20001`, `--color-brand-red-dark: #8a0001`
+- [x] Animation keyframes in `globals.css`: `heroReveal`, `fadeIn`, `ctaPulse`
 
 ### Components (all in `src/components/`)
-- [x] `layout/Header.tsx` — sticky header, nav links, Join Us WA CTA, mobile hamburger menu; social icons (IG, FB, YT); no logo in header (matches live WP design)
-- [x] `layout/Footer.tsx` — ESTS white logo, "Trusted by" partner logos (AIS, Secana, Dyatmika), real address (Jl. Bypass Ngurah Rai No.88A), phone/WA, company name, footer links
-- [x] `classes/ClassHero.tsx` — dark `#121212` fallback; shows WP featured image as full-bleed background with dark overlay when available
-- [x] `classes/ClassIntro.tsx`
-- [x] `classes/BenefitsList.tsx`
+- [x] `layout/Header.tsx` — sticky header, nav links (with Classes + Gallery dropdowns), Join Us WA CTA, mobile hamburger menu; social icons (IG, FB, YT); no logo (matches live WP design); desktop 3-col layout (15% social | 70% nav | 15% Join Us)
+- [x] `layout/Footer.tsx` — white ESTS logo, "Trusted by" + partner logos (AIS, Secana, Dyatmika), real address, phone/WA, PT EVA SCOLARO ENTERTAINMENT, footer links, FireStone Studio credit
+- [x] `classes/ClassHero.tsx` — full-bleed `next/image`, dark `#121212` fallback, bottom scrim gradient, title pinned bottom-left with `heroReveal` animation
+- [x] `classes/ClassIntro.tsx` — scroll-reveal fade+slide via `useInView`
+- [x] `classes/BenefitsList.tsx` — staggered left-slide reveal per item
 - [x] `classes/AgeGroupTable.tsx`
-- [x] `classes/ScheduleTabs.tsx` — dynamic tabs per studio location, accessible ARIA roles
-- [x] `classes/CoachNote.tsx`
-- [x] `classes/PriceNote.tsx`
-- [x] `classes/FaqAccordion.tsx` — accessible expand/collapse
-- [x] `classes/CtaButton.tsx` — WhatsApp link with pre-filled message per class
+- [x] `classes/ScheduleTabs.tsx` — dynamic tabs per studio location, stagger-reveal, fade on tab switch, accessible ARIA roles, horizontal scroll on small screens
+- [x] `classes/CoachNote.tsx` — left-border accent, slide-in from left
+- [x] `classes/PriceNote.tsx` — fade+lift reveal, gray card
+- [x] `classes/FaqAccordion.tsx` — CSS grid-rows height transition (no layout thrash), accessible expand/collapse, stagger reveal
+- [x] `classes/CtaButton.tsx` — WhatsApp link with pre-filled message per class, `ctaPulse` animation
 - [x] `classes/ComingSoonBanner.tsx` — used for Public Speaking
+- [x] `hooks/useInView.ts` — lightweight `IntersectionObserver` hook for all scroll-reveal animations; fires once then disconnects
 
 ### Data layer
 - [x] `src/lib/types/class.ts` — full TypeScript types matching intended ACF structure
-- [x] `src/lib/queries/classQueries.ts` — WP REST API fetcher for live schedule data (`/wp/v2/event` CPT), Yoast SEO meta fetcher, `fetchFeaturedImage()` for hero images
-- [x] `src/lib/mock/classMock.ts` — dev mock data (superseded by real data in `page.tsx`; kept as dev reference)
-- [x] `src/lib/apollo-client.ts` — Apollo client (ready for when WPGraphQL is preferred over REST)
+- [x] `src/lib/queries/classQueries.ts`:
+  - `fetchScheduleForClass(slug)` — WP REST API `/wp/v2/event` CPT; groups by location, sorts by day+time; filters to Sanur Studio + Canggu Studio only (partner school venues excluded); keyword matching via `SLUG_TO_KEYWORDS`
+  - `fetchYoastMeta(slug)` — Yoast SEO head JSON from `/wp/v2/class` endpoint
+  - `fetchFeaturedImage(slug)` — featured image URL from `_embedded` `wp:featuredmedia`
+- [x] `src/lib/schema.ts` — JSON-LD builders: `Course` (with `CourseInstance` + `Schedule` per location), `FAQPage`, combined `@graph` output
+- [x] `src/lib/mock/classMock.ts` — dev mock data (superseded by `STATIC_CONTENT` in `page.tsx`; kept as dev reference)
+- [x] `src/lib/apollo-client.ts` — Apollo client ready for WPGraphQL if/when preferred over REST
 
 ### Class pages
 - [x] `src/app/classes/[slug]/page.tsx` — dynamic route for all 9 slugs
-  - [x] `STATIC_CONTENT` map: all 9 classes fully populated (intro, benefits, age groups, FAQ, CTA)
+  - [x] `STATIC_CONTENT` map: all 9 classes fully populated (intro, benefits, age groups, FAQ, CTA, coachNote, priceNote)
   - [x] Live schedule fetched from WP REST API, grouped by location, sorted by day+time
-  - [x] `generateMetadata()` — Yoast SEO values override static fallback when available
+  - [x] `generateMetadata()` — Yoast override with auto-title detection guard (handles Yoast's fallback title pattern `"Title — Site Name"` correctly; falls back to `seoTitle` from `STATIC_CONTENT`)
   - [x] `generateStaticParams()` — pre-renders all 9 slugs at build time
-  - [x] Schema.org `Course` JSON-LD on every page
-  - [x] `public-speaking` renders `ComingSoonBanner` correctly
+  - [x] Schema.org `Course` + `FAQPage` JSON-LD on every page
+  - [x] `public-speaking` renders `ComingSoonBanner` correctly (status: `coming_soon`)
   - [x] All 8 active classes render full layout
-  - [x] `fetchFeaturedImage()` called per page — hero image shown if WP Media is uploaded
+  - [x] `fetchFeaturedImage()` called per page; hero shows WP featured image when set
 
 ### SEO files
-- [x] `src/app/sitemap.ts` — covers all 9 `/classes/*` slugs; `public-speaking` at 0.6 priority, rest at 0.8
-- [x] `src/app/robots.ts` — allows `/classes/`; points to sitemap URL
+- [x] `src/app/sitemap.ts` — all 9 `/classes/*` slugs; `public-speaking` at 0.6 priority, rest at 0.8
+- [x] `src/app/robots.ts` — allows `/classes/`, points to sitemap URL
 
 ### Public assets
 - [x] `public/logo.svg` — main ESTS logo
 - [x] `public/logo-white.svg` — white ESTS logo (used in Footer)
 - [x] `public/ests-logo-white.svg` — alternate white logo variant
 - [x] `public/ais-logo.svg`, `public/secana-logo.svg`, `public/dyatmika-logo.svg` — partner logos in Footer
+- [x] `public/favicon-16.png`, `public/favicon-32.png`, `public/apple-touch-icon.png` — favicon assets
 
 ### Tooling
-- [x] `scripts/seed-classes.mjs` — idempotent script to create/update 9 WP class CPT posts + Yoast SEO meta (`npm run seed:classes`)
+- [x] `scripts/seed-classes.mjs` — idempotent: creates/updates 9 WP class CPT posts + Yoast SEO meta; reads `.env.local` automatically
 
 ### Completed milestones
-- [x] **18 Jul 2026** — Run `npm run seed:classes`: all 9 class CPT posts exist (IDs 7102–7110). Yoast custom title write blocked by WP (see P1 #12) — fallback in `page.tsx` handles this correctly.
-- [x] **18 Jul 2026** — Verify live schedule: all 8 active classes show correct Sanur/Canggu data. Toki Hub/Parklife tabs filtered out. One WP data entry error found (see below).
+- [x] **18 Jul 2026** — `npm run seed:classes` run: all 9 class CPT posts created (IDs 7102–7110). Yoast custom title write blocked by WP (P1 #12 below); fallback in `generateMetadata()` handles this correctly for all 9 pages.
+- [x] **18 Jul 2026** — Live schedule verified: all 8 active classes show correct Sanur/Canggu data. Toki Hub/Parklife filtered out correctly.
+- [x] **18 Jul 2026** — WP data entry error fixed: TOTS BALLET Canggu Saturday `Time_End` corrected to `10:45` (was `22:45`). Verified via REST API.
+- [x] **18 Jul 2026** — Hero images: all 9 class CPT posts have featured images assigned in WP Media. Verified via REST API.
+- [x] **18 Jul 2026** — YouTube channel URL confirmed correct in `Header.tsx`: `https://www.youtube.com/@evascolarotalentstudio8290`
+- [x] **19 Jul 2026** — `npm run build` clean. All 15 routes pre-render without errors or TypeScript warnings.
 
 ---
 
@@ -80,27 +106,21 @@ Full migration           ░░░░░░░░░░░░░░░░░░�
 
 | # | Task | Where | Notes |
 |---|---|---|---|
-| **1** | ~~Seed WordPress~~ | ~~WordPress~~ | ✅ Done 18 Jul 2026 |
-| **2** | ~~Verify live schedule data~~ | ~~Browser / WP Admin~~ | ✅ Done 18 Jul 2026 |
-| **3** | ~~sitemap.ts + robots.ts~~ | ~~`src/app/`~~ | ✅ Both files exist and are correct |
-| **4** | ~~Logo + Header/Footer assets~~ | ~~`public/`~~ | ✅ `logo.svg`, `logo-white.svg`, partner logos all in `public/`. Footer uses real address + company name. |
-| **5** | ~~Fix WP data entry error~~ | ~~WP Admin~~ | ✅ Done 18 Jul 2026. TOTS BALLET Canggu Saturday: `10:00–10:45`. JUNIOR BALLET Canggu Saturday: `11:00–12:00`. Both verified via REST API. |
-| **6** | ~~Upload hero images to WP Media~~ | ~~WP Admin~~ | ✅ Done 18 Jul 2026. All 9 class posts have featured images assigned (verified via REST API). |
-| **7** | ~~Confirm YouTube channel URL in Header~~ | ~~`Header.tsx`~~ | ✅ Confirmed correct: `https://www.youtube.com/@evascolarotalentstudio8290` |
-| **8** | Staging test: rewrite proxy | Vercel preview | Deploy to Vercel preview, set `WP_ORIGIN` env var to live WP server. Walk through: homepage, price, timetable, gallery (proxy), then all 9 class pages (Next.js). If clean → DNS cutover is safe. |
+| **1** | **Staging test: rewrite proxy** | Vercel preview | Deploy branch to Vercel. Set `WP_ORIGIN` env var. Walk through: `/` (homepage proxy), `/gallery/`, `/practice/`, `/dancewear/`, `/announcement/` — all should return 200 from WP. Then walk all 9 `/classes/*` pages. If clean → DNS cutover is safe. |
+
+That's the only remaining P0 blocker. Everything else is done or is a P1/P2 item.
 
 ### P1 — Important but not hard blockers
 
 | # | Task | Notes |
 |---|---|---|
-| **9** | Business decision: Public Speaking | Keep `coming_soon` this term, or flip to `active`? One-line change in `STATIC_CONTENT` in `page.tsx` (`status: "active"`). |
-| **10** | Mobile QA | Test at 375px, 390px, 428px. Focus on ScheduleTabs horizontal scroll on small screens. |
-| **11** | Lighthouse audit | Target ≥ 90 mobile for each class page. Run after hero images are added. |
-| **12** | Enable Yoast custom title write on `class` CPT | Until fixed, `page.tsx` auto-detects Yoast's fallback title and uses the static SEO title instead — all 9 pages render correct titles. To fix permanently, add this to a must-use plugin or `functions.php`: |
+| **2** | **Mobile QA** | Test at 375px, 390px, 428px. Focus: ScheduleTabs horizontal scroll on small screens; hero image scaling; Footer partner logos on narrow viewports. |
+| **3** | **Lighthouse audit** | Target ≥ 90 mobile for each class page. Run after DNS is pointed (real domain + CDN makes a real difference). |
+| **4** | **Business decision: Public Speaking** | Keep `coming_soon` this term or flip to `active`? One-line change: `status: "active"` in `STATIC_CONTENT["public-speaking"]` in `src/app/classes/[slug]/page.tsx`. If flipped, schedule data will load automatically from WP `event` CPT — no other code change needed. |
+| **5** | **Enable Yoast custom title write on `class` CPT** | Current workaround in `generateMetadata()` works correctly. To fix permanently in WP, add this to a must-use plugin at `wp-content/mu-plugins/yoast-rest-meta.php`: |
 
 ```php
 // Allow Yoast SEO meta fields to be written via REST API on the 'class' CPT.
-// Add to: wp-content/mu-plugins/yoast-rest-meta.php
 add_action( 'init', function () {
     foreach ( [ '_yoast_wpseo_title', '_yoast_wpseo_metadesc' ] as $key ) {
         register_meta( 'post', $key, [
@@ -114,40 +134,62 @@ add_action( 'init', function () {
 } );
 ```
 
-After adding this, re-run `npm run seed:classes` — titles will write correctly and the auto-title detection guard in `page.tsx` can be simplified.
+After adding, re-run `npm run seed:classes` to write titles correctly. The auto-title detection guard in `page.tsx` can then be simplified (but leaving it in does no harm).
 
 ### P2 — Phase 2 items (after Phase 1 go-live)
 
 | # | Task | Doc reference |
 |---|---|---|
-| **13** | Studio location pages — `/studio/canggu/` and `/studio/sanur/` | `PRD-SEO-Eva-Scolaro-Talent-Studio.md` §10 |
-| **14** | ACF field group for static content | Migrate `STATIC_CONTENT` from `page.tsx` into WP ACF so client can edit without a developer |
-| **15** | Blog / educational content (min. 8 articles) | `PRD-SEO-Eva-Scolaro-Talent-Studio.md` §6 Phase 2 |
-| **16** | School Partnerships page (`/school-partnerships/`) | Social proof + E-E-A-T signal for SEO |
-| **17** | Breakdance Sanur — open if demand grows | Add events in WP `event` CPT; no frontend code change needed |
-| **18** | `classMock.ts` cleanup | File is superseded by `STATIC_CONTENT` in `page.tsx`; can be deleted or kept as dev reference |
+| **6** | Studio location pages — `/studio/canggu/` and `/studio/sanur/` | `PRD-SEO-Eva-Scolaro-Talent-Studio.md` §10 |
+| **7** | ACF field group for static content | Migrate `STATIC_CONTENT` from `page.tsx` into WP ACF so client can edit without a developer. Types in `class.ts` already mirror the intended structure. |
+| **8** | Blog / educational content (min. 8 articles) | `PRD-SEO-Eva-Scolaro-Talent-Studio.md` §6 Phase 2 |
+| **9** | School Partnerships page (`/school-partnerships/`) | Social proof + E-E-A-T signal for SEO |
+| **10** | Breakdance Sanur — open if demand grows | Add events in WP `event` CPT only; no frontend code change needed |
+| **11** | `classMock.ts` cleanup | Superseded by `STATIC_CONTENT` in `page.tsx`; can be deleted or kept as dev reference |
+| **12** | Full WordPress → Next.js migration | Migrate remaining pages (Home, Gallery, Practice, Dancewear, News, Contact, T&C); move WP to `cms.evascolarotalentstudio.com`; implement Resend forms. See `Migration-Plan-Nextjs-Eva-Scolaro.md`. |
 
 ---
 
 ## Next Steps Right Now
 
-In order — do these before touching anything else:
+**Only one thing stands between the current code and going live:**
 
-**Step 1 — Fix WP data entry error** ⚠️
-WP Admin → Events → find "Tots Ballet Canggu Saturday" → change `Time_End` from `22:45` to `10:45`.
+### Step 1 — Staging test on Vercel preview
 
-**Step 2 — Upload hero images to WP Media**
-For each of the 9 class CPT posts (IDs 7102–7110), upload a suitable hero image in WP Admin → Media, then set it as the featured image on the class post. The Next.js code (`fetchFeaturedImage()` in `classQueries.ts` → `ClassHero.tsx`) is already wired up — no code changes needed. After uploading, ISR will pick up the new images within 1 hour (or force a revalidation).
+1. Push current branch to Git remote.
+2. In Vercel dashboard → project → Settings → Environment Variables, add:
+   - `WP_ORIGIN` = `https://evascolarotalentstudio.com` (the live WP server before DNS changes)
+   - `NEXT_PUBLIC_WA_NUMBER` = `6282146284464`
+   - `NEXT_PUBLIC_GTM_ID` = `GTM-NKCTQ2DW`
+   - `NEXT_PUBLIC_GA_ID` = `G-1JDY0MTPSV`
+3. Open the Vercel preview URL and check each of these:
+   - `[preview-url]/` → should proxy to WordPress homepage ✓
+   - `[preview-url]/gallery/` → WP gallery page ✓
+   - `[preview-url]/practice/` → WP practice page ✓
+   - `[preview-url]/announcement/` → WP news page ✓
+   - `[preview-url]/classes/hip-hop/` → Next.js renders, schedule table shows Sanur + Canggu data ✓
+   - `[preview-url]/classes/ballet/` → hero image appears ✓
+   - `[preview-url]/classes/public-speaking/` → ComingSoonBanner shows, no schedule ✓
+   - Check mobile (DevTools → 390px) for all 9 class pages
+4. If all proxy and class pages pass → proceed to DNS cutover (point `www` A record / CNAME to Vercel).
 
-**Step 3 — Confirm YouTube URL**
-Check `Header.tsx` line with `https://www.youtube.com/@evascolarotalentstudio8290` — verify this is the correct channel handle. If wrong, update `SOCIAL_LINKS` in `Header.tsx`.
+### After go-live
 
-**Step 4 — Staging test on Vercel preview**
-- Deploy branch to Vercel
-- Set `WP_ORIGIN` env var to live WP server
-- Walk through homepage, price, timetable, gallery (all should proxy through)
-- Walk through all 9 class pages (all should render from Next.js)
-- If proxy works cleanly → DNS cutover is safe
+Once DNS is live, run these in order:
+1. Submit `https://www.evascolarotalentstudio.com/sitemap.xml` to Google Search Console.
+2. Check GSC → URL Inspection on a few class pages — verify indexed, no noindex signals.
+3. Run Lighthouse on 2–3 class pages to baseline mobile score.
+4. Decide on Public Speaking status (P1 #4).
+
+---
+
+## Known Issues / Notes
+
+| Issue | Status | Detail |
+|---|---|---|
+| Yoast custom title write blocked on `class` CPT | ⚠️ Workaround active | `generateMetadata()` auto-detects Yoast's fallback title pattern and ignores it, using `STATIC_CONTENT.seoTitle` instead. All 9 pages render correct titles. Fix: add `mu-plugin` snippet above (P1 #5). |
+| `layout.tsx` white card wraps `{children}` | ℹ️ By design | The `<div className="max-w-[960px] ... bg-white">` in `layout.tsx` clips the class page body sections inside a card. `ClassHero` is a sibling inside `<main>`, so it renders inside the card, not full-bleed across the viewport. This matches the current intended design (dark page bg + white content card). If truly full-bleed hero is wanted later, `ClassPage` would need to use a layout that breaks out of the card — defer to Phase 2 redesign if needed. |
+| `classMock.ts` is dead code | ℹ️ Low priority | Superseded by `STATIC_CONTENT` in `page.tsx`. No component imports it. Safe to delete in cleanup (P2 #11). |
 
 ---
 
@@ -157,29 +199,33 @@ Check `Header.tsx` line with `https://www.youtube.com/@evascolarotalentstudio829
 src/
 ├── app/
 │   ├── classes/[slug]/page.tsx    ← all 9 class pages, STATIC_CONTENT, fetchScheduleForClass
-│   ├── layout.tsx                 ← fonts, Header, Footer
-│   ├── globals.css
-│   ├── sitemap.ts                 ← ✅ done
-│   └── robots.ts                  ← ✅ done
+│   ├── layout.tsx                 ← fonts, GTM/GA, Header, Footer, white-card layout
+│   ├── page.tsx                   ← dev placeholder (WP proxies this in prod)
+│   ├── globals.css                ← brand tokens, base styles, keyframes
+│   ├── sitemap.ts                 ← ✅ /classes/* only
+│   └── robots.ts                  ← ✅ allows /classes/
 ├── components/
 │   ├── layout/
-│   │   ├── Header.tsx             ← ✅ complete (social icons, nav, Join Us, mobile menu)
-│   │   └── Footer.tsx             ← ✅ complete (logo, partners, address, links)
+│   │   ├── Header.tsx             ← ✅ complete
+│   │   └── Footer.tsx             ← ✅ complete
 │   └── classes/
-│       ├── ClassHero.tsx          ← ✅ WP featured image support wired (images need uploading in WP)
-│       ├── ClassIntro.tsx         ← ✅
-│       ├── BenefitsList.tsx       ← ✅
+│       ├── ClassHero.tsx          ← ✅ WP featured image, heroReveal animation
+│       ├── ClassIntro.tsx         ← ✅ scroll-reveal
+│       ├── BenefitsList.tsx       ← ✅ stagger reveal
 │       ├── AgeGroupTable.tsx      ← ✅
-│       ├── ScheduleTabs.tsx       ← ✅
-│       ├── CoachNote.tsx          ← ✅
-│       ├── PriceNote.tsx          ← ✅
-│       ├── FaqAccordion.tsx       ← ✅
-│       ├── CtaButton.tsx          ← ✅
+│       ├── ScheduleTabs.tsx       ← ✅ dynamic tabs, fade on switch
+│       ├── CoachNote.tsx          ← ✅ slide-in
+│       ├── PriceNote.tsx          ← ✅ fade+lift
+│       ├── FaqAccordion.tsx       ← ✅ grid-rows transition
+│       ├── CtaButton.tsx          ← ✅ ctaPulse animation
 │       └── ComingSoonBanner.tsx   ← ✅
+├── hooks/
+│   └── useInView.ts               ← ✅ IntersectionObserver scroll-reveal hook
 ├── lib/
-│   ├── apollo-client.ts           ← ✅ (ready for WPGraphQL if/when needed)
-│   ├── queries/classQueries.ts    ← ✅ REST API fetcher + Yoast meta + fetchFeaturedImage
-│   ├── mock/classMock.ts          ← superseded, keep for dev reference
+│   ├── apollo-client.ts           ← ✅ (ready for WPGraphQL if needed)
+│   ├── queries/classQueries.ts    ← ✅ schedule + Yoast + featuredImage fetchers
+│   ├── schema.ts                  ← ✅ Course + FAQPage JSON-LD builders
+│   ├── mock/classMock.ts          ← superseded, P2 cleanup
 │   └── types/class.ts             ← ✅
 public/
 │   ├── logo.svg                   ← ✅
@@ -187,7 +233,10 @@ public/
 │   ├── ests-logo-white.svg        ← ✅
 │   ├── ais-logo.svg               ← ✅
 │   ├── secana-logo.svg            ← ✅
-│   └── dyatmika-logo.svg          ← ✅
+│   ├── dyatmika-logo.svg          ← ✅
+│   ├── favicon-16.png             ← ✅
+│   ├── favicon-32.png             ← ✅
+│   └── apple-touch-icon.png       ← ✅
 scripts/
 └── seed-classes.mjs               ← ✅ run once per environment
 _docs/
