@@ -10,6 +10,7 @@
     "seed:classes": "node scripts/seed-classes.mjs"
   },
   "dependencies": {
+    "@animateicons/react": "^0.3.4",
     "@apollo/client": "^4.2.7",
     "@next/third-parties": "^16.2.10",
     "clsx": "^2.1.1",

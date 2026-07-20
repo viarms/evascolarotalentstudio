@@ -7,6 +7,15 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import {
+  ZapIcon,
+  CheckIcon,
+  RocketIcon,
+  AudioLinesIcon,
+  MicIcon,
+  CompassIcon,
+  UserIcon,
+} from "@animateicons/react/lucide";
 
 const WA_NUMBER = process.env.NEXT_PUBLIC_WA_NUMBER ?? "6282146284464";
 const WA_JOIN   = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent("Hi, I'd like to join Eva Scolaro Talent Studio!")}`;
@@ -86,7 +95,7 @@ const MOCK_SCHEDULE: Record<string, { day: string; name: string; time: string; c
   ],
 };
 
-const LOCATION_ORDER = ["Sanur Studio", "Canggu Studio", "AIS School CCAs", "Dyatmika School ECAs", "Toki Hub"];
+const LOCATION_ORDER = ["Sanur Studio", "Canggu Studio", "AIS School CCAs", "Dyatmika School ECAs"];
 const DAY_ORDER      = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 
 
@@ -104,6 +113,17 @@ function HomeHero() {
       style={{ minHeight: "100vh", background: "#121212" }}
       aria-label="Hero"
     >
+      {/* Video background — matches original WP site (elementor-element-50c1893) */}
+      <video
+        className="absolute inset-0 w-full h-full object-cover z-0"
+        src="https://www.evascolarotalentstudio.com/wp-content/uploads/2024/10/VideoWebsiteHomepage_web.webm"
+        autoPlay
+        muted
+        loop
+        playsInline
+        aria-hidden="true"
+      />
+
       {/* 85% black overlay — matches WP */}
       <div
         className="absolute inset-0 z-10"
@@ -202,7 +222,10 @@ function HomeHero() {
           onMouseEnter={e => (e.currentTarget.style.background = "#B20001")}
           onMouseLeave={e => (e.currentTarget.style.background = "rgba(0,0,0,0.39)")}
         >
-          Join Us
+          <span style={{ display: "flex", alignItems: "center", gap: "0.4em" }}>
+            <ZapIcon size={18} color="#EFEFEF" />
+            Join Us
+          </span>
         </a>
       </div>
     </section>
@@ -247,27 +270,6 @@ function HomeAbout() {
       >
         {/* 75% black overlay */}
         <div className="absolute inset-0" style={{ background: "rgba(0,0,0,0.75)" }} aria-hidden="true" />
-        <a
-          href={WA_JOIN}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="relative z-10 inline-block transition-colors duration-300"
-          style={{
-            background: "rgba(0,0,0,0.39)",
-            fontFamily: "Inter, sans-serif",
-            fontSize: "1.5em",
-            fontWeight: 800,
-            color: "#EFEFEF",
-            border: "1px solid #EFEFEF",
-            borderRadius: "1px",
-            padding: "0.4em 1.2em",
-            textDecoration: "none",
-          }}
-          onMouseEnter={e => (e.currentTarget.style.background = "#B20001")}
-          onMouseLeave={e => (e.currentTarget.style.background = "rgba(0,0,0,0.39)")}
-        >
-          Join Us
-        </a>
       </div>
 
       {/* Right: about text */}
@@ -401,7 +403,12 @@ function HomePricing() {
                     color: "#EFEFEF",
                     padding: "7.5px 0",
                     borderBottom: i < pack.features.length - 1 ? "1px dashed #A5A5A5" : "none",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: "0.4em",
                   }}>
+                    <CheckIcon size={13} color="#B20001" />
                     {f}
                   </li>
                 ))}
@@ -441,7 +448,10 @@ function HomePricing() {
             onMouseEnter={e => (e.currentTarget.style.background = "#B20001")}
             onMouseLeave={e => (e.currentTarget.style.background = "rgba(178,0,1,0.5)")}
           >
-            Book Free Trial
+            <span style={{ display: "flex", alignItems: "center", gap: "0.4em" }}>
+              <RocketIcon size={20} color="#EFEFEF" />
+              Book Free Trial
+            </span>
           </a>
         </div>
       </div>
@@ -511,8 +521,14 @@ function HomeTimetable() {
           color: "#DDDDDD",
           textAlign: "center",
           margin: "0 0 2em 0",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: "0.4em",
         }}>
+          <AudioLinesIcon size={15} color="#DDDDDD" />
           Class Schedule
+          <AudioLinesIcon size={15} color="#DDDDDD" />
         </p>
 
         {/* Location tabs */}
@@ -524,7 +540,6 @@ function HomeTimetable() {
             flexWrap: "wrap",
             gap: "0.5em",
             marginBottom: "0",
-            padding: "0 0 0 0",
           }}
         >
           {LOCATION_ORDER.map((loc) => {
@@ -554,34 +569,43 @@ function HomeTimetable() {
           })}
         </div>
 
-        {/* Tab panel — day-header grouped exactly as WP site */}
+        {/* Tab panel — day columns */}
         <div
           key={panelKey}
           role="tabpanel"
           style={{
-            background: "#121212",
-            padding: "3em 0 6em 0",
+            padding: "2em 0 4em 0",
             animation: "fadeIn 0.25s ease-out both",
+            overflowX: "auto",
           }}
         >
-          <div style={{ display: "flex", flexDirection: "column", gap: "0" }}>
+          {/* Column grid: one column per day that has classes */}
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: `repeat(${days.length}, minmax(140px, 1fr))`,
+              gap: "0",
+              minWidth: days.length > 5 ? `${days.length * 140}px` : undefined,
+            }}
+          >
             {days.map((day) => (
-              <div key={day} style={{ display: "flex", flexDirection: "row", flexWrap: "wrap", alignItems: "flex-start", gap: "0" }}>
-                {/* Day header — left column with border */}
-                <div style={{
-                  display: "flex",
-                  alignItems: "center",
-                  border: "1px solid #DDDDDD",
-                  padding: "0.5em 1em",
-                  minWidth: "120px",
-                  marginBottom: "0",
-                }}>
+              <div key={day} style={{ display: "flex", flexDirection: "column" }}>
+
+                {/* Day header */}
+                <div
+                  style={{
+                    background: "#1a1a1a",
+                    border: "1px solid #2a2a2a",
+                    padding: "0.6em 0.75em",
+                    textAlign: "center",
+                  }}
+                >
                   <h2 style={{
-                    fontFamily: "inherit",
-                    fontSize: "0.8em",
-                    fontWeight: 400,
+                    fontFamily: "Inter, sans-serif",
+                    fontSize: "0.75em",
+                    fontWeight: 600,
                     textTransform: "uppercase",
-                    letterSpacing: "1px",
+                    letterSpacing: "2px",
                     color: "#EFEFEF",
                     margin: 0,
                   }}>
@@ -590,37 +614,45 @@ function HomeTimetable() {
                 </div>
 
                 {/* Classes for this day */}
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  {byDay[day].map((item, i) => (
-                    <div
-                      key={i}
-                      style={{
-                        background: "#121212",
-                        padding: "0.75em 1em",
-                        borderBottom: "1px solid #1f1f1f",
-                      }}
-                    >
-                      <h3 style={{
-                        fontFamily: '"Archivo Black", sans-serif',
-                        fontSize: "0.95em",
-                        fontWeight: 400,
-                        color: "#DDDDDD",
-                        margin: "0 0 0.3em 0",
-                        textTransform: "uppercase",
-                      }}>
-                        {item.name}
-                      </h3>
-                      <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "flex", gap: "1.5em", flexWrap: "wrap" }}>
-                        <li style={{ fontFamily: "Inter, sans-serif", fontSize: "0.8em", color: "#EFEFEF" }}>
-                          Coach: {item.coach}
-                        </li>
-                        <li style={{ fontFamily: "Inter, sans-serif", fontSize: "0.8em", color: "#EFEFEF" }}>
-                          {item.time}
-                        </li>
-                      </ul>
-                    </div>
-                  ))}
-                </div>
+                {byDay[day].map((item, i) => (
+                  <div
+                    key={i}
+                    style={{
+                      background: i % 2 === 0 ? "#111111" : "#141414",
+                      border: "1px solid #1f1f1f",
+                      borderTop: "none",
+                      padding: "0.65em 0.75em",
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: "0.3em",
+                    }}
+                  >
+                    <span style={{
+                      fontFamily: '"Archivo Black", sans-serif',
+                      fontSize: "0.72em",
+                      fontWeight: 400,
+                      color: "#EFEFEF",
+                      textTransform: "uppercase",
+                      lineHeight: 1.3,
+                    }}>
+                      {item.name}
+                    </span>
+                    <span style={{
+                      fontFamily: "Inter, sans-serif",
+                      fontSize: "0.7em",
+                      color: "#AAAAAA",
+                    }}>
+                      {item.time}
+                    </span>
+                    <span style={{
+                      fontFamily: "Inter, sans-serif",
+                      fontSize: "0.68em",
+                      color: "#888888",
+                    }}>
+                      {item.coach}
+                    </span>
+                  </div>
+                ))}
               </div>
             ))}
           </div>
@@ -720,10 +752,14 @@ function HomeLocation() {
               borderRadius: "2px",
               padding: "0.5em 1.5em",
               textDecoration: "none",
+              display: "flex",
+              alignItems: "center",
+              gap: "0.45em",
             }}
             onMouseEnter={e => (e.currentTarget.style.background = "#B20001")}
             onMouseLeave={e => (e.currentTarget.style.background = "#121212")}
           >
+            <CompassIcon size={14} color="#DDDDDD" />
             Direction
           </a>
         </div>
@@ -821,7 +857,11 @@ function HomeAboutEva() {
           color: "#EFEFEF",
           margin: "0 0 0.5em 0",
           paddingBottom: "0.5em",
+          display: "flex",
+          alignItems: "center",
+          gap: "0.4em",
         }}>
+          <UserIcon size={15} color="#EFEFEF" />
           About
         </p>
         {/* "Eva Scolaro" — Licorice font */}
@@ -862,8 +902,9 @@ function HomeAboutEva() {
             href="https://open.spotify.com/artist/1Cnhz3VFCwxhAgrvrCOXlT"
             target="_blank"
             rel="noopener noreferrer"
-            style={{ color: "#DDDDDD" }}
+            style={{ color: "#DDDDDD", display: "inline-flex", alignItems: "center", gap: "0.3em" }}
           >
+            <MicIcon size={13} color="#DDDDDD" />
             LISTEN NOW!
           </a>
         </p>

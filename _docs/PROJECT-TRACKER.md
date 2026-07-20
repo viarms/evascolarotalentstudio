@@ -228,7 +228,7 @@ After adding, re-run `npm run seed:classes` to write titles correctly. The auto-
 | **10** | School Partnerships page (`/school-partnerships/`) | Social proof + E-E-A-T signal for SEO |
 | **11** | Breakdance Sanur — open if demand grows | Add events in WP `event` CPT only; no frontend code change needed |
 | **12** | `classMock.ts` cleanup | Superseded by `STATIC_CONTENT` in `page.tsx`; can be deleted or kept as dev reference |
-| **13** | Registration / Book Free Trial / Feedback forms in Next.js | Replace WA CTA fallback with real forms. React Hook Form + Zod + Resend. See `Migration-Plan-Nextjs-Eva-Scolaro.md` §5. |
+| **13** | **Forms — modal system with Resend** | Replicate all 3 live WP popup forms (Join Us / Registration, Book Free Trial, Feedback) as native Next.js modal components. Use the existing `<dialog>`-based modal pattern (`FeedbackModal.tsx`). Route each trigger CTA to the correct modal. Send emails via **Resend** (key in `.env.local` as `RESEND_API_KEY`). Recipient routing: Join Us + Book Free Trial → `agent3.evascolaro@gmail.com`; Feedback + Contact + RSVP → `agent2.evascolaro@gmail.com`; all forms CC `firestone.stdo@gmail.com`. Full spec: `Plan-Forms-Modal-Resend.md`. |
 | **14** | Full WordPress → Next.js migration | Migrate remaining pages (Gallery, Practice, Dancewear, News, Contact, T&C); move WP to `cms.evascolarotalentstudio.com`. See `Migration-Plan-Nextjs-Eva-Scolaro.md`. |
 
 ---

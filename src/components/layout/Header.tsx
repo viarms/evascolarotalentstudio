@@ -19,7 +19,7 @@ const NAV_LINKS = [
   { label: "Price",     href: "/#pricing" },
   {
     label: "Classes",
-    href: "/#",
+    href: "/classes",
     children: [
       { label: "Hip-Hop",               href: "/classes/hip-hop/" },
       { label: "Ballet",                href: "/classes/ballet/" },
