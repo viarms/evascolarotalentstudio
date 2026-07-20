@@ -17,6 +17,7 @@ import {
   UserIcon,
 } from "@animateicons/react/lucide";
 import AboutEvaShader from "@/components/AboutEvaShader";
+import AboutEvaNavyShader from "@/components/AboutEvaNavyShader";
 
 const WA_NUMBER = process.env.NEXT_PUBLIC_WA_NUMBER ?? "6282146284464";
 const WA_JOIN   = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent("Hi, I'd like to join Eva Scolaro Talent Studio!")}`;
@@ -286,24 +287,30 @@ function HomeAbout() {
         style={{
           width: "50%",
           flex: "1 1 280px",
-          padding: "0 2em",
-          gap: "1em",
+          padding: "3em 3.5em",
+          gap: "1.5em",
           position: "relative",
           overflow: "hidden",
         }}
       >
-        {/* Top scrim — fades black down to transparent over the text column */}
+        {/* WebGL mesh-drift shader — same as About Eva section, sits behind everything */}
+        <AboutEvaShader />
+
+        {/* Bottom scrim — fades from transparent at top to solid black at the section edge,
+            layered above the shader but below the text */}
         <div
-          className="absolute top-0 left-0 right-0 pointer-events-none"
-          style={{ height: "35%", background: "linear-gradient(to top, transparent 0%, #000000 100%)", zIndex: 1 }}
+          className="absolute bottom-0 left-0 right-0 pointer-events-none"
+          style={{ height: "50%", background: "linear-gradient(to bottom, transparent 0%, #121212 100%)", zIndex: 1 }}
           aria-hidden="true"
         />
-        <p style={{ fontFamily: "Inter, sans-serif", fontSize: "1.25em", color: "#FFFFFF", margin: 0, lineHeight: 1.6 }}>
+
+        {/* Text content — above both shader and scrim */}
+        <p style={{ fontFamily: "Inter, sans-serif", fontSize: "1.25em", color: "#FFFFFF", margin: 0, lineHeight: 1.6, position: "relative", zIndex: 2 }}>
           Eva Scolaro Talent Studio is a premier performing arts institution dedicated to nurturing the creativity
           and talents of young minds aged 3 to 16 years old. Our studio offers a comprehensive range of performing
           arts classes, including singing, dancing, acting, and modeling.
         </p>
-        <p style={{ fontFamily: "Inter, sans-serif", fontSize: "14px", color: "#EFEFEF", margin: 0, lineHeight: 1.6 }}>
+        <p style={{ fontFamily: "Inter, sans-serif", fontSize: "14px", color: "#EFEFEF", margin: 0, lineHeight: 1.6, position: "relative", zIndex: 2 }}>
           With a team of experienced coaches, we create an inspiring environment where passion meets discipline,
           offering quarterly performances to showcase the incredible growth and talent of our students. Every end
           of term, we organize and host a vibrant concert showcasing the talents of our students, providing them
@@ -866,7 +873,7 @@ function HomeAboutEva() {
         }}
       >
         {/* ── WebGL mesh-drift shader background ── */}
-        <AboutEvaShader />
+        <AboutEvaNavyShader />
         {/* ── Text content — above the shader ── */}
         <div style={{ position: "relative", zIndex: 1, display: "flex", flexDirection: "column", gap: 0 }}>
 
