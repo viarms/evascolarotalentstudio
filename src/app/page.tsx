@@ -5,7 +5,7 @@
 
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import {
   ZapIcon,
@@ -243,6 +243,88 @@ function HomeHero() {
 
 
 
+// ─── About carousel photos ────────────────────────────────────────────────────
+// 5 best shots from the gallery (2026/07 batch, selected by filesize / content)
+const ABOUT_SLIDES = [
+  "https://www.evascolarotalentstudio.com/wp-content/uploads/2026/07/KWA9474.webp",
+  "https://www.evascolarotalentstudio.com/wp-content/uploads/2026/07/KWA9194.webp",
+  "https://www.evascolarotalentstudio.com/wp-content/uploads/2026/07/KWA9360.webp",
+  "https://www.evascolarotalentstudio.com/wp-content/uploads/2026/07/KWA9350.webp",
+  "https://www.evascolarotalentstudio.com/wp-content/uploads/2026/07/KWA9322.webp",
+];
+
+// Crossfade interval in ms
+const SLIDE_INTERVAL = 4000;
+
+function AboutCarousel() {
+  const [current, setCurrent] = useState(0);
+  const [prev, setPrev]       = useState<number | null>(null);
+  const [fading, setFading]   = useState(false);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      const next = (current + 1) % ABOUT_SLIDES.length;
+      setPrev(current);
+      setFading(true);
+      // after the CSS transition completes, retire the prev layer
+      const cleanup = setTimeout(() => {
+        setPrev(null);
+        setFading(false);
+        setCurrent(next);
+      }, 900); // matches transition duration below
+      return () => clearTimeout(cleanup);
+    }, SLIDE_INTERVAL);
+    return () => clearInterval(timer);
+  }, [current]);
+
+  return (
+    <div
+      aria-hidden="true"
+      style={{
+        width: "50%",
+        minWidth: "280px",
+        flex: "1 1 280px",
+        minHeight: "500px",
+        borderRight: "2px solid #000000",
+        position: "relative",
+        overflow: "hidden",
+      }}
+    >
+      {/* Render up to two layers: outgoing (fading out) + incoming (always opaque) */}
+      {ABOUT_SLIDES.map((src, i) => {
+        const isCurrent = i === current;
+        const isPrev    = i === prev;
+        if (!isCurrent && !isPrev) return null;
+        return (
+          <div
+            key={src}
+            style={{
+              position: "absolute",
+              inset: 0,
+              backgroundImage: `url('${src}')`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              opacity: isPrev && fading ? 0 : 1,
+              transition: isPrev ? "opacity 0.9s ease-in-out" : "none",
+              zIndex: isPrev ? 1 : 2,
+            }}
+          />
+        );
+      })}
+      {/* 75% black overlay — sits above all slides */}
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          background: "rgba(0,0,0,0.75)",
+          zIndex: 3,
+        }}
+      />
+    </div>
+  );
+}
+
+
 // ─── About ────────────────────────────────────────────────────────────────────
 // Source: elementor-element-fccd84d (#121212 bg, min-height:25rem, 2px top border #000)
 //         Left col (860bcac): 50% width, photo bg (Term-1-2023), 75% overlay, "Join Us" btn centered
@@ -262,24 +344,8 @@ function HomeAbout() {
       }}
       aria-label="About"
     >
-      {/* Left: photo background + "Join Us" button centered */}
-      <div
-        className="flex items-center justify-center"
-        style={{
-          width: "50%",
-          minWidth: "280px",
-          flex: "1 1 280px",
-          minHeight: "500px",
-          backgroundImage: "url('https://www.evascolarotalentstudio.com/wp-content/uploads/2024/10/Term-1-2023-Photo-23.webp')",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          borderRight: "2px solid #000000",
-          position: "relative",
-        }}
-      >
-        {/* 75% black overlay */}
-        <div className="absolute inset-0" style={{ background: "rgba(0,0,0,0.75)" }} aria-hidden="true" />
-      </div>
+      {/* Left: autoplay crossfade carousel */}
+      <AboutCarousel />
 
       {/* Right: about text */}
       <div
