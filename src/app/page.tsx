@@ -244,17 +244,19 @@ function HomeHero() {
 
 
 // ─── About carousel photos ────────────────────────────────────────────────────
-// Best shots from "Concert 20 March 2026" (SMY prefix, 2026/03)
-// and "Xmas Concert 13 December 2024" (christmas-concert, 2025/01)
-// Selected for colour, stage lighting, and landscape orientation.
+// Kids & teens performing on stage — Christmas Term Concert (The Trans Resort Bali)
+// Selected by visual inspection: all show students mid-performance on stage.
 const ABOUT_SLIDES = [
-  // March 20 Concert 2026
-  "https://www.evascolarotalentstudio.com/wp-content/uploads/2026/03/SMY06048.webp",
-  "https://www.evascolarotalentstudio.com/wp-content/uploads/2026/03/SMY05930.webp",
-  "https://www.evascolarotalentstudio.com/wp-content/uploads/2026/03/SMY00787.webp",
-  // Xmas Concert 13 December 2024
-  "https://www.evascolarotalentstudio.com/wp-content/uploads/2025/01/christmas-concert-canggu-14.webp",
-  "https://www.evascolarotalentstudio.com/wp-content/uploads/2025/01/christmas-concert-sanur-22.webp",
+  // Tots hip-hop — red tracksuits, hands raised on stage
+  "https://www.evascolarotalentstudio.com/wp-content/uploads/2026/03/SMY00246.webp",
+  // Girls in red dresses singing with microphones on stage
+  "https://www.evascolarotalentstudio.com/wp-content/uploads/2026/03/SMY05921.webp",
+  // Teens drama performance on stage
+  "https://www.evascolarotalentstudio.com/wp-content/uploads/2026/03/SMY00449.webp",
+  // Tots pink hip-hop uniforms dancing on stage
+  "https://www.evascolarotalentstudio.com/wp-content/uploads/2026/03/SMY05861.webp",
+  // Hip-hop kids mid-dance on stage
+  "https://www.evascolarotalentstudio.com/wp-content/uploads/2026/03/SMY05984.webp",
 ];
 
 // Crossfade interval in ms
