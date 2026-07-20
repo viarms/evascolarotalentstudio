@@ -9,7 +9,7 @@
 // variables consumed by globals.css @theme tokens.
 
 import type { Metadata } from "next";
-import { Archivo_Black, Inter } from "next/font/google";
+import { Archivo_Black, Alumni_Sans, Inter, Licorice } from "next/font/google";
 import { GoogleTagManager, GoogleAnalytics } from "@next/third-parties/google";
 import "./globals.css";
 import Header from "@/components/layout/Header";
@@ -26,6 +26,21 @@ const inter = Inter({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
   variable: "--font-inter",
+  display: "swap",
+});
+
+const licorice = Licorice({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-licorice",
+  display: "swap",
+});
+
+const alumniSans = Alumni_Sans({
+  subsets: ["latin"],
+  weight: ["300", "400", "600"],
+  style: ["normal", "italic"],
+  variable: "--font-alumni-sans",
   display: "swap",
 });
 
@@ -57,7 +72,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="id" className={`${archivoBlack.variable} ${inter.variable}`}>
+    <html lang="id" className={`${archivoBlack.variable} ${inter.variable} ${licorice.variable} ${alumniSans.variable}`}>
       <GoogleTagManager gtmId="GTM-NKCTQ2DW" />
       <body className="min-h-screen flex flex-col text-[#DDDDDD] antialiased" style={{ background: "#121212" }}>
         <Header />

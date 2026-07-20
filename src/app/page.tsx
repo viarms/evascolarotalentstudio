@@ -786,7 +786,8 @@ function HomeAboutEva() {
           style={{
             padding: "3em",
             margin: 0,
-            fontFamily: '"Alumni Sans", sans-serif',
+            fontFamily: 'var(--font-alumni-sans), sans-serif',
+            fontStyle: "italic",
             fontSize: "23px",
             color: "#EFEFEF",
             lineHeight: 1.4,
@@ -825,7 +826,7 @@ function HomeAboutEva() {
         </p>
         {/* "Eva Scolaro" — Licorice font */}
         <h2 style={{
-          fontFamily: '"Licorice", cursive',
+          fontFamily: 'var(--font-licorice), cursive',
           fontSize: "3em",
           fontWeight: 400,
           letterSpacing: "1px",
