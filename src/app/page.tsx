@@ -132,6 +132,13 @@ function HomeHero() {
         aria-hidden="true"
       />
 
+      {/* Bottom scrim — fades video to solid black at the section edge */}
+      <div
+        className="absolute bottom-0 left-0 right-0 z-[15]"
+        style={{ height: "35%", background: "linear-gradient(to bottom, transparent 0%, #000000 100%)" }}
+        aria-hidden="true"
+      />
+
       {/* Content */}
       <div className="relative z-20 flex flex-col items-center text-center px-6 py-16" style={{ gap: 0 }}>
         {/* ESTS wordmark SVG — same as footer white logo */}
@@ -281,8 +288,16 @@ function HomeAbout() {
           flex: "1 1 280px",
           padding: "0 2em",
           gap: "1em",
+          position: "relative",
+          overflow: "hidden",
         }}
       >
+        {/* Top scrim — fades black down to transparent over the text column */}
+        <div
+          className="absolute top-0 left-0 right-0 pointer-events-none"
+          style={{ height: "35%", background: "linear-gradient(to top, transparent 0%, #000000 100%)", zIndex: 1 }}
+          aria-hidden="true"
+        />
         <p style={{ fontFamily: "Inter, sans-serif", fontSize: "1.25em", color: "#FFFFFF", margin: 0, lineHeight: 1.6 }}>
           Eva Scolaro Talent Studio is a premier performing arts institution dedicated to nurturing the creativity
           and talents of young minds aged 3 to 16 years old. Our studio offers a comprehensive range of performing
