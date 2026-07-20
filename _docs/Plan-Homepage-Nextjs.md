@@ -1,9 +1,9 @@
 # Plan: Homepage Migration — WordPress → Next.js
 ## Eva Scolaro Talent Studio
 
-**Status:** Planning
-**Last updated:** 19 July 2026
-**Depends on:** Phase 1 (class pages) fully live — DNS already pointing to Vercel
+**Status:** Ready to start — Phase 1 code complete, DNS cutover pending (not a blocker for building)
+**Last updated:** 20 July 2026
+**Depends on:** Phase 1 code ✅ done. DNS cutover still pending (Cloudflare Worker not yet deployed to production). Homepage can be built in parallel — deploy/Worker update is the last step.
 
 ---
 
@@ -211,42 +211,51 @@ This is a small but meaningful refactor — needs to be done before the homepage
 
 ## Implementation Order
 
-### Step 0 — Layout refactor (prerequisite)
+### Step 0 — Layout refactor (prerequisite) ⏳ NOT STARTED
 Move the white card wrapper out of `layout.tsx` and into a `/classes` route group layout (`src/app/classes/layout.tsx`). This decouples the homepage from the class page card design.
 
 Files affected:
 - `src/app/layout.tsx` — remove `<div className="max-w-[960px]...bg-white...">` wrapper
 - Create `src/app/classes/layout.tsx` — add the white card wrapper here
+- `src/app/classes/page.tsx` (classes index) still sits inside `src/app/classes/` so it inherits `classes/layout.tsx` — the white card will wrap it automatically ✓
 - Verify: `npm run build` still clean, all 9 class pages still render correctly
 
-### Step 1 — Data layer
+### Step 1 — Data layer ⏳ NOT STARTED
 Add `fetchAllSchedules()` to `src/lib/queries/classQueries.ts`:
 - No keyword filter
 - No location filter (include all locations except the WP placeholder)
 - Same day-sort logic as `fetchScheduleForClass`
 - Location display order: Sanur → Canggu → AIS → Dyatmika → Toki Hub
 
-### Step 2 — Components
-Build in this order (each is independent):
-1. `HomeHero.tsx`
-2. `HomeAbout.tsx`
-3. `PricingSection.tsx`
-4. `HomeTimetable.tsx` (most complex — do last among components)
-5. `LocationSection.tsx`
+**Before coding:** audit the REST API for exact `event_location` strings for the 3 school-partner venues:
+```
+curl "https://www.evascolarotalentstudio.com/wp-json/wp/v2/event?per_page=100&_fields=acf" | \
+  jq '[.[].acf.event_location] | unique'
+```
+Use the exact strings returned to build the `HOMEPAGE_LOCATION_ORDER` array.
 
-### Step 3 — `src/app/page.tsx`
+### Step 2 — Components ⏳ NOT STARTED
+All go in `src/components/home/`. Build in this order (each is independent):
+1. `HomeHero.tsx` — full-bleed image, headline, "Join Us" WA CTA button. Use `fetchFeaturedImage` for the WP homepage post (or `hero-home.jpg` in `/public/` if preferred).
+2. `HomeAbout.tsx` — studio description paragraphs + partner logos row. Partner logos already in `public/` (AIS, Secana, Dyatmika).
+3. `PricingSection.tsx` — 3 pricing cards side by side, features list, "Book Free Trial" WA CTA. Add `id="pricing"` for anchor scroll.
+4. `LocationSection.tsx` — two studio cards with address + static map image (not iframe — better performance).
+5. `HomeTimetable.tsx` — most complex, do last. Tabs for 5 locations, day-header grouping rows, class rows with coach + time. Add `id="timetable"` for anchor scroll.
+
+### Step 3 — `src/app/page.tsx` ⏳ NOT STARTED
 Wire everything together:
 - `HOMEPAGE_CONTENT` constant with all static data (hero text, about copy, pricing, addresses)
-- `fetchAllSchedules()` call for timetable
+- `fetchAllSchedules()` call for timetable data
 - `generateMetadata()` for SEO
-- `LocalBusiness` JSON-LD (two locations)
+- `LocalBusiness` JSON-LD (two locations, wrapped in `@graph`)
 - ISR: `export const revalidate = 3600`
+- Update `src/app/sitemap.ts` to add `/` (priority 1.0)
 
-### Step 4 — Cloudflare Worker update
+### Step 4 — Cloudflare Worker update ⏳ NOT STARTED
 Add `pathname === "/"` to `shouldRouteToVercel()` in `_docs/cloudflare-worker.js`.
-Deploy updated Worker to Cloudflare.
+Deploy updated Worker to Cloudflare dashboard (Workers → Edit → paste → Deploy).
 
-### Step 5 — QA
+### Step 5 — QA ⏳ NOT STARTED
 - Desktop + mobile (375px, 390px, 428px)
 - All 5 timetable location tabs load correct data
 - Anchor links (`/#pricing`, `/#timetable`) scroll correctly

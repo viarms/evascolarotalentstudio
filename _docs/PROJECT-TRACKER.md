@@ -1,13 +1,14 @@
 # Project Tracker — Eva Scolaro Talent Studio
-**Last updated:** 19 July 2026 (rev 4)
-**Phase:** Phase 1 — Class Pages (Next.js pilot)
+**Last updated:** 20 July 2026 (rev 5)
+**Phase:** Phase 1 complete → Homepage migration active
 
 ---
 
 ## Overall Status
 
 ```
-Phase 1 (9 class pages)  ██████████████████░░  ~90% done
+Phase 1 (9 class pages)  ████████████████████  100% done ✅
+Homepage (Next.js)       ░░░░░░░░░░░░░░░░░░░░  0% — starting now
 Phase 2 (Studio + blog)  ░░░░░░░░░░░░░░░░░░░░  not started
 Full migration           ░░░░░░░░░░░░░░░░░░░░  not started
 ```
@@ -20,7 +21,8 @@ Full migration           ░░░░░░░░░░░░░░░░░░�
 
 ```
 /classes/[slug]   ISR (revalidate 1h / expire 1y)
-/                 Static (WP proxy placeholder)
+/classes          Static (class index page)
+/                 ⚠️  No page.tsx yet — falls through to WP proxy (by design until homepage is built)
 /robots.txt       Static
 /sitemap.xml      Static
 ```
@@ -111,9 +113,83 @@ Full migration           ░░░░░░░░░░░░░░░░░░�
 
 | # | Task | Where | Notes |
 |---|---|---|---|
-| **1** | **Staging test: rewrite proxy + Cloudflare Worker** | Vercel preview + CF Worker staging | Deploy branch to Vercel. Set `WP_ORIGIN` env var. Walk through: `/` (homepage proxy), `/gallery/`, `/practice/`, `/dancewear/`, `/announcement/` — all should return 200 from WP. Then walk all 9 `/classes/*` pages. Also verify Worker redirect: `https://www.evascolarotalentstudio.com/class/ballet/` should 301 → `/classes/ballet/` (once Worker is deployed to production). If clean → DNS cutover is safe. |
+| **1** | **Deploy Cloudflare Worker to production** | Cloudflare dashboard | `_docs/cloudflare-worker.js` is ready. Go to Cloudflare → Workers → Create → paste code → Deploy. Once live: `https://www.evascolarotalentstudio.com/class/ballet/` should 301 → `/classes/ballet/`. |
+| **2** | **Staging test: all routes** | Vercel preview URL | Set `WP_ORIGIN`, `NEXT_PUBLIC_WA_NUMBER`, `NEXT_PUBLIC_GTM_ID`, `NEXT_PUBLIC_GA_ID` in Vercel env vars. Verify: `/` proxies to WP, `/gallery/` proxies to WP, all 9 `/classes/*` pages render with live schedule data. |
+| **3** | **DNS cutover** | Vercel / domain registrar | Point `www` CNAME to `cname.vercel-dns.com`. After live: submit sitemap to GSC, run Lighthouse baseline. |
 
-That's the only remaining P0 blocker. Everything else is done or is a P1/P2 item.
+These can happen in parallel with or after the homepage build — they don't block each other.
+
+---
+
+## Homepage Migration — Next Steps 🚀
+
+**Full plan:** `Plan-Homepage-Nextjs.md`
+
+### Step 0 — Layout refactor (prerequisite, ~30 min)
+
+The white card wrapper is currently in `src/app/layout.tsx`, which means it would wrap the homepage too. Must be moved first.
+
+**What to do:**
+1. Create `src/app/classes/layout.tsx` — move the `<div className="flex-1 w-full max-w-[960px]...bg-white...">` wrapper here
+2. Update `src/app/layout.tsx` — remove that wrapper div; keep only `<Header>`, `<body>` base styles, `<Footer>`
+3. `npm run build` — verify all 9 class pages and `/classes` index still render (they inherit the new `classes/layout.tsx`)
+
+**File diff:**
+- `src/app/layout.tsx` — remove inner wrapper div
+- New `src/app/classes/layout.tsx` — contains the white card
+
+### Step 1 — Data layer (~1 hour)
+
+Add to `src/lib/queries/classQueries.ts`:
+
+```ts
+// Fetches ALL events grouped by location (no keyword filter, no location filter)
+// Used by the homepage timetable.
+export async function fetchAllSchedules(): Promise<StudioSchedule[]>
+```
+
+**Before coding:** audit the WP REST API for the exact `event_location` strings for the 3 school-partner venues:
+```bash
+curl "https://www.evascolarotalentstudio.com/wp-json/wp/v2/event?per_page=100&_fields=acf" | \
+  jq '[.[].acf.event_location] | unique'
+```
+Use the returned strings to set `HOMEPAGE_LOCATION_ORDER` (Sanur → Canggu → AIS → Dyatmika → Toki Hub).
+
+### Step 2 — Components (~4–6 hours)
+
+New directory: `src/components/home/`
+
+| File | Description |
+|---|---|
+| `HomeHero.tsx` | Full-bleed, WP featured image via `fetchFeaturedImage`, headline, "Join Us" WA CTA |
+| `HomeAbout.tsx` | 2-para studio description + partner logos row |
+| `PricingSection.tsx` | 3 pricing cards (180K / 140K / 110K), features list, "Book Free Trial" WA CTA; `id="pricing"` |
+| `LocationSection.tsx` | 2 studio cards with address + static map image; `id="location"` |
+| `HomeTimetable.tsx` | 5-tab timetable, day-header grouping rows; `id="timetable"` |
+
+### Step 3 — `src/app/page.tsx` (~1–2 hours)
+
+Create the homepage route:
+- `HOMEPAGE_CONTENT` constant (hero text, about copy, pricing packs, studio addresses)
+- `fetchAllSchedules()` for timetable
+- `generateMetadata()` — homepage title/description/OG
+- `LocalBusiness` JSON-LD for both studios (Sanur + Canggu)
+- `export const revalidate = 3600`
+- Update `src/app/sitemap.ts` to include `'/'` (priority 1.0)
+
+### Step 4 — Cloudflare Worker update (~15 min)
+
+In `_docs/cloudflare-worker.js`, add to `shouldRouteToVercel()`:
+```js
+pathname === "/" ||    // homepage
+```
+Deploy updated Worker.
+
+### Step 5 — QA (~1–2 hours)
+
+Desktop + 375/390/428px mobile. Verify all 5 timetable tabs, anchor scroll for `/#pricing` and `/#timetable`, WA CTAs, all 9 class page nav links, `npm run build` clean.
+
+---
 
 ### P1 — Important but not hard blockers
 
@@ -141,11 +217,11 @@ add_action( 'init', function () {
 
 After adding, re-run `npm run seed:classes` to write titles correctly. The auto-title detection guard in `page.tsx` can then be simplified (but leaving it in does no harm).
 
-### P2 — Phase 2 items (after Phase 1 go-live)
+### P2 — Phase 2 items (after homepage go-live)
 
 | # | Task | Doc reference |
 |---|---|---|
-| **6** | **Homepage → Next.js** | `Plan-Homepage-Nextjs.md` — full plan. ~8–12h effort. Biggest performance win after class pages. Requires layout refactor (Step 0) + `fetchAllSchedules()` + 5 new components + Worker update. |
+| **6** | **Homepage → Next.js** | ✅ Plan ready in `Plan-Homepage-Nextjs.md`. Active work — see "Homepage Migration — Next Steps" above. |
 | **7** | Studio location pages — `/studio/canggu/` and `/studio/sanur/` | `PRD-SEO-Eva-Scolaro-Talent-Studio.md` §10 |
 | **8** | ACF field group for static content | Migrate `STATIC_CONTENT` from `page.tsx` into WP ACF so client can edit without a developer. Types in `class.ts` already mirror the intended structure. |
 | **9** | Blog / educational content (min. 8 articles) | `PRD-SEO-Eva-Scolaro-Talent-Studio.md` §6 Phase 2 |
@@ -159,35 +235,40 @@ After adding, re-run `npm run seed:classes` to write titles correctly. The auto-
 
 ## Next Steps Right Now
 
-**Only one thing stands between the current code and going live:**
+**Two parallel tracks:**
 
-### Step 1 — Staging test on Vercel preview
+### Track A — Phase 1 go-live (can be done any time, independent of Track B)
 
-1. Push current branch to Git remote.
-2. In Vercel dashboard → project → Settings → Environment Variables, add:
-   - `WP_ORIGIN` = `https://evascolarotalentstudio.com` (the live WP server before DNS changes)
-   - `NEXT_PUBLIC_WA_NUMBER` = `6282146284464`
-   - `NEXT_PUBLIC_GTM_ID` = `GTM-NKCTQ2DW`
-   - `NEXT_PUBLIC_GA_ID` = `G-1JDY0MTPSV`
-3. Open the Vercel preview URL and check each of these:
-   - `[preview-url]/` → should proxy to WordPress homepage ✓
-   - `[preview-url]/gallery/` → WP gallery page ✓
-   - `[preview-url]/practice/` → WP practice page ✓
-   - `[preview-url]/announcement/` → WP news page ✓
-   - `[preview-url]/classes/hip-hop/` → Next.js renders, schedule table shows Sanur + Canggu data ✓
-   - `[preview-url]/classes/ballet/` → hero image appears ✓
-   - `[preview-url]/classes/public-speaking/` → ComingSoonBanner shows, no schedule ✓
-   - Check mobile (DevTools → 390px) for all 9 class pages
-4. Once Worker is deployed to Cloudflare: verify `https://www.evascolarotalentstudio.com/class/ballet/` returns a 301 redirect to `https://www.evascolarotalentstudio.com/classes/ballet/`
-5. If all proxy, class pages, and redirect pass → proceed to DNS cutover (point `www` A record / CNAME to Vercel).
+1. **Deploy Cloudflare Worker** — paste `_docs/cloudflare-worker.js` into Cloudflare dashboard (Workers → Create → paste → Deploy).
+2. **Staging test** — add env vars to Vercel, walk through proxy pages + all 9 class pages on preview URL.
+3. **DNS cutover** — point `www` CNAME to Vercel. Submit sitemap to GSC. Run Lighthouse baseline.
 
-### After go-live
+### Track B — Homepage build (start now)
 
-Once DNS is live, run these in order:
-1. Submit `https://www.evascolarotalentstudio.com/sitemap.xml` to Google Search Console.
-2. Check GSC → URL Inspection on a few class pages — verify indexed, no noindex signals.
-3. Run Lighthouse on 2–3 class pages to baseline mobile score.
-4. Decide on Public Speaking status (P1 #4).
+Do these in order:
+
+**Step 0 — Layout refactor** (30 min, prerequisite)
+- Create `src/app/classes/layout.tsx` with the white card wrapper
+- Remove white card wrapper from `src/app/layout.tsx`
+- `npm run build` — confirm all class pages still render
+
+**Step 1 — Audit WP location strings** (5 min)
+```bash
+curl "https://www.evascolarotalentstudio.com/wp-json/wp/v2/event?per_page=100&_fields=acf" | \
+  jq '[.[].acf.event_location] | unique'
+```
+Note exact strings for AIS / Dyatmika / Toki Hub before writing `fetchAllSchedules()`.
+
+**Step 2 — `fetchAllSchedules()`** (1 hour)
+Add to `src/lib/queries/classQueries.ts`.
+
+**Step 3 — Components** (4–6 hours)
+`src/components/home/`: HomeHero → HomeAbout → PricingSection → LocationSection → HomeTimetable.
+
+**Step 4 — `src/app/page.tsx`** (1–2 hours)
+Wire everything together with `HOMEPAGE_CONTENT`, metadata, JSON-LD, ISR.
+
+**Step 5 — Worker update + QA + deploy**
 
 ---
 
@@ -196,9 +277,9 @@ Once DNS is live, run these in order:
 | Issue | Status | Detail |
 |---|---|---|
 | Yoast custom title write blocked on `class` CPT | ⚠️ Workaround active | `generateMetadata()` auto-detects Yoast's fallback title pattern and ignores it, using `STATIC_CONTENT.seoTitle` instead. All 9 pages render correct titles. Fix: add `mu-plugin` snippet above (P1 #5). |
-| Cloudflare Worker not yet deployed to production | ⏳ Pending | `_docs/cloudflare-worker.js` is the reference/source for the Worker. It still needs to be deployed via the Cloudflare dashboard (Workers → Create → paste code). The `/class/* → /classes/*` redirect will only be live once deployed. |
+| Cloudflare Worker not yet deployed to production | ⏳ Pending | `_docs/cloudflare-worker.js` is ready. Needs to be deployed via Cloudflare dashboard (Workers → Create → paste code → Deploy). The `/class/* → /classes/*` redirect and homepage routing will only be live once deployed. |
 | Worker bug fixed: `*.png`/`*.svg`/`*.ico` were matching WP deep asset paths | ✅ Fixed in Worker source | Original `pathname.endsWith(".svg")` etc. matched `/wp-content/uploads/photo.png` → routed to Vercel → returned HTML → browser MIME error ("Refused to apply style... MIME type 'text/html'"). Fixed with `isRootLevelFile()` helper that only matches root-level paths (e.g. `/logo.svg`), not paths with subdirectories. |
-| `layout.tsx` white card wraps `{children}` | ℹ️ By design | The `<div className="max-w-[960px] ... bg-white">` in `layout.tsx` clips the class page body sections inside a card. `ClassHero` is a sibling inside `<main>`, so it renders inside the card, not full-bleed across the viewport. This matches the current intended design (dark page bg + white content card). If truly full-bleed hero is wanted later, `ClassPage` would need to use a layout that breaks out of the card — defer to Phase 2 redesign if needed. |
+| `layout.tsx` white card wraps `{children}` | ⏳ Fix in progress | The `<div className="max-w-[960px] ... bg-white">` in `layout.tsx` will be moved to `src/app/classes/layout.tsx` as Step 0 of the homepage build. This unblocks full-bleed homepage sections (hero, timetable, location). |
 | `classMock.ts` is dead code | ℹ️ Low priority | Superseded by `STATIC_CONTENT` in `page.tsx`. No component imports it. Safe to delete in cleanup (P2 #11). |
 
 ---
@@ -208,32 +289,41 @@ Once DNS is live, run these in order:
 ```
 src/
 ├── app/
-│   ├── classes/[slug]/page.tsx    ← all 9 class pages, STATIC_CONTENT, fetchScheduleForClass
-│   ├── layout.tsx                 ← fonts, GTM/GA, Header, Footer, white-card layout
-│   ├── page.tsx                   ← dev placeholder (WP proxies this in prod)
-│   ├── globals.css                ← brand tokens, base styles, keyframes
-│   ├── sitemap.ts                 ← ✅ /classes/* only
+│   ├── classes/
+│   │   ├── layout.tsx             ← 🔜 Step 0: white card wrapper (move from root layout)
+│   │   ├── page.tsx               ← ✅ /classes index (class catalogue)
+│   │   └── [slug]/page.tsx        ← ✅ all 9 class pages, STATIC_CONTENT, fetchScheduleForClass
+│   ├── layout.tsx                 ← ✅ fonts, GTM/GA, Header, Footer (white card moves out in Step 0)
+│   ├── page.tsx                   ← 🔜 Step 3: homepage (doesn't exist yet — / falls to WP proxy)
+│   ├── globals.css                ← ✅ brand tokens, base styles, keyframes
+│   ├── sitemap.ts                 ← ✅ /classes/* (update in Step 3 to add /)
 │   └── robots.ts                  ← ✅ allows /classes/
 ├── components/
 │   ├── layout/
 │   │   ├── Header.tsx             ← ✅ complete
 │   │   └── Footer.tsx             ← ✅ complete
-│   └── classes/
-│       ├── ClassHero.tsx          ← ✅ WP featured image, heroReveal animation
-│       ├── ClassIntro.tsx         ← ✅ scroll-reveal
-│       ├── BenefitsList.tsx       ← ✅ stagger reveal
-│       ├── AgeGroupTable.tsx      ← ✅
-│       ├── ScheduleTabs.tsx       ← ✅ dynamic tabs, fade on switch
-│       ├── CoachNote.tsx          ← ✅ slide-in
-│       ├── PriceNote.tsx          ← ✅ fade+lift
-│       ├── FaqAccordion.tsx       ← ✅ grid-rows transition
-│       ├── CtaButton.tsx          ← ✅ ctaPulse animation
-│       └── ComingSoonBanner.tsx   ← ✅
+│   ├── classes/
+│   │   ├── ClassHero.tsx          ← ✅ WP featured image, heroReveal animation
+│   │   ├── ClassIntro.tsx         ← ✅ scroll-reveal
+│   │   ├── BenefitsList.tsx       ← ✅ stagger reveal
+│   │   ├── AgeGroupTable.tsx      ← ✅
+│   │   ├── ScheduleTabs.tsx       ← ✅ dynamic tabs, fade on switch
+│   │   ├── CoachNote.tsx          ← ✅ slide-in
+│   │   ├── PriceNote.tsx          ← ✅ fade+lift
+│   │   ├── FaqAccordion.tsx       ← ✅ grid-rows transition
+│   │   ├── CtaButton.tsx          ← ✅ ctaPulse animation
+│   │   └── ComingSoonBanner.tsx   ← ✅
+│   └── home/                      ← 🔜 Step 2: create this directory + all 5 components
+│       ├── HomeHero.tsx
+│       ├── HomeAbout.tsx
+│       ├── PricingSection.tsx
+│       ├── HomeTimetable.tsx
+│       └── LocationSection.tsx
 ├── hooks/
 │   └── useInView.ts               ← ✅ IntersectionObserver scroll-reveal hook
 ├── lib/
 │   ├── apollo-client.ts           ← ✅ (ready for WPGraphQL if needed)
-│   ├── queries/classQueries.ts    ← ✅ schedule + Yoast + featuredImage fetchers
+│   ├── queries/classQueries.ts    ← ✅ existing fetchers; 🔜 Step 1: add fetchAllSchedules()
 │   ├── schema.ts                  ← ✅ Course + FAQPage JSON-LD builders
 │   ├── mock/classMock.ts          ← superseded, P2 cleanup
 │   └── types/class.ts             ← ✅
@@ -246,14 +336,15 @@ public/
 │   ├── dyatmika-logo.svg          ← ✅
 │   ├── favicon-16.png             ← ✅
 │   ├── favicon-32.png             ← ✅
-│   └── apple-touch-icon.png       ← ✅
+│   ├── apple-touch-icon.png       ← ✅
+│   └── og-home.jpg                ← 🔜 needed for Step 3 OG meta (export from Canva, 1200×630)
 scripts/
 └── seed-classes.mjs               ← ✅ run once per environment
 _docs/
-├── PROJECT-TRACKER.md             ← this file
-├── cloudflare-worker.js           ← ✅ Cloudflare Worker: /class/* redirect + Vercel routing + WP passthrough
+├── PROJECT-TRACKER.md             ← this file (rev 5, 20 Jul 2026)
+├── cloudflare-worker.js           ← ✅ ready; 🔜 Step 4: add pathname === "/" then deploy
+├── Plan-Homepage-Nextjs.md        ← 📋 Homepage migration plan (active)
 ├── class-pages-seo.md             ← SEO titles & meta descriptions for all 9 class pages
-├── Plan-Homepage-Nextjs.md        ← 📋 Homepage migration plan (WP → Next.js, Phase 2)
 ├── Draft-Konten-Halaman-Kelas-Eva-Scolaro.md
 ├── Frontend-Plan-Fase1-Halaman-Kelas.md
 ├── Migration-Plan-Fase1-Halaman-Kelas.md

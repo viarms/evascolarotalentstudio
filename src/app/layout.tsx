@@ -59,13 +59,10 @@ export default function RootLayout({
   return (
     <html lang="id" className={`${archivoBlack.variable} ${inter.variable}`}>
       <GoogleTagManager gtmId="GTM-NKCTQ2DW" />
-      <body className="min-h-screen flex flex-col text-[#DDDDDD] antialiased" style={{ background: "linear-gradient(to bottom, #121212 0%, #121212 33vh, #ffffff 33vh, #ffffff 100%)" }}>
+      <body className="min-h-screen flex flex-col text-[#DDDDDD] antialiased" style={{ background: "#121212" }}>
         <Header />
-        {/* Light content card — matches the WP site's secondary (#121212 page bg, white card) */}
-        <div className="flex-1 w-full max-w-[960px] mx-auto my-6 md:my-10 px-4 sm:px-6">
-          <div className="bg-white text-gray-900 rounded-sm shadow-lg px-6 py-10 sm:px-10 md:px-16 md:py-14 min-h-[60vh]">
-            {children}
-          </div>
+        <div className="flex-1 flex flex-col">
+          {children}
         </div>
         <Footer />
       </body>
