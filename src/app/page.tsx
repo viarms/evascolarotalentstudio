@@ -512,7 +512,7 @@ function HomeTimetable() {
           Timetable
         </h2>
         {/* "Class Schedule" */}
-        <p style={{
+        <div style={{
           fontFamily: "Inter, sans-serif",
           fontSize: "1em",
           fontWeight: 600,
@@ -529,7 +529,7 @@ function HomeTimetable() {
           <AudioLinesIcon size={15} color="#DDDDDD" />
           Class Schedule
           <AudioLinesIcon size={15} color="#DDDDDD" />
-        </p>
+        </div>
 
         {/* Location tabs */}
         <div
@@ -848,7 +848,7 @@ function HomeAboutEva() {
         }}
       >
         {/* "ABOUT" label */}
-        <p style={{
+        <div style={{
           fontFamily: "Inter, sans-serif",
           fontSize: "1em",
           fontWeight: 200,
@@ -863,7 +863,7 @@ function HomeAboutEva() {
         }}>
           <UserIcon size={15} color="#EFEFEF" />
           About
-        </p>
+        </div>
         {/* "Eva Scolaro" — Licorice font */}
         <h2 style={{
           fontFamily: 'var(--font-licorice), cursive',
@@ -888,7 +888,7 @@ function HomeAboutEva() {
           to every stage she steps on. From the age of 5, Eva has been captivating audiences, lighting up stages
           across Indonesia and Southeast Asia with her undeniable talent.
         </p>
-        <p style={{
+        <div style={{
           fontFamily: "Inter, sans-serif",
           fontSize: "14px",
           color: "#DDDDDD",
@@ -902,12 +902,12 @@ function HomeAboutEva() {
             href="https://open.spotify.com/artist/1Cnhz3VFCwxhAgrvrCOXlT"
             target="_blank"
             rel="noopener noreferrer"
-            style={{ color: "#DDDDDD", display: "inline-flex", alignItems: "center", gap: "0.3em" }}
+            style={{ color: "#DDDDDD", display: "inline-flex", alignItems: "center", gap: "0.3em", verticalAlign: "middle" }}
           >
             <MicIcon size={13} color="#DDDDDD" />
             LISTEN NOW!
           </a>
-        </p>
+        </div>
         <p style={{
           fontFamily: "Inter, sans-serif",
           fontSize: "14px",
