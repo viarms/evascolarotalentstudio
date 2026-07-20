@@ -244,13 +244,17 @@ function HomeHero() {
 
 
 // ─── About carousel photos ────────────────────────────────────────────────────
-// 5 best shots from the gallery (2026/07 batch, selected by filesize / content)
+// Best shots from "Concert 20 March 2026" (SMY prefix, 2026/03)
+// and "Xmas Concert 13 December 2024" (christmas-concert, 2025/01)
+// Selected for colour, stage lighting, and landscape orientation.
 const ABOUT_SLIDES = [
-  "https://www.evascolarotalentstudio.com/wp-content/uploads/2026/07/KWA9474.webp",
-  "https://www.evascolarotalentstudio.com/wp-content/uploads/2026/07/KWA9194.webp",
-  "https://www.evascolarotalentstudio.com/wp-content/uploads/2026/07/KWA9360.webp",
-  "https://www.evascolarotalentstudio.com/wp-content/uploads/2026/07/KWA9350.webp",
-  "https://www.evascolarotalentstudio.com/wp-content/uploads/2026/07/KWA9322.webp",
+  // March 20 Concert 2026
+  "https://www.evascolarotalentstudio.com/wp-content/uploads/2026/03/SMY06048.webp",
+  "https://www.evascolarotalentstudio.com/wp-content/uploads/2026/03/SMY05930.webp",
+  "https://www.evascolarotalentstudio.com/wp-content/uploads/2026/03/SMY00787.webp",
+  // Xmas Concert 13 December 2024
+  "https://www.evascolarotalentstudio.com/wp-content/uploads/2025/01/christmas-concert-canggu-14.webp",
+  "https://www.evascolarotalentstudio.com/wp-content/uploads/2025/01/christmas-concert-sanur-22.webp",
 ];
 
 // Crossfade interval in ms
@@ -311,12 +315,12 @@ function AboutCarousel() {
           />
         );
       })}
-      {/* 75% black overlay — sits above all slides */}
+      {/* Vignette overlay — dark at all edges, transparent at centre */}
       <div
         style={{
           position: "absolute",
           inset: 0,
-          background: "rgba(0,0,0,0.75)",
+          background: "radial-gradient(ellipse at center, transparent 30%, rgba(0,0,0,0.85) 100%)",
           zIndex: 3,
         }}
       />
