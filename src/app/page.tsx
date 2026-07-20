@@ -16,6 +16,7 @@ import {
   CompassIcon,
   UserIcon,
 } from "@animateicons/react/lucide";
+import AboutEvaShader from "@/components/AboutEvaShader";
 
 const WA_NUMBER = process.env.NEXT_PUBLIC_WA_NUMBER ?? "6282146284464";
 const WA_JOIN   = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent("Hi, I'd like to join Eva Scolaro Talent Studio!")}`;
@@ -845,8 +846,15 @@ function HomeAboutEva() {
           flexDirection: "column",
           justifyContent: "center",
           gap: 0,
+          position: "relative",
+          overflow: "hidden",
         }}
       >
+        {/* ── WebGL mesh-drift shader background ── */}
+        <AboutEvaShader />
+        {/* ── Text content — above the shader ── */}
+        <div style={{ position: "relative", zIndex: 1, display: "flex", flexDirection: "column", gap: 0 }}>
+
         {/* "ABOUT" label */}
         <div style={{
           fontFamily: "Inter, sans-serif",
@@ -919,6 +927,7 @@ function HomeAboutEva() {
           that she had as a child, which has proven true and brought her so much success in her career
           to date. To now share this with the younger generations so they may experience the joy of the stage.
         </p>
+        </div>{/* end text content wrapper */}
       </div>
     </section>
   );
