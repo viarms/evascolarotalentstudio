@@ -6,6 +6,7 @@
 // Submits to: POST /api/join-us
 
 import { useEffect, useRef, useCallback, useState, useId } from "react";
+import { useLenis } from "@/components/SmoothScrollProvider";
 
 // ── Constants ─────────────────────────────────────────────────────────────────
 
@@ -100,6 +101,7 @@ const cls = {
 export default function JoinUsModal() {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const uid       = useId();
+  const lenis     = useLenis();
 
   const [fields,    setFields]    = useState<FormFields>(EMPTY);
   const [errors,    setErrors]    = useState<FieldErrors>({});
@@ -118,12 +120,14 @@ export default function JoinUsModal() {
     reset();
     dialogRef.current?.showModal();
     document.body.style.overflow = "hidden";
-  }, [reset]);
+    lenis?.stop();
+  }, [reset, lenis]);
 
   const closeModal = useCallback(() => {
     dialogRef.current?.close();
     document.body.style.overflow = "";
-  }, []);
+    lenis?.start();
+  }, [lenis]);
 
   useEffect(() => {
     window.addEventListener("open-join-us-modal", openModal);
@@ -133,7 +137,7 @@ export default function JoinUsModal() {
   useEffect(() => {
     const dialog = dialogRef.current;
     if (!dialog) return;
-    const onCancel = () => { document.body.style.overflow = ""; };
+    const onCancel = () => { document.body.style.overflow = ""; lenis?.start(); };
     dialog.addEventListener("cancel", onCancel);
     return () => dialog.removeEventListener("cancel", onCancel);
   }, []);
@@ -213,7 +217,8 @@ export default function JoinUsModal() {
       aria-modal="true"
       className="
         m-auto w-full max-w-[580px] max-h-[90dvh]
-        rounded-sm shadow-2xl border-0 p-0 bg-white overflow-hidden
+        rounded-sm shadow-2xl border-0 p-0 bg-white
+        flex flex-col
         backdrop:bg-black/60 backdrop:backdrop-blur-sm
       "
       style={{ zIndex: 9999 }}
@@ -244,7 +249,7 @@ export default function JoinUsModal() {
       </div>
 
       {/* ── Scrollable body ── */}
-      <div className="overflow-y-auto overscroll-contain" style={{ maxHeight: "calc(90dvh - 60px)" }}>
+      <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain">
         <div className="px-6 py-6">
 
           {/* ── Success ── */}

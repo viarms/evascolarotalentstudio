@@ -1,9 +1,16 @@
 "use client";
 // src/components/SmoothScrollProvider.tsx
 // Initialises Lenis smooth scroll via its own requestAnimationFrame loop.
+// Exposes the Lenis instance via LenisContext so modals can stop/start it.
 
-import { useEffect, useRef } from "react";
+import { createContext, useContext, useEffect, useRef } from "react";
 import Lenis from "lenis";
+
+const LenisContext = createContext<{ stop: () => void; start: () => void } | null>(null);
+
+export function useLenis() {
+  return useContext(LenisContext);
+}
 
 export default function SmoothScrollProvider({
   children,
@@ -36,5 +43,14 @@ export default function SmoothScrollProvider({
     };
   }, []);
 
-  return <>{children}</>;
+  const api = {
+    stop:  () => lenisRef.current?.stop(),
+    start: () => lenisRef.current?.start(),
+  };
+
+  return (
+    <LenisContext.Provider value={api}>
+      {children}
+    </LenisContext.Provider>
+  );
 }
