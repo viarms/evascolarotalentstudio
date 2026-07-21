@@ -247,11 +247,11 @@ export default function Header() {
 
   return (
     <>
-      {/* ── Desktop header (hidden on mobile / tablet — matches WP elementor-hidden-mobile/tablet) ── */}
+      {/* ── Desktop header (xl and above only) ── */}
       <header
         className="
           fixed top-0 left-0 right-0 z-50
-          hidden md:flex items-center
+          hidden xl:flex items-center
           py-[1em] px-0
           transition-colors duration-[250ms]
           bg-black/50 hover:bg-black
@@ -321,8 +321,8 @@ export default function Header() {
         </div>
       </header>
 
-      {/* ── Mobile header ── */}
-      <header className="fixed top-0 left-0 right-0 z-50 md:hidden bg-black/80">
+      {/* ── Mobile / tablet header ── */}
+      <header className="fixed top-0 left-0 right-0 z-50 xl:hidden bg-black/80">
         <div className="flex items-center justify-between px-4 py-3">
 
           {/* Social icons (mobile) */}
@@ -400,7 +400,7 @@ export default function Header() {
       </header>
 
       {/* Spacer so page content starts below the fixed header */}
-      <div className="h-[60px] md:h-[72px]" aria-hidden="true" />
+      <div className="h-[60px] xl:h-[72px]" aria-hidden="true" />
     </>
   );
 }
