@@ -104,6 +104,8 @@ export default function BookTrialModal() {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const uid       = useId();
   const lenis     = useLenis();
+  const lenisRef  = useRef(lenis);
+  lenisRef.current = lenis;
 
   const [fields,    setFields]    = useState<FormFields>(EMPTY);
   const [errors,    setErrors]    = useState<FieldErrors>({});
@@ -122,14 +124,14 @@ export default function BookTrialModal() {
     reset();
     dialogRef.current?.showModal();
     document.body.style.overflow = "hidden";
-    lenis?.stop();
-  }, [reset, lenis]);
+    lenisRef.current?.stop();
+  }, [reset]);
 
   const closeModal = useCallback(() => {
     dialogRef.current?.close();
     document.body.style.overflow = "";
-    lenis?.start();
-  }, [lenis]);
+    lenisRef.current?.start();
+  }, []);
 
   useEffect(() => {
     // Ensure dialog is closed on mount — guards against HMR / StrictMode remounts
@@ -138,7 +140,7 @@ export default function BookTrialModal() {
     if (dialog?.open) {
       dialog.close();
       document.body.style.overflow = "";
-      lenis?.start();
+      lenisRef.current?.start();
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -151,7 +153,7 @@ export default function BookTrialModal() {
   useEffect(() => {
     const dialog = dialogRef.current;
     if (!dialog) return;
-    const onCancel = () => { document.body.style.overflow = ""; lenis?.start(); };
+    const onCancel = () => { document.body.style.overflow = ""; lenisRef.current?.start(); };
     dialog.addEventListener("cancel", onCancel);
     return () => dialog.removeEventListener("cancel", onCancel);
   }, []);

@@ -3,7 +3,7 @@
 // Initialises Lenis smooth scroll via its own requestAnimationFrame loop.
 // Exposes the Lenis instance via LenisContext so modals can stop/start it.
 
-import { createContext, useContext, useEffect, useRef } from "react";
+import { createContext, useCallback, useContext, useEffect, useRef } from "react";
 import Lenis from "lenis";
 
 const LenisContext = createContext<{ stop: () => void; start: () => void } | null>(null);
@@ -40,16 +40,21 @@ export default function SmoothScrollProvider({
     return () => {
       cancelAnimationFrame(rafId);
       lenis.destroy();
+      lenisRef.current = null;
     };
   }, []);
 
-  const api = {
-    stop:  () => lenisRef.current?.stop(),
-    start: () => lenisRef.current?.start(),
-  };
+  // Stable callbacks — never recreated, always call through the ref.
+  const stop  = useCallback(() => lenisRef.current?.stop(),  []);
+  const start = useCallback(() => lenisRef.current?.start(), []);
+
+  // useMemo would still recreate the object; inline stable refs are simpler.
+  // We pass a stable object by keeping the same reference via useRef.
+  const apiRef = useRef({ stop, start });
+  apiRef.current = { stop, start }; // keep values fresh without changing reference
 
   return (
-    <LenisContext.Provider value={api}>
+    <LenisContext.Provider value={apiRef.current}>
       {children}
     </LenisContext.Provider>
   );
