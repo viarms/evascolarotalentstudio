@@ -38,7 +38,7 @@ export default function ClassBreadcrumb({ current }: Props) {
 
   return (
     <>
-      {/* Structured data */}
+      {/* Structured data — includes the current page for SEO */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -56,52 +56,31 @@ export default function ClassBreadcrumb({ current }: Props) {
             list-none m-0
           "
         >
-          {allCrumbs.map((crumb, i) => {
-            const isLast = i === allCrumbs.length - 1;
-            return (
-              <li key={crumb.label} className="flex items-center">
-                {/* Separator — shown before every item except the first */}
-                {i > 0 && (
-                  <span
-                    aria-hidden="true"
-                    className="mx-2.5 text-white/20 font-light select-none text-xs"
-                    style={{ letterSpacing: "0.05em" }}
-                  >
-                    /
-                  </span>
-                )}
-
-                {isLast ? (
-                  /* Current page — not a link */
-                  <span
-                    aria-current="page"
-                    className="
-                      text-white/50
-                      font-normal text-[11px] tracking-wide
-                      truncate max-w-[200px] md:max-w-none
-                    "
-                    style={{ fontFamily: "Inter, sans-serif" }}
-                  >
-                    {crumb.label}
-                  </span>
-                ) : (
-                  /* Ancestor links */
-                  <Link
-                    href={crumb.href}
-                    className="
-                      text-white/40 hover:text-[#B20001]
-                      font-normal text-[11px] tracking-wide
-                      transition-colors duration-200
-                      no-underline whitespace-nowrap
-                    "
-                    style={{ fontFamily: "Inter, sans-serif" }}
-                  >
-                    {crumb.label}
-                  </Link>
-                )}
-              </li>
-            );
-          })}
+          {BASE_CRUMBS.map((crumb, i) => (
+            <li key={crumb.label} className="flex items-center">
+              {i > 0 && (
+                <span
+                  aria-hidden="true"
+                  className="mx-2.5 text-white/20 font-light select-none text-xs"
+                  style={{ letterSpacing: "0.05em" }}
+                >
+                  /
+                </span>
+              )}
+              <Link
+                href={crumb.href}
+                className="
+                  text-white/40 hover:text-[#B20001]
+                  font-normal text-[11px] tracking-wide
+                  transition-colors duration-200
+                  no-underline whitespace-nowrap
+                "
+                style={{ fontFamily: "Inter, sans-serif" }}
+              >
+                {crumb.label}
+              </Link>
+            </li>
+          ))}
         </ol>
       </nav>
     </>

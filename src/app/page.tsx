@@ -185,7 +185,7 @@ function HomeHero() {
         {/* 3em Archivo Black uppercase #EFEFEF */}
         <h1
           ref={h1Ref}
-          aria-hidden="true"
+          aria-label="Bali's #1 Performing Arts Studio for Kids in SANUR & CANGGU!"
           className="text-white leading-tight mb-0"
           style={{
             fontFamily: '"Archivo Black", sans-serif',
@@ -199,11 +199,6 @@ function HomeHero() {
         >
           Bali&apos;s #1 Performing Arts Studio for Kids in SANUR &amp; CANGGU!
         </h1>
-        {/* Screen-reader duplicate */}
-        <p className="sr-only">
-          Bali&apos;s #1 Performing Arts Studio for Kids in SANUR &amp; CANGGU!
-        </p>
-
         {/* "Performing arts" — 1em Inter 600 uppercase #EFEFEF */}
         <p
           className="mt-4 mb-0"
@@ -446,8 +441,8 @@ function HomeAbout() {
     const staggerEnd = (split.words.length - 1) * 0.08 + 2;
     const fadeTween = gsap.to(p2, {
       opacity: 1,
-      duration: 1.2,
-      ease: "power2.out",
+      duration: 2.2,
+      ease: "power1.out",
       delay: staggerEnd * 0.7,
       paused: true,
     });
@@ -514,18 +509,12 @@ function HomeAbout() {
         />
 
         {/* First paragraph — SplitText word-stagger reveal.
-            aria-hidden on the animated node; sr-only duplicate preserves screen-reader access. */}
+            aria-label preserves screen-reader access without a visible duplicate. */}
         <p
           ref={p1Ref}
-          aria-hidden="true"
+          aria-label="Eva Scolaro Talent Studio is a premier performing arts institution dedicated to nurturing the creativity and talents of young minds aged 3 to 16 years old. Our studio offers a comprehensive range of performing arts classes, including singing, dancing, acting, and modeling."
           style={{ fontFamily: "Inter, sans-serif", fontSize: "1.25em", color: "#FFFFFF", margin: 0, lineHeight: 1.6, position: "relative", zIndex: 2 }}
         >
-          Eva Scolaro Talent Studio is a premier performing arts institution dedicated to nurturing the creativity
-          and talents of young minds aged 3 to 16 years old. Our studio offers a comprehensive range of performing
-          arts classes, including singing, dancing, acting, and modeling.
-        </p>
-        {/* Screen-reader duplicate — visually hidden, semantically intact */}
-        <p className="sr-only">
           Eva Scolaro Talent Studio is a premier performing arts institution dedicated to nurturing the creativity
           and talents of young minds aged 3 to 16 years old. Our studio offers a comprehensive range of performing
           arts classes, including singing, dancing, acting, and modeling.
@@ -582,7 +571,7 @@ function HomePricing() {
       ref={sectionRef}
       id="pricing"
       style={{
-        background: "#121212",
+        background: "#080808",
         borderTop: "2px solid #000000",
         padding: "4em 0",
       }}
@@ -766,7 +755,7 @@ function HomeTimetable() {
       ref={sectionRef}
       id="timetable"
       style={{
-        background: "#121212",
+        background: "#080808",
         borderTop: "2px solid #000000",
         padding: "3em 0 1em",
       }}
@@ -1234,7 +1223,7 @@ function HomeAboutEva() {
         </h2>
         <p
           ref={bioP1Ref}
-          aria-hidden="true"
+          aria-label="With over 28 years in the entertainment industry, Eva Scolaro isn't just a performer—she's a force of nature. Fueled by passion and an unstoppable creative spirit, Eva brings unforgettable energy to every stage she steps on. From the age of 5, Eva has been captivating audiences, lighting up stages across Indonesia and Southeast Asia with her undeniable talent."
           style={{
             fontFamily: "Inter, sans-serif",
             fontSize: "1em",
@@ -1249,18 +1238,11 @@ function HomeAboutEva() {
           to every stage she steps on. From the age of 5, Eva has been captivating audiences, lighting up stages
           across Indonesia and Southeast Asia with her undeniable talent.
         </p>
-        {/* Screen-reader duplicate */}
-        <p className="sr-only">
-          With over 28 years in the entertainment industry, Eva Scolaro isn't just a performer—she's a
-          force of nature. Fueled by passion and an unstoppable creative spirit, Eva brings unforgettable energy
-          to every stage she steps on. From the age of 5, Eva has been captivating audiences, lighting up stages
-          across Indonesia and Southeast Asia with her undeniable talent.
-        </p>
 
-        {/* p2 — SplitText target (plain text only so words split cleanly) */}
+        {/* p2 — SplitText target */}
         <p
           ref={bioP2Ref}
-          aria-hidden="true"
+          aria-label="She's not just a performer, she's an experience that touches your soul. Fresh off recording her first solo album in Spain, Eva has just released her latest single, Deeper Love. You can now dive into her latest work on Spotify and iTunes."
           style={{
             fontFamily: "Inter, sans-serif",
             fontSize: "14px",
@@ -1273,16 +1255,10 @@ function HomeAboutEva() {
           her first solo album in Spain, Eva has just released her latest single, &quot;Deeper Love&quot;.
           You can now dive into her latest work on Spotify and iTunes.
         </p>
-        {/* Screen-reader duplicate */}
-        <p className="sr-only">
-          She&apos;s not just a performer, she&apos;s an experience that touches your soul. Fresh off recording
-          her first solo album in Spain, Eva has just released her latest single, &quot;Deeper Love&quot;.
-          You can now dive into her latest work on Spotify and iTunes.
-        </p>
 
         <p
           ref={bioP3Ref}
-          aria-hidden="true"
+          aria-label="Eva has made her dream full circle. Bringing the knowledge and experience of performing arts that she had as a child, which has proven true and brought her so much success in her career to date. To now share this with the younger generations so they may experience the joy of the stage."
           style={{
             fontFamily: "Inter, sans-serif",
             fontSize: "14px",
@@ -1291,12 +1267,6 @@ function HomeAboutEva() {
             lineHeight: 1.6,
           }}
         >
-          Eva has made her dream full circle. Bringing the knowledge and experience of performing arts
-          that she had as a child, which has proven true and brought her so much success in her career
-          to date. To now share this with the younger generations so they may experience the joy of the stage.
-        </p>
-        {/* Screen-reader duplicate */}
-        <p className="sr-only">
           Eva has made her dream full circle. Bringing the knowledge and experience of performing arts
           that she had as a child, which has proven true and brought her so much success in her career
           to date. To now share this with the younger generations so they may experience the joy of the stage.
