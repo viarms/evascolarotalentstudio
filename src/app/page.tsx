@@ -1061,56 +1061,69 @@ function HomeLocation() {
 //                              Bio text: 1em 300 #DDDDDD, 14px #DDDDDD
 
 function HomeAboutEva() {
-  const photoRef  = useRef<HTMLDivElement>(null);
-  const textRef   = useRef<HTMLDivElement>(null);
-  const bioP1Ref  = useRef<HTMLParagraphElement>(null);
-  const bioP2Ref  = useRef<HTMLDivElement>(null);
-  const bioP3Ref  = useRef<HTMLParagraphElement>(null);
+  const photoRef   = useRef<HTMLDivElement>(null);
+  const textRef    = useRef<HTMLDivElement>(null);
+  const quoteRef   = useRef<HTMLQuoteElement>(null);
+  const bioP1Ref   = useRef<HTMLParagraphElement>(null);
+  const bioP2Ref   = useRef<HTMLParagraphElement>(null);
+  const bioP3Ref   = useRef<HTMLParagraphElement>(null);
+  const spotifyRef = useRef<HTMLAnchorElement>(null);
 
   useEffect(() => {
+    // ── Quote fade-in (left column) ──────────────────────────────────────────
+    const quote = quoteRef.current;
+    if (quote) {
+      gsap.set(quote, { opacity: 0, y: 24 });
+      ScrollTrigger.create({
+        trigger: quote,
+        start: "top 88%",
+        once: true,
+        onEnter: () => gsap.to(quote, { opacity: 1, y: 0, duration: 1.2, ease: "power2.out" }),
+      });
+    }
+
+    // ── Bio word-stagger (right column) ─────────────────────────────────────
     const p1 = bioP1Ref.current;
     const p2 = bioP2Ref.current;
     const p3 = bioP3Ref.current;
+    const spotify = spotifyRef.current;
     if (!p1 || !p2 || !p3) return;
 
-    // Split all three paragraphs into words
-    const split1 = SplitText.create(p1, { type: "words", aria: "hidden" });
-    const split2 = SplitText.create(p2, { type: "words", aria: "hidden" });
-    const split3 = SplitText.create(p3, { type: "words", aria: "hidden" });
+    // Split all three into words in one call so stagger flows continuously
+    const split = SplitText.create([p1, p2, p3], { type: "words", aria: "hidden" });
 
-    const staggerOpts = { duration: 2, ease: "sine.out" as const, stagger: 0.08 };
+    const totalWords = split.words.length;
+    const totalDur = (totalWords - 1) * 0.08 + 2;
 
-    // Time from play() until the last word of each paragraph finishes
-    const dur1 = (split1.words.length - 1) * 0.08 + 2; // p1 total duration
-    const dur2 = (split2.words.length - 1) * 0.08 + 2; // p2 total duration
+    const tween = gsap.from(split.words, {
+      opacity: 0,
+      duration: 2,
+      ease: "sine.out",
+      stagger: 0.08,
+      paused: true,
+    });
 
-    // p2 starts when p1 is done; p3 starts when p2 is done
-    const delay2 = dur1;
-    const delay3 = dur1 + dur2;
-
-    const tween1 = gsap.from(split1.words, { opacity: 0, ...staggerOpts, paused: true });
-    const tween2 = gsap.from(split2.words, { opacity: 0, ...staggerOpts, delay: delay2, paused: true });
-    const tween3 = gsap.from(split3.words, { opacity: 0, ...staggerOpts, delay: delay3, paused: true });
+    // Spotify button fades in after all words finish
+    if (spotify) gsap.set(spotify, { opacity: 0, y: 10 });
+    const tweenSpotify = spotify
+      ? gsap.to(spotify, { opacity: 1, y: 0, duration: 0.8, ease: "power2.out", delay: totalDur, paused: true })
+      : null;
 
     const trigger = ScrollTrigger.create({
       trigger: p1,
       start: "top 85%",
       once: true,
       onEnter: () => {
-        tween1.play();
-        tween2.play();
-        tween3.play();
+        tween.play();
+        tweenSpotify?.play();
       },
     });
 
     return () => {
       trigger.kill();
-      tween1.kill();
-      tween2.kill();
-      tween3.kill();
-      split1.revert();
-      split2.revert();
-      split3.revert();
+      tween.kill();
+      tweenSpotify?.kill();
+      split.revert();
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -1153,6 +1166,7 @@ function HomeAboutEva() {
         />
         {/* Quote */}
         <blockquote
+          ref={quoteRef}
           className="relative z-10"
           style={{
             padding: "3em",
@@ -1257,20 +1271,13 @@ function HomeAboutEva() {
         >
           She&apos;s not just a performer, she&apos;s an experience that touches your soul. Fresh off recording
           her first solo album in Spain, Eva has just released her latest single, &quot;Deeper Love&quot;.
-          You can now dive into her latest work on Spotify and iTunes. LISTEN NOW!
+          You can now dive into her latest work on Spotify and iTunes.
         </p>
-        {/* Screen-reader duplicate — includes the real link */}
+        {/* Screen-reader duplicate */}
         <p className="sr-only">
           She&apos;s not just a performer, she&apos;s an experience that touches your soul. Fresh off recording
           her first solo album in Spain, Eva has just released her latest single, &quot;Deeper Love&quot;.
-          You can now dive into her latest work on Spotify and iTunes.{" "}
-          <a
-            href="https://open.spotify.com/artist/1Cnhz3VFCwxhAgrvrCOXlT"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            LISTEN NOW!
-          </a>
+          You can now dive into her latest work on Spotify and iTunes.
         </p>
 
         <p
@@ -1280,7 +1287,7 @@ function HomeAboutEva() {
             fontFamily: "Inter, sans-serif",
             fontSize: "14px",
             color: "#DDDDDD",
-            margin: 0,
+            margin: "0 0 1.5em 0",
             lineHeight: 1.6,
           }}
         >
@@ -1294,6 +1301,48 @@ function HomeAboutEva() {
           that she had as a child, which has proven true and brought her so much success in her career
           to date. To now share this with the younger generations so they may experience the joy of the stage.
         </p>
+
+        {/* Spotify CTA — fades in after p3 completes */}
+        <a
+          ref={spotifyRef}
+          href="https://open.spotify.com/artist/1Cnhz3VFCwxhAgrvrCOXlT?si=YW5CRx18SCCOkJ-TphkHPg"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            display: "inline-flex",
+            alignSelf: "flex-start",
+            alignItems: "center",
+            gap: "0.5em",
+            fontFamily: "Inter, sans-serif",
+            fontSize: "0.85em",
+            fontWeight: 600,
+            letterSpacing: "1px",
+            textTransform: "uppercase",
+            color: "#EFEFEF",
+            textDecoration: "none",
+            border: "1px solid rgba(239,239,239,0.25)",
+            borderRadius: "2px",
+            padding: "0.55em 1.2em",
+            background: "rgba(255,255,255,0.04)",
+            transition: "background 0.2s, border-color 0.2s",
+          }}
+          onMouseEnter={e => {
+            e.currentTarget.style.background = "rgba(30,215,96,0.12)";
+            e.currentTarget.style.borderColor = "#1DB954";
+            gsap.to(e.currentTarget, { y: -3, scale: 1.03, duration: 0.2, ease: "power2.out" });
+          }}
+          onMouseLeave={e => {
+            e.currentTarget.style.background = "rgba(255,255,255,0.04)";
+            e.currentTarget.style.borderColor = "rgba(239,239,239,0.25)";
+            gsap.to(e.currentTarget, { y: 0, scale: 1, duration: 0.25, ease: "power2.out" });
+          }}
+        >
+          {/* Spotify SVG icon */}
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="#1DB954" aria-hidden="true">
+            <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/>
+          </svg>
+          Listen Now
+        </a>
         </div>{/* end text content wrapper */}
       </div>
     </section>
