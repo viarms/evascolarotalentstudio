@@ -6,7 +6,6 @@
 // Submits to: POST /api/join-us
 
 import { useEffect, useRef, useCallback, useState, useId } from "react";
-import { useLenis } from "@/components/SmoothScrollProvider";
 
 // ── Constants ─────────────────────────────────────────────────────────────────
 
@@ -101,9 +100,6 @@ const cls = {
 export default function JoinUsModal() {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const uid       = useId();
-  const lenis     = useLenis();
-  const lenisRef  = useRef(lenis);
-  lenisRef.current = lenis;
 
   const [fields,    setFields]    = useState<FormFields>(EMPTY);
   const [errors,    setErrors]    = useState<FieldErrors>({});
@@ -122,13 +118,11 @@ export default function JoinUsModal() {
     reset();
     dialogRef.current?.showModal();
     document.body.style.overflow = "hidden";
-    lenisRef.current?.stop();
   }, [reset]);
 
   const closeModal = useCallback(() => {
     dialogRef.current?.close();
     document.body.style.overflow = "";
-    lenisRef.current?.start();
   }, []);
 
   useEffect(() => {
@@ -137,7 +131,6 @@ export default function JoinUsModal() {
     if (dialog?.open) {
       dialog.close();
       document.body.style.overflow = "";
-      lenisRef.current?.start();
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -150,7 +143,7 @@ export default function JoinUsModal() {
   useEffect(() => {
     const dialog = dialogRef.current;
     if (!dialog) return;
-    const onCancel = () => { document.body.style.overflow = ""; lenisRef.current?.start(); };
+    const onCancel = () => { document.body.style.overflow = ""; };
     dialog.addEventListener("cancel", onCancel);
     return () => dialog.removeEventListener("cancel", onCancel);
   }, []);
