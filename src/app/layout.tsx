@@ -75,7 +75,7 @@ export default function RootLayout({
   return (
     <html lang="id" className={`${archivoBlack.variable} ${inter.variable} ${licorice.variable} ${alumniSans.variable}`}>
       <GoogleTagManager gtmId="GTM-NKCTQ2DW" />
-      <body className="min-h-screen flex flex-col text-[#DDDDDD] antialiased" style={{ backgroundColor: "#121212" }}>
+      <body className="min-h-screen flex flex-col text-[#DDDDDD] antialiased bg-[#121212]">
         <SmoothScrollProvider>
           <Header />
           <div className="flex-1 flex flex-col">

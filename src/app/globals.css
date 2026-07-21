@@ -55,3 +55,14 @@ h1, h2, h3, h4, h5, h6 {
   0%, 100% { box-shadow: 0 2px 12px rgba(178, 0, 1, 0.25); opacity: 1; }
   50%       { box-shadow: 0 4px 28px rgba(178, 0, 1, 0.55); opacity: 0.88; }
 }
+
+/* Visually hidden but accessible to screen readers */
+.sr-only:not(:focus):not(:active) {
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}

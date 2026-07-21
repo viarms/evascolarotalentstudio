@@ -7,6 +7,11 @@
 
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { SplitText } from "gsap/SplitText";
+
+gsap.registerPlugin(ScrollTrigger, SplitText);
 import {
   ZapIcon,
   CheckIcon,
@@ -261,28 +266,50 @@ const ABOUT_SLIDES = [
   "https://www.evascolarotalentstudio.com/wp-content/uploads/2026/03/SMY05984.webp",
 ];
 
-// Crossfade interval in ms
-const SLIDE_INTERVAL = 4000;
+// Crossfade interval in ms — time each slide is fully visible
+const SLIDE_INTERVAL = 4500;
+// Dissolve duration in ms — both slides cross-fade simultaneously
+const DISSOLVE_MS    = 1400;
 
 function AboutCarousel() {
   const [current, setCurrent] = useState(0);
-  const [prev, setPrev]       = useState<number | null>(null);
-  const [fading, setFading]   = useState(false);
+  const [next,    setNext]    = useState<number | null>(null);
+  // 0 = both at rest, progresses 0→1 during the dissolve
+  const [progress, setProgress] = useState(0);
+  const rafRef  = useRef<number>(0);
+  const startRef= useRef<number>(0);
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      const next = (current + 1) % ABOUT_SLIDES.length;
-      setPrev(current);
-      setFading(true);
-      // after the CSS transition completes, retire the prev layer
-      const cleanup = setTimeout(() => {
-        setPrev(null);
-        setFading(false);
-        setCurrent(next);
-      }, 900); // matches transition duration below
-      return () => clearTimeout(cleanup);
+    const hold = setTimeout(() => {
+      const nextSlide = (current + 1) % ABOUT_SLIDES.length;
+      setNext(nextSlide);
+      setProgress(0);
+
+      startRef.current = performance.now();
+
+      function tick(now: number) {
+        const p = Math.min((now - startRef.current) / DISSOLVE_MS, 1);
+        // ease-in-out cubic for a silky dissolve
+        const eased = p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2;
+        setProgress(eased);
+
+        if (p < 1) {
+          rafRef.current = requestAnimationFrame(tick);
+        } else {
+          // Dissolve complete — promote next to current
+          setCurrent(nextSlide);
+          setNext(null);
+          setProgress(0);
+        }
+      }
+
+      rafRef.current = requestAnimationFrame(tick);
     }, SLIDE_INTERVAL);
-    return () => clearInterval(timer);
+
+    return () => {
+      clearTimeout(hold);
+      cancelAnimationFrame(rafRef.current);
+    };
   }, [current]);
 
   return (
@@ -298,27 +325,33 @@ function AboutCarousel() {
         overflow: "hidden",
       }}
     >
-      {/* Render up to two layers: outgoing (fading out) + incoming (always opaque) */}
-      {ABOUT_SLIDES.map((src, i) => {
-        const isCurrent = i === current;
-        const isPrev    = i === prev;
-        if (!isCurrent && !isPrev) return null;
-        return (
-          <div
-            key={src}
-            style={{
-              position: "absolute",
-              inset: 0,
-              backgroundImage: `url('${src}')`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              opacity: isPrev && fading ? 0 : 1,
-              transition: isPrev ? "opacity 0.9s ease-in-out" : "none",
-              zIndex: isPrev ? 1 : 2,
-            }}
-          />
-        );
-      })}
+      {/* Current slide — fades out as next comes in */}
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          backgroundImage: `url('${ABOUT_SLIDES[current]}')`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          opacity: next !== null ? 1 - progress : 1,
+          zIndex: 1,
+        }}
+      />
+
+      {/* Next slide — fades in simultaneously */}
+      {next !== null && (
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            backgroundImage: `url('${ABOUT_SLIDES[next]}')`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            opacity: progress,
+            zIndex: 2,
+          }}
+        />
+      )}
       {/* Vignette overlay — dark at all edges, transparent at centre */}
       <div
         style={{
@@ -336,7 +369,7 @@ function AboutCarousel() {
           left: 0,
           right: 0,
           height: "40%",
-          background: "linear-gradient(to bottom, transparent 0%, #121212 100%)",
+          background: "linear-gradient(to bottom, transparent 0%, #0d0808 100%)",
           zIndex: 4,
         }}
       />
@@ -354,12 +387,62 @@ function AboutCarousel() {
 function HomeAbout() {
   const sectionRef = useRef<HTMLElement>(null);
   const textRef    = useRef<HTMLDivElement>(null);
+  const p1Ref      = useRef<HTMLParagraphElement>(null);
+  const p2Ref      = useRef<HTMLParagraphElement>(null);
+
+  useEffect(() => {
+    const p1 = p1Ref.current;
+    const p2 = p2Ref.current;
+    if (!p1 || !p2) return;
+
+    // Split first paragraph into individual words
+    const split = SplitText.create(p1, { type: "words", aria: "hidden" });
+
+    // Word stagger tween — paused until ScrollTrigger fires
+    const wordTween = gsap.from(split.words, {
+      opacity: 0,
+      duration: 2,
+      ease: "sine.out",
+      stagger: 0.08,
+      paused: true,
+    });
+
+    // Second paragraph invisible until stagger finishes
+    gsap.set(p2, { opacity: 0 });
+    // Total duration of the word stagger: last word starts at (n-1)*stagger, then runs for duration
+    const staggerEnd = (split.words.length - 1) * 0.08 + 2;
+    const fadeTween = gsap.to(p2, {
+      opacity: 1,
+      duration: 1.2,
+      ease: "power2.out",
+      delay: staggerEnd * 0.7,
+      paused: true,
+    });
+
+    const trigger = ScrollTrigger.create({
+      trigger: p1,
+      start: "top 85%",
+      once: true,
+      onEnter: () => {
+        wordTween.play();
+        fadeTween.play();
+      },
+    });
+
+    return () => {
+      trigger.kill();
+      wordTween.kill();
+      fadeTween.kill();
+      split.revert();
+    };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <section
       ref={sectionRef}
       style={{
-        background: "#121212",
+        background: "#0d0808",
         borderTop: "2px solid #000000",
         minHeight: "25rem",
         display: "flex",
@@ -382,26 +465,44 @@ function HomeAbout() {
           gap: "1.5em",
           position: "relative",
           overflow: "hidden",
+          /* Warm near-black: sits between pure black and the shader's #0a0101 base,
+             reads as "dark with a hint of depth" without being #000 */
+          background: "#0d0808",
         }}
       >
         {/* WebGL mesh-drift shader — same as About Eva section, sits behind everything */}
         <AboutEvaShader />
 
-        {/* Bottom scrim — fades from transparent at top to solid black at the section edge,
-            layered above the shader but below the text */}
+        {/* Bottom scrim — fades into the section background colour */}
         <div
           className="absolute bottom-0 left-0 right-0 pointer-events-none"
-          style={{ height: "50%", background: "linear-gradient(to bottom, transparent 0%, #121212 100%)", zIndex: 1 }}
+          style={{ height: "50%", background: "linear-gradient(to bottom, transparent 0%, #0d0808 100%)", zIndex: 1 }}
           aria-hidden="true"
         />
 
-        {/* Text content — above both shader and scrim */}
-        <p style={{ fontFamily: "Inter, sans-serif", fontSize: "1.25em", color: "#FFFFFF", margin: 0, lineHeight: 1.6, position: "relative", zIndex: 2 }}>
+        {/* First paragraph — SplitText word-stagger reveal.
+            aria-hidden on the animated node; sr-only duplicate preserves screen-reader access. */}
+        <p
+          ref={p1Ref}
+          aria-hidden="true"
+          style={{ fontFamily: "Inter, sans-serif", fontSize: "1.25em", color: "#FFFFFF", margin: 0, lineHeight: 1.6, position: "relative", zIndex: 2 }}
+        >
           Eva Scolaro Talent Studio is a premier performing arts institution dedicated to nurturing the creativity
           and talents of young minds aged 3 to 16 years old. Our studio offers a comprehensive range of performing
           arts classes, including singing, dancing, acting, and modeling.
         </p>
-        <p style={{ fontFamily: "Inter, sans-serif", fontSize: "14px", color: "#EFEFEF", margin: 0, lineHeight: 1.6, position: "relative", zIndex: 2 }}>
+        {/* Screen-reader duplicate — visually hidden, semantically intact */}
+        <p className="sr-only">
+          Eva Scolaro Talent Studio is a premier performing arts institution dedicated to nurturing the creativity
+          and talents of young minds aged 3 to 16 years old. Our studio offers a comprehensive range of performing
+          arts classes, including singing, dancing, acting, and modeling.
+        </p>
+
+        {/* Second paragraph — fades in after the word stagger completes */}
+        <p
+          ref={p2Ref}
+          style={{ fontFamily: "Inter, sans-serif", fontSize: "14px", color: "#EFEFEF", margin: 0, lineHeight: 1.6, position: "relative", zIndex: 2 }}
+        >
           With a team of experienced coaches, we create an inspiring environment where passion meets discipline,
           offering quarterly performances to showcase the incredible growth and talent of our students. Every end
           of term, we organize and host a vibrant concert showcasing the talents of our students, providing them
@@ -908,8 +1009,59 @@ function HomeLocation() {
 //                              Bio text: 1em 300 #DDDDDD, 14px #DDDDDD
 
 function HomeAboutEva() {
-  const photoRef = useRef<HTMLDivElement>(null);
-  const textRef  = useRef<HTMLDivElement>(null);
+  const photoRef  = useRef<HTMLDivElement>(null);
+  const textRef   = useRef<HTMLDivElement>(null);
+  const bioP1Ref  = useRef<HTMLParagraphElement>(null);
+  const bioP2Ref  = useRef<HTMLDivElement>(null);
+  const bioP3Ref  = useRef<HTMLParagraphElement>(null);
+
+  useEffect(() => {
+    const p1 = bioP1Ref.current;
+    const p2 = bioP2Ref.current;
+    const p3 = bioP3Ref.current;
+    if (!p1 || !p2 || !p3) return;
+
+    // Split all three paragraphs into words
+    const split1 = SplitText.create(p1, { type: "words", aria: "hidden" });
+    const split2 = SplitText.create(p2, { type: "words", aria: "hidden" });
+    const split3 = SplitText.create(p3, { type: "words", aria: "hidden" });
+
+    const staggerOpts = { duration: 2, ease: "sine.out" as const, stagger: 0.08 };
+
+    // Time from play() until the last word of each paragraph finishes
+    const dur1 = (split1.words.length - 1) * 0.08 + 2; // p1 total duration
+    const dur2 = (split2.words.length - 1) * 0.08 + 2; // p2 total duration
+
+    // p2 starts when p1 is done; p3 starts when p2 is done
+    const delay2 = dur1;
+    const delay3 = dur1 + dur2;
+
+    const tween1 = gsap.from(split1.words, { opacity: 0, ...staggerOpts, paused: true });
+    const tween2 = gsap.from(split2.words, { opacity: 0, ...staggerOpts, delay: delay2, paused: true });
+    const tween3 = gsap.from(split3.words, { opacity: 0, ...staggerOpts, delay: delay3, paused: true });
+
+    const trigger = ScrollTrigger.create({
+      trigger: p1,
+      start: "top 85%",
+      once: true,
+      onEnter: () => {
+        tween1.play();
+        tween2.play();
+        tween3.play();
+      },
+    });
+
+    return () => {
+      trigger.kill();
+      tween1.kill();
+      tween2.kill();
+      tween3.kill();
+      split1.revert();
+      split2.revert();
+      split3.revert();
+    };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <section
@@ -1014,26 +1166,49 @@ function HomeAboutEva() {
         }}>
           Eva Scolaro
         </h2>
-        <p style={{
-          fontFamily: "Inter, sans-serif",
-          fontSize: "1em",
-          fontWeight: 300,
-          color: "#DDDDDD",
-          margin: "0 0 1em 0",
-          lineHeight: 1.6,
-        }}>
+        <p
+          ref={bioP1Ref}
+          aria-hidden="true"
+          style={{
+            fontFamily: "Inter, sans-serif",
+            fontSize: "1em",
+            fontWeight: 300,
+            color: "#DDDDDD",
+            margin: "0 0 1em 0",
+            lineHeight: 1.6,
+          }}
+        >
           With over 28 years in the entertainment industry, Eva Scolaro isn&apos;t just a performer—she&apos;s a
           force of nature. Fueled by passion and an unstoppable creative spirit, Eva brings unforgettable energy
           to every stage she steps on. From the age of 5, Eva has been captivating audiences, lighting up stages
           across Indonesia and Southeast Asia with her undeniable talent.
         </p>
-        <div style={{
-          fontFamily: "Inter, sans-serif",
-          fontSize: "14px",
-          color: "#DDDDDD",
-          margin: "0 0 1em 0",
-          lineHeight: 1.6,
-        }}>
+        {/* Screen-reader duplicate */}
+        <p className="sr-only">
+          With over 28 years in the entertainment industry, Eva Scolaro isn't just a performer—she's a
+          force of nature. Fueled by passion and an unstoppable creative spirit, Eva brings unforgettable energy
+          to every stage she steps on. From the age of 5, Eva has been captivating audiences, lighting up stages
+          across Indonesia and Southeast Asia with her undeniable talent.
+        </p>
+
+        {/* p2 — SplitText target (plain text only so words split cleanly) */}
+        <p
+          ref={bioP2Ref}
+          aria-hidden="true"
+          style={{
+            fontFamily: "Inter, sans-serif",
+            fontSize: "14px",
+            color: "#DDDDDD",
+            margin: "0 0 1em 0",
+            lineHeight: 1.6,
+          }}
+        >
+          She&apos;s not just a performer, she&apos;s an experience that touches your soul. Fresh off recording
+          her first solo album in Spain, Eva has just released her latest single, &quot;Deeper Love&quot;.
+          You can now dive into her latest work on Spotify and iTunes. LISTEN NOW!
+        </p>
+        {/* Screen-reader duplicate — includes the real link */}
+        <p className="sr-only">
           She&apos;s not just a performer, she&apos;s an experience that touches your soul. Fresh off recording
           her first solo album in Spain, Eva has just released her latest single, &quot;Deeper Love&quot;.
           You can now dive into her latest work on Spotify and iTunes.{" "}
@@ -1041,19 +1216,28 @@ function HomeAboutEva() {
             href="https://open.spotify.com/artist/1Cnhz3VFCwxhAgrvrCOXlT"
             target="_blank"
             rel="noopener noreferrer"
-            style={{ color: "#DDDDDD", display: "inline-flex", alignItems: "center", gap: "0.3em", verticalAlign: "middle" }}
           >
-            <MicIcon size={13} color="#DDDDDD" />
             LISTEN NOW!
           </a>
-        </div>
-        <p style={{
-          fontFamily: "Inter, sans-serif",
-          fontSize: "14px",
-          color: "#DDDDDD",
-          margin: 0,
-          lineHeight: 1.6,
-        }}>
+        </p>
+
+        <p
+          ref={bioP3Ref}
+          aria-hidden="true"
+          style={{
+            fontFamily: "Inter, sans-serif",
+            fontSize: "14px",
+            color: "#DDDDDD",
+            margin: 0,
+            lineHeight: 1.6,
+          }}
+        >
+          Eva has made her dream full circle. Bringing the knowledge and experience of performing arts
+          that she had as a child, which has proven true and brought her so much success in her career
+          to date. To now share this with the younger generations so they may experience the joy of the stage.
+        </p>
+        {/* Screen-reader duplicate */}
+        <p className="sr-only">
           Eva has made her dream full circle. Bringing the knowledge and experience of performing arts
           that she had as a child, which has proven true and brought her so much success in her career
           to date. To now share this with the younger generations so they may experience the joy of the stage.
