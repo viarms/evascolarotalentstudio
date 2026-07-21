@@ -46,9 +46,7 @@ const NAV_LINKS = [
   { label: "News",      href: "/announcement/" },
 ] as const;
 
-// Join Us opens a WA link (same behaviour as the original popup CTA)
-const WA_NUMBER    = process.env.NEXT_PUBLIC_WA_NUMBER ?? "6282146284464";
-const JOIN_US_HREF = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent("Hi, I'd like to join Eva Scolaro Talent Studio!")}`;
+// Join Us button dispatches the registration modal event
 
 // ─── Social icon SVGs (from live site — Font Awesome 5 Brands) ───────────────
 
@@ -298,12 +296,11 @@ export default function Header() {
 
           {/* ── Col 3: Join Us button (15%) ── */}
           <div className="flex items-center justify-end" style={{ width: "15%" }}>
-            <a
-              href={JOIN_US_HREF}
-              target="_blank"
-              rel="noopener noreferrer"
+            <button
+              type="button"
+              onClick={() => window.dispatchEvent(new Event("open-join-us-modal"))}
               className="
-                inline-block
+                inline-block cursor-pointer
                 bg-black/40 hover:bg-[#B20001]
                 text-[#EFEFEF]
                 text-[1.2em] [font-family:var(--font-display)]
@@ -315,7 +312,7 @@ export default function Header() {
               "
             >
               Join Us
-            </a>
+            </button>
           </div>
 
         </div>
@@ -380,19 +377,18 @@ export default function Header() {
                 />
               ))}
               <li className="px-6 pt-3 pb-2">
-                <a
-                  href={JOIN_US_HREF}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <button
+                  type="button"
+                  onClick={() => window.dispatchEvent(new Event("open-join-us-modal"))}
                   className="
-                    inline-block bg-black/40 hover:bg-[#B20001]
+                    inline-block cursor-pointer bg-black/40 hover:bg-[#B20001]
                     text-[#EFEFEF] text-[1.1em] [font-family:var(--font-display)]
                     border border-[#222222] rounded-[1px] px-4 py-2
                     transition-colors
                   "
                 >
                   Join Us
-                </a>
+                </button>
               </li>
             </ul>
           </nav>

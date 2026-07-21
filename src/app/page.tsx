@@ -25,9 +25,6 @@ import AboutEvaShader from "@/components/AboutEvaShader";
 import AboutEvaNavyShader from "@/components/AboutEvaNavyShader";
 
 const WA_NUMBER = process.env.NEXT_PUBLIC_WA_NUMBER ?? "6282146284464";
-const WA_JOIN   = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent("Hi, I'd like to join Eva Scolaro Talent Studio!")}`;
-const WA_TRIAL  = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent("Hi, I'd like to book a free trial class!")}`;
-
 
 
 // ─── Timetable mock data ──────────────────────────────────────────────────────
@@ -245,12 +242,11 @@ function HomeHero() {
           Join us and be part of a community where young stars are born!
         </p>
 
-        {/* Join Us CTA — dark semi-transparent, Archivo Black 1.2em, 1px border #222 */}
-        <a
-          href={WA_JOIN}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-block transition-colors duration-300"
+        {/* Join Us CTA — opens registration modal */}
+        <button
+          type="button"
+          onClick={() => window.dispatchEvent(new Event("open-join-us-modal"))}
+          className="inline-block transition-colors duration-300 cursor-pointer"
           style={{
             background: "rgba(0,0,0,0.39)",
             fontFamily: '"Archivo Black", sans-serif',
@@ -260,7 +256,6 @@ function HomeHero() {
             border: "1px solid #222222",
             borderRadius: "1px",
             padding: "0.5em 1.2em",
-            textDecoration: "none",
             animation: "ctaPulse 2.5s ease-in-out infinite",
           }}
           onMouseEnter={e => (e.currentTarget.style.background = "#B20001")}
@@ -270,7 +265,7 @@ function HomeHero() {
             <ZapIcon size={18} color="#EFEFEF" />
             Join Us
           </span>
-        </a>
+        </button>
       </div>
     </section>
   );
@@ -566,6 +561,20 @@ function HomePricing() {
   const headingRef  = useRef<HTMLDivElement>(null);
   const packsRef    = useRef<HTMLDivElement>(null);
 
+  useEffect(() => {
+    const el = headingRef.current;
+    if (!el) return;
+    gsap.set(el, { opacity: 0, y: 30 });
+    const trigger = ScrollTrigger.create({
+      trigger: el,
+      start: "top 88%",
+      once: true,
+      onEnter: () => gsap.to(el, { opacity: 1, y: 0, duration: 0.9, ease: "power2.out" }),
+    });
+    return () => trigger.kill();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <section
       ref={sectionRef}
@@ -668,13 +677,12 @@ function HomePricing() {
           </ul>
         </div>
 
-        {/* Book Free Trial CTA */}
+        {/* Book Free Trial CTA — opens trial modal */}
         <div style={{ display: "flex", justifyContent: "center", marginTop: "2em" }}>
-          <a
-            href={WA_TRIAL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-block transition-colors duration-300"
+          <button
+            type="button"
+            onClick={() => window.dispatchEvent(new Event("open-book-trial-modal"))}
+            className="inline-block transition-colors duration-300 cursor-pointer"
             style={{
               background: "rgba(178,0,1,0.5)",
               fontFamily: "Inter, sans-serif",
@@ -684,7 +692,6 @@ function HomePricing() {
               border: "5px solid rgba(239,239,239,0.75)",
               borderRadius: "1px",
               padding: "0.4em 1.5em",
-              textDecoration: "none",
               display: "inline-block",
             }}
             onMouseEnter={e => (e.currentTarget.style.background = "#B20001")}
@@ -694,7 +701,7 @@ function HomePricing() {
               <RocketIcon size={20} color="#EFEFEF" />
               Book Free Trial
             </span>
-          </a>
+          </button>
         </div>
       </div>
     </section>
@@ -716,6 +723,20 @@ function HomeTimetable() {
   const sectionRef  = useRef<HTMLElement>(null);
   const headingRef  = useRef<HTMLDivElement>(null);
   const panelRef    = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = headingRef.current;
+    if (!el) return;
+    gsap.set(el, { opacity: 0, y: 30 });
+    const trigger = ScrollTrigger.create({
+      trigger: el,
+      start: "top 88%",
+      once: true,
+      onEnter: () => gsap.to(el, { opacity: 1, y: 0, duration: 0.9, ease: "power2.out" }),
+    });
+    return () => trigger.kill();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   function changeTab(loc: string) {
     if (loc === activeTab) return;
@@ -836,89 +857,61 @@ function HomeTimetable() {
           })}
         </div>
 
-        {/* Tab panel — day columns */}
+        {/* Tab panel */}
         <div
           ref={panelRef}
           role="tabpanel"
-          style={{
-            padding: "2em 0 4em 0",
-            overflowX: "auto",
-          }}
+          style={{ padding: "2em 0 4em 0" }}
         >
-          {/* Column grid: one column per day that has classes */}
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: `repeat(${days.length}, minmax(140px, 1fr))`,
-              gap: "0",
-              minWidth: days.length > 5 ? `${days.length * 140}px` : undefined,
-            }}
-          >
-            {days.map((day) => (
-              <div key={day} style={{ display: "flex", flexDirection: "column" }}>
+          {/* ── Desktop / tablet: horizontal scrolling grid ── */}
+          <div className="hidden sm:block" style={{ overflowX: "auto" }}>
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: `repeat(${days.length}, minmax(130px, 1fr))`,
+                gap: "0",
+                minWidth: days.length > 4 ? `${days.length * 130}px` : undefined,
+              }}
+            >
+              {days.map((day) => (
+                <div key={day} style={{ display: "flex", flexDirection: "column" }}>
+                  <div style={{ background: "#1a1a1a", border: "1px solid #2a2a2a", padding: "0.6em 0.75em", textAlign: "center" }}>
+                    <h2 style={{ fontFamily: "Inter, sans-serif", fontSize: "0.75em", fontWeight: 600, textTransform: "uppercase", letterSpacing: "2px", color: "#EFEFEF", margin: 0 }}>
+                      {day}
+                    </h2>
+                  </div>
+                  {byDay[day].map((item, i) => (
+                    <div key={i} style={{ background: i % 2 === 0 ? "#111111" : "#141414", border: "1px solid #1f1f1f", borderTop: "none", padding: "0.65em 0.75em", display: "flex", flexDirection: "column", gap: "0.3em" }}>
+                      <span style={{ fontFamily: '"Archivo Black", sans-serif', fontSize: "0.72em", color: "#EFEFEF", textTransform: "uppercase", lineHeight: 1.3 }}>{item.name}</span>
+                      <span style={{ fontFamily: "Inter, sans-serif", fontSize: "0.7em", color: "#AAAAAA" }}>{item.time}</span>
+                      <span style={{ fontFamily: "Inter, sans-serif", fontSize: "0.68em", color: "#888888" }}>{item.coach}</span>
+                    </div>
+                  ))}
+                </div>
+              ))}
+            </div>
+          </div>
 
+          {/* ── Mobile: stacked day blocks ── */}
+          <div className="flex sm:hidden flex-col gap-4">
+            {days.map((day) => (
+              <div key={day} style={{ border: "1px solid #2a2a2a", borderRadius: "2px", overflow: "hidden" }}>
                 {/* Day header */}
-                <div
-                  style={{
-                    background: "#1a1a1a",
-                    border: "1px solid #2a2a2a",
-                    padding: "0.6em 0.75em",
-                    textAlign: "center",
-                  }}
-                >
-                  <h2 style={{
-                    fontFamily: "Inter, sans-serif",
-                    fontSize: "0.75em",
-                    fontWeight: 600,
-                    textTransform: "uppercase",
-                    letterSpacing: "2px",
-                    color: "#EFEFEF",
-                    margin: 0,
-                  }}>
+                <div style={{ background: "#1a1a1a", padding: "0.6em 1em" }}>
+                  <h2 style={{ fontFamily: "Inter, sans-serif", fontSize: "0.75em", fontWeight: 600, textTransform: "uppercase", letterSpacing: "2px", color: "#EFEFEF", margin: 0 }}>
                     {day}
                   </h2>
                 </div>
-
-                {/* Classes for this day */}
-                {byDay[day].map((item, i) => (
-                  <div
-                    key={i}
-                    style={{
-                      background: i % 2 === 0 ? "#111111" : "#141414",
-                      border: "1px solid #1f1f1f",
-                      borderTop: "none",
-                      padding: "0.65em 0.75em",
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: "0.3em",
-                    }}
-                  >
-                    <span style={{
-                      fontFamily: '"Archivo Black", sans-serif',
-                      fontSize: "0.72em",
-                      fontWeight: 400,
-                      color: "#EFEFEF",
-                      textTransform: "uppercase",
-                      lineHeight: 1.3,
-                    }}>
-                      {item.name}
-                    </span>
-                    <span style={{
-                      fontFamily: "Inter, sans-serif",
-                      fontSize: "0.7em",
-                      color: "#AAAAAA",
-                    }}>
-                      {item.time}
-                    </span>
-                    <span style={{
-                      fontFamily: "Inter, sans-serif",
-                      fontSize: "0.68em",
-                      color: "#888888",
-                    }}>
-                      {item.coach}
-                    </span>
-                  </div>
-                ))}
+                {/* Class rows — 2-column micro-grid */}
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0" }}>
+                  {byDay[day].map((item, i) => (
+                    <div key={i} style={{ background: i % 2 === 0 ? "#111111" : "#141414", border: "1px solid #1f1f1f", padding: "0.65em 0.75em", display: "flex", flexDirection: "column", gap: "0.25em" }}>
+                      <span style={{ fontFamily: '"Archivo Black", sans-serif', fontSize: "0.7em", color: "#EFEFEF", textTransform: "uppercase", lineHeight: 1.3 }}>{item.name}</span>
+                      <span style={{ fontFamily: "Inter, sans-serif", fontSize: "0.68em", color: "#AAAAAA" }}>{item.time}</span>
+                      <span style={{ fontFamily: "Inter, sans-serif", fontSize: "0.65em", color: "#888888" }}>{item.coach}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
             ))}
           </div>
@@ -953,6 +946,26 @@ function HomeLocation() {
   ];
 
   const containerRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+    const titles = Array.from(container.querySelectorAll<HTMLElement>("h2"));
+    gsap.set(titles, { opacity: 0, y: 28 });
+    const trigger = ScrollTrigger.create({
+      trigger: container,
+      start: "top 85%",
+      once: true,
+      onEnter: () => gsap.to(titles, {
+        opacity: 1, y: 0,
+        duration: 0.9,
+        ease: "power2.out",
+        stagger: 0.15,
+      }),
+    });
+    return () => trigger.kill();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <section
@@ -997,7 +1010,6 @@ function HomeLocation() {
               color: "#EFEFEF",
               margin: 0,
               textAlign: "center",
-              animation: "fadeIn 0.7s ease-out both",
             }}
           >
             {studio.name}

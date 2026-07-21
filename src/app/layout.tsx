@@ -15,6 +15,9 @@ import "./globals.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import SmoothScrollProvider from "@/components/SmoothScrollProvider";
+import FeedbackModal from "@/components/modals/FeedbackModal";
+import JoinUsModal from "@/components/modals/JoinUsModal";
+import BookTrialModal from "@/components/modals/BookTrialModal";
 
 const archivoBlack = Archivo_Black({
   subsets: ["latin"],
@@ -82,6 +85,9 @@ export default function RootLayout({
             {children}
           </div>
           <Footer />
+          <FeedbackModal />
+          <JoinUsModal />
+          <BookTrialModal />
         </SmoothScrollProvider>
       </body>
       <GoogleAnalytics gaId="G-1JDY0MTPSV" />
