@@ -115,6 +115,33 @@ const DAY_ORDER      = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", 
 
 function HomeHero() {
   const contentRef = useRef<HTMLDivElement>(null);
+  const h1Ref      = useRef<HTMLHeadingElement>(null);
+
+  useEffect(() => {
+    const el = h1Ref.current;
+    if (!el) return;
+
+    // shshaw-style masked word reveal: words rise up from below their overflow:hidden clip
+    const split = SplitText.create(el, {
+      type: "words",
+      mask: "words",  // each word gets an overflow:hidden wrapper — cinematic reveal
+      aria: "hidden",
+    });
+
+    const tween = gsap.from(split.words, {
+      yPercent: 100,
+      opacity: 0,
+      duration: 1.0,
+      ease: "power3.out",
+      stagger: 0.07,
+      delay: 0.4,
+    });
+
+    return () => {
+      tween.kill();
+      split.revert();
+    };
+  }, []);
 
   return (
     <section
@@ -157,6 +184,8 @@ function HomeHero() {
         {/* "Bali's #1 Performing Arts Studio for Kids in SANUR & CANGGU!" */}
         {/* 3em Archivo Black uppercase #EFEFEF */}
         <h1
+          ref={h1Ref}
+          aria-hidden="true"
           className="text-white leading-tight mb-0"
           style={{
             fontFamily: '"Archivo Black", sans-serif',
@@ -170,6 +199,10 @@ function HomeHero() {
         >
           Bali&apos;s #1 Performing Arts Studio for Kids in SANUR &amp; CANGGU!
         </h1>
+        {/* Screen-reader duplicate */}
+        <p className="sr-only">
+          Bali&apos;s #1 Performing Arts Studio for Kids in SANUR &amp; CANGGU!
+        </p>
 
         {/* "Performing arts" — 1em Inter 600 uppercase #EFEFEF */}
         <p
@@ -206,7 +239,7 @@ function HomeHero() {
           className="mb-8"
           style={{
             fontFamily: "Inter, sans-serif",
-            fontSize: "clamp(0.7rem, 1.5vw, 1em)",
+            fontSize: "clamp(0.6rem, 1.2vw, 0.85em)",
             fontWeight: 600,
             textTransform: "uppercase",
             letterSpacing: "1px",
@@ -691,13 +724,33 @@ function HomePricing() {
 
 function HomeTimetable() {
   const [activeTab, setActiveTab] = useState<string>(LOCATION_ORDER[0]);
-  const [panelKey, setPanelKey] = useState(0);
   const sectionRef  = useRef<HTMLElement>(null);
   const headingRef  = useRef<HTMLDivElement>(null);
+  const panelRef    = useRef<HTMLDivElement>(null);
 
   function changeTab(loc: string) {
-    setActiveTab(loc);
-    setPanelKey((k) => k + 1);
+    if (loc === activeTab) return;
+
+    const panel = panelRef.current;
+    if (!panel) {
+      setActiveTab(loc);
+      return;
+    }
+
+    // Fade out current panel, then swap content and fade in
+    gsap.to(panel, {
+      opacity: 0,
+      duration: 0.2,
+      ease: "power2.in",
+      onComplete: () => {
+        setActiveTab(loc);
+        gsap.fromTo(
+          panel,
+          { opacity: 0 },
+          { opacity: 1, duration: 0.3, ease: "power2.out" }
+        );
+      },
+    });
   }
 
   const items = MOCK_SCHEDULE[activeTab] ?? [];
@@ -796,11 +849,10 @@ function HomeTimetable() {
 
         {/* Tab panel — day columns */}
         <div
-          key={panelKey}
+          ref={panelRef}
           role="tabpanel"
           style={{
             padding: "2em 0 4em 0",
-            animation: "fadeIn 0.25s ease-out both",
             overflowX: "auto",
           }}
         >
@@ -1124,7 +1176,7 @@ function HomeAboutEva() {
         style={{
           flex: "1 1 300px",
           width: "50%",
-          padding: "2em",
+          padding: "3em 3.5em",
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
