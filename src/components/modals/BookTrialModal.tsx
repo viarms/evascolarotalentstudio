@@ -132,6 +132,18 @@ export default function BookTrialModal() {
   }, [lenis]);
 
   useEffect(() => {
+    // Ensure dialog is closed on mount — guards against HMR / StrictMode remounts
+    // leaving a stale open state on the DOM node.
+    const dialog = dialogRef.current;
+    if (dialog?.open) {
+      dialog.close();
+      document.body.style.overflow = "";
+      lenis?.start();
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
     window.addEventListener("open-book-trial-modal", openModal);
     return () => window.removeEventListener("open-book-trial-modal", openModal);
   }, [openModal]);

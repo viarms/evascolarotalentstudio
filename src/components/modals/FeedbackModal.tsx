@@ -109,6 +109,17 @@ export default function FeedbackModal() {
   }, [lenis]);
 
   useEffect(() => {
+    // Ensure dialog is closed on mount — guards against HMR / StrictMode remounts
+    const dialog = dialogRef.current;
+    if (dialog?.open) {
+      dialog.close();
+      document.body.style.overflow = "";
+      lenis?.start();
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
     window.addEventListener("open-feedback-modal", openModal);
     return () => window.removeEventListener("open-feedback-modal", openModal);
   }, [openModal]);
