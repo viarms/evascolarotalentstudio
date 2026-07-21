@@ -5,7 +5,7 @@
 
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import {
   ZapIcon,
@@ -109,6 +109,8 @@ const DAY_ORDER      = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", 
 //         9f14ff9 (1.6em Archivo Black uppercase brand-red), 9e14629 (1em Inter 600 uppercase)
 
 function HomeHero() {
+  const contentRef = useRef<HTMLDivElement>(null);
+
   return (
     <section
       className="relative flex flex-col items-center justify-center w-full overflow-hidden"
@@ -141,7 +143,7 @@ function HomeHero() {
       />
 
       {/* Content */}
-      <div className="relative z-20 flex flex-col items-center text-center px-6 py-16" style={{ gap: 0 }}>
+      <div ref={contentRef} className="relative z-20 flex flex-col items-center text-center px-6 py-16" style={{ gap: 0 }}>
         {/* ESTS wordmark SVG — same as footer white logo */}
         <div className="mb-8">
           <Image src="/logo-white.svg" alt="Eva Scolaro Talent Studio" width={180} height={98} priority />
@@ -326,6 +328,18 @@ function AboutCarousel() {
           zIndex: 3,
         }}
       />
+      {/* Bottom scrim — fades carousel into the section below */}
+      <div
+        style={{
+          position: "absolute",
+          bottom: 0,
+          left: 0,
+          right: 0,
+          height: "40%",
+          background: "linear-gradient(to bottom, transparent 0%, #121212 100%)",
+          zIndex: 4,
+        }}
+      />
     </div>
   );
 }
@@ -338,8 +352,12 @@ function AboutCarousel() {
 //         Text: 7279e57 = 1.25em white; 2e743d2 = 14px #EFEFEF
 
 function HomeAbout() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const textRef    = useRef<HTMLDivElement>(null);
+
   return (
     <section
+      ref={sectionRef}
       style={{
         background: "#121212",
         borderTop: "2px solid #000000",
@@ -355,6 +373,7 @@ function HomeAbout() {
 
       {/* Right: about text */}
       <div
+        ref={textRef}
         className="flex flex-col justify-center"
         style={{
           width: "50%",
@@ -420,8 +439,13 @@ const PACKS = [
 ];
 
 function HomePricing() {
+  const sectionRef  = useRef<HTMLElement>(null);
+  const headingRef  = useRef<HTMLDivElement>(null);
+  const packsRef    = useRef<HTMLDivElement>(null);
+
   return (
     <section
+      ref={sectionRef}
       id="pricing"
       style={{
         background: "#121212",
@@ -433,7 +457,7 @@ function HomePricing() {
       <div style={{ maxWidth: 1140, margin: "0 auto", padding: "0 1.5em" }}>
 
         {/* Section heading */}
-        <div style={{ paddingBottom: "2em", textAlign: "center" }}>
+        <div ref={headingRef} style={{ paddingBottom: "2em", textAlign: "center" }}>
           <h2 style={{
             fontFamily: '"Archivo Black", sans-serif',
             fontSize: "2em",
@@ -448,7 +472,7 @@ function HomePricing() {
         </div>
 
         {/* 3 pack columns */}
-        <div style={{ display: "flex", flexWrap: "wrap", gap: "0", marginBottom: "-20px" }}>
+        <div ref={packsRef} style={{ display: "flex", flexWrap: "wrap", gap: "0", marginBottom: "-20px" }}>
           {PACKS.map((pack) => (
             <div key={pack.name} style={{ flex: "1 1 200px", padding: "0 1em", marginBottom: "20px" }}>
               {/* Pack name */}
@@ -567,6 +591,8 @@ function HomePricing() {
 function HomeTimetable() {
   const [activeTab, setActiveTab] = useState<string>(LOCATION_ORDER[0]);
   const [panelKey, setPanelKey] = useState(0);
+  const sectionRef  = useRef<HTMLElement>(null);
+  const headingRef  = useRef<HTMLDivElement>(null);
 
   function changeTab(loc: string) {
     setActiveTab(loc);
@@ -583,6 +609,7 @@ function HomeTimetable() {
 
   return (
     <section
+      ref={sectionRef}
       id="timetable"
       style={{
         background: "#121212",
@@ -594,6 +621,7 @@ function HomeTimetable() {
       <div style={{ maxWidth: 1140, margin: "0 auto", padding: "0 1.5em" }}>
 
         {/* "TIMETABLE" */}
+        <div ref={headingRef}>
         <h2 style={{
           fontFamily: '"Archivo Black", sans-serif',
           fontSize: "2em",
@@ -624,6 +652,7 @@ function HomeTimetable() {
           <AudioLinesIcon size={15} color="#DDDDDD" />
           Class Schedule
           <AudioLinesIcon size={15} color="#DDDDDD" />
+        </div>
         </div>
 
         {/* Location tabs */}
@@ -781,8 +810,11 @@ function HomeLocation() {
     },
   ];
 
+  const containerRef = useRef<HTMLElement>(null);
+
   return (
     <section
+      ref={containerRef}
       style={{
         background: "#121212",
         borderTop: "1px solid #000000",
@@ -876,6 +908,9 @@ function HomeLocation() {
 //                              Bio text: 1em 300 #DDDDDD, 14px #DDDDDD
 
 function HomeAboutEva() {
+  const photoRef = useRef<HTMLDivElement>(null);
+  const textRef  = useRef<HTMLDivElement>(null);
+
   return (
     <section
       style={{
@@ -890,6 +925,7 @@ function HomeAboutEva() {
     >
       {/* Left: Eva photo + quote */}
       <div
+        ref={photoRef}
         style={{
           flex: "1 1 300px",
           width: "50%",
@@ -932,6 +968,7 @@ function HomeAboutEva() {
 
       {/* Right: About text */}
       <div
+        ref={textRef}
         style={{
           flex: "1 1 300px",
           width: "50%",

@@ -14,6 +14,7 @@ import { GoogleTagManager, GoogleAnalytics } from "@next/third-parties/google";
 import "./globals.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import SmoothScrollProvider from "@/components/SmoothScrollProvider";
 
 const archivoBlack = Archivo_Black({
   subsets: ["latin"],
@@ -74,12 +75,14 @@ export default function RootLayout({
   return (
     <html lang="id" className={`${archivoBlack.variable} ${inter.variable} ${licorice.variable} ${alumniSans.variable}`}>
       <GoogleTagManager gtmId="GTM-NKCTQ2DW" />
-      <body className="min-h-screen flex flex-col text-[#DDDDDD] antialiased" style={{ background: "#121212" }}>
-        <Header />
-        <div className="flex-1 flex flex-col">
-          {children}
-        </div>
-        <Footer />
+      <body className="min-h-screen flex flex-col text-[#DDDDDD] antialiased" style={{ backgroundColor: "#121212" }}>
+        <SmoothScrollProvider>
+          <Header />
+          <div className="flex-1 flex flex-col">
+            {children}
+          </div>
+          <Footer />
+        </SmoothScrollProvider>
       </body>
       <GoogleAnalytics gaId="G-1JDY0MTPSV" />
     </html>
