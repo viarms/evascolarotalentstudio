@@ -3,13 +3,17 @@
 
 ---
 
-**Homepage — now live ✅**
+**Homepage — live in production ✅**
 
-The homepage has been fully migrated from WordPress to the new Next.js platform. Visitors to evascolarotalentstudio.com now see the redesigned homepage with the new hero section, photo carousel, about section, pricing, timetable, and studio locations. The WordPress homepage is no longer active.
+The homepage at evascolarotalentstudio.com is now fully running on the new platform. The WordPress homepage has been replaced. Visitors see the redesigned homepage with the new hero section, photo carousel, about section, pricing, timetable, and studio locations.
 
-**Class pages — live ✅**
+**Class pages — live in production ✅**
 
-9 class pages are fully live — Ballet, Hip-Hop, Singing, K-Pop Dance, Jazz Dance, Drama & Musical Theatre, Modeling, Breakdance, and Public Speaking. Each page has class descriptions, schedules by studio location, age groups, pricing notes, and FAQs.
+All 9 class pages are live at evascolarotalentstudio.com/classes/ — Ballet, Hip-Hop, Singing, K-Pop Dance, Jazz Dance, Drama & Musical Theatre, Modeling, Breakdance, and Public Speaking. Each page shows live schedules, age groups, pricing notes, and FAQs pulled directly from the studio database.
+
+**Rest of the site**
+
+Gallery, Practice, Dancewear, News, and all other pages continue to run on WordPress as before — no changes to those.
 
 **Planned new pages**
 
