@@ -135,7 +135,7 @@ export async function fetchYoastMeta(slug: string): Promise<YoastMeta | null> {
 export async function fetchFeaturedImage(slug: string): Promise<string | null> {
   const res = await fetch(
     `${WP_BASE}/class?slug=${encodeURIComponent(slug)}&_embed`,
-    { next: { revalidate: 3600 } }
+    { next: { revalidate: 300 } }   // 5 min — short so WP image changes appear quickly
   );
   if (!res.ok) return null;
 
