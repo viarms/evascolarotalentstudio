@@ -17,6 +17,7 @@ import {
   CheckIcon,
   SparklesIcon,
   BellRingIcon,
+  MapPinCheckInsideIcon,
   AudioLinesIcon,
   MicIcon,
   CompassIcon,
@@ -1007,6 +1008,71 @@ function HomeTimetable() {
 //         "Direction" button: dark bg (#121212), 1px border #DDDDDD, Inter 500 0.88em uppercase letter-spacing 2px
 //         btn hover → #B20001
 
+// ─── DirectionButton ──────────────────────────────────────────────────────────
+// Flat style, micro-movement on hover.
+// MapPinCheckInsideIcon animation triggered by button hover via imperative ref.
+
+function DirectionButton({ href }: { href: string }) {
+  const iconRef = useRef<{ startAnimation: () => void; stopAnimation: () => void }>(null);
+
+  return (
+    <>
+      <style>{`
+        @keyframes dir-lift {
+          0%   { transform: translateY(0) scale(1); }
+          40%  { transform: translateY(-3px) scale(1.015); }
+          70%  { transform: translateY(-1px) scale(1.01); }
+          100% { transform: translateY(0) scale(1); }
+        }
+        .dir-btn {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.45em;
+          font-family: Inter, sans-serif;
+          font-size: 0.88em;
+          font-weight: 500;
+          text-transform: uppercase;
+          letter-spacing: 2px;
+          color: #DDDDDD;
+          background: transparent;
+          border: 1.5px solid rgba(221,221,221,0.5);
+          border-radius: 2px;
+          padding: 0.5em 1.5em;
+          text-decoration: none;
+          cursor: pointer;
+          transition: background 0.22s ease, border-color 0.22s ease, color 0.22s ease;
+          will-change: transform;
+        }
+        .dir-btn:hover {
+          background: #B20001;
+          border-color: rgba(178,0,1,0.6);
+          color: #EFEFEF;
+          animation: dir-lift 0.38s ease forwards;
+        }
+        .dir-btn:active {
+          transform: translateY(0) scale(0.98);
+        }
+      `}</style>
+      <a
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="relative z-10 dir-btn"
+        onMouseEnter={() => iconRef.current?.startAnimation()}
+        onMouseLeave={() => iconRef.current?.stopAnimation()}
+      >
+        <MapPinCheckInsideIcon
+          ref={iconRef}
+          size={14}
+          color="#DDDDDD"
+          isAnimated={false}
+        />
+        Direction
+      </a>
+    </>
+  );
+}
+
 function HomeLocation() {
   const studios = [
     {
@@ -1092,33 +1158,7 @@ function HomeLocation() {
           </h2>
 
           {/* Direction button */}
-          <a
-            href={studio.mapsUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="relative z-10 inline-block transition-colors duration-300"
-            style={{
-              background: "#121212",
-              fontFamily: "Inter, sans-serif",
-              fontSize: "0.88em",
-              fontWeight: 500,
-              textTransform: "uppercase",
-              letterSpacing: "2px",
-              color: "#DDDDDD",
-              border: "1px solid #DDDDDD",
-              borderRadius: "2px",
-              padding: "0.5em 1.5em",
-              textDecoration: "none",
-              display: "flex",
-              alignItems: "center",
-              gap: "0.45em",
-            }}
-            onMouseEnter={e => (e.currentTarget.style.background = "#B20001")}
-            onMouseLeave={e => (e.currentTarget.style.background = "#121212")}
-          >
-            <CompassIcon size={14} color="#DDDDDD" />
-            Direction
-          </a>
+          <DirectionButton href={studio.mapsUrl} />
         </div>
       ))}
     </section>
