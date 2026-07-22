@@ -69,6 +69,14 @@ export const metadata: Metadata = {
     siteName: "Eva Scolaro Talent Studio",
     locale: "id_ID",
     type: "website",
+    images: [
+      {
+        url: "/og-home.webp",
+        width: 1024,
+        height: 682,
+        alt: "Eva Scolaro Talent Studio — Bali's performing arts studio for kids",
+      },
+    ],
   },
 };
 
