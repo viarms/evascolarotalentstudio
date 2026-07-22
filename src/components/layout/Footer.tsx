@@ -1,9 +1,9 @@
-// src/components/layout/Footer.tsx
+"use client";
 // src/components/layout/Footer.tsx
 //
 // Pixel-perfect match of the live WP site footer (elementor-6804).
 //
-// Bottom strip links: Terms & Conditions | Contact
+// Bottom strip links: Terms & Conditions | Contact | Feedback
 // Link text color: #A5A5A5, hover: #EFEFEF
 
 import Image from "next/image";
@@ -14,7 +14,6 @@ const WA_NUMBER = process.env.NEXT_PUBLIC_WA_NUMBER ?? "6282146284464";
 
 const FOOTER_LINKS = [
   { label: "Terms & Conditions", href: "https://www.evascolarotalentstudio.com/terms-conditions/" },
-  { label: "Contact",            href: "/contact/" },
 ] as const;
 
 // ─── Footer ───────────────────────────────────────────────────────────────────
@@ -131,6 +130,25 @@ export default function Footer() {
               </a>
             </li>
           ))}
+          <li>
+            <button
+              type="button"
+              onClick={() => window.dispatchEvent(new Event("open-feedback-modal"))}
+              className="text-[#A5A5A5] hover:text-[#EFEFEF] transition-colors duration-300 cursor-pointer bg-transparent border-none p-0"
+              style={{ fontSize: "0.8em" }}
+            >
+              Feedback
+            </button>
+          </li>
+          <li>
+            <a
+              href="/contact/"
+              className="text-[#A5A5A5] hover:text-[#EFEFEF] transition-colors duration-300 no-underline"
+              style={{ fontSize: "0.8em" }}
+            >
+              Contact
+            </a>
+          </li>
         </ul>
 
         {/* Handcrafted with love credit */}
