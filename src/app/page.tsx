@@ -1,7 +1,6 @@
 // src/app/page.tsx
 // Homepage — pixel-accurate visual match to the live WordPress/Elementor site.
 // Structure and styling extracted from post-1028.css and the saved HTML.
-// Static mockup: schedule uses hardcoded data; replace with fetchAllSchedules() in Step 1-3.
 
 "use client";
 
@@ -25,6 +24,7 @@ import {
 } from "@animateicons/react/lucide";
 import AboutEvaShader from "@/components/AboutEvaShader";
 import AboutEvaNavyShader from "@/components/AboutEvaNavyShader";
+import type { StudioSchedule } from "@/lib/types/class";
 
 const WA_NUMBER = process.env.NEXT_PUBLIC_WA_NUMBER ?? "6282146284464";
 
@@ -101,6 +101,7 @@ const MOCK_SCHEDULE: Record<string, { day: string; name: string; time: string; c
   ],
 };
 
+// Location order for timetable tabs — matches HOMEPAGE_LOCATION_ORDER in classQueries.ts
 const LOCATION_ORDER = ["Sanur Studio", "Canggu Studio", "AIS School CCAs", "Dyatmika School ECAs"];
 const DAY_ORDER      = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 
@@ -868,8 +869,14 @@ function HomePricing() {
 //         Day header boxes: border 1px #DDDDDD, day name 0.8em uppercase #EFEFEF
 //         Class rows: event_name, Coach: X, Start: X, End: X (from WP loop template)
 
-function HomeTimetable() {
-  const [activeTab, setActiveTab] = useState<string>(LOCATION_ORDER[0]);
+function HomeTimetable({ schedules }: { schedules: StudioSchedule[] }) {
+  // Build a lookup map from live data; fall back to MOCK_SCHEDULE if empty
+  const liveData = schedules.length > 0;
+  const tabs = liveData
+    ? schedules.map((s) => s.location)
+    : LOCATION_ORDER;
+
+  const [activeTab, setActiveTab] = useState<string>(tabs[0]);
   const sectionRef  = useRef<HTMLElement>(null);
   const headingRef  = useRef<HTMLDivElement>(null);
   const panelRef    = useRef<HTMLDivElement>(null);
@@ -913,9 +920,18 @@ function HomeTimetable() {
     });
   }
 
-  const items = MOCK_SCHEDULE[activeTab] ?? [];
-  const byDay: Record<string, typeof items> = {};
-  for (const item of items) {
+  const liveItems = liveData
+    ? (schedules.find((s) => s.location === activeTab)?.items ?? [])
+    : (MOCK_SCHEDULE[activeTab] ?? []).map((i) => ({
+        day: i.day,
+        className: i.name,
+        timeStart: i.time.split("–")[0] ?? i.time,
+        timeEnd:   i.time.split("–")[1] ?? "",
+        coach:     i.coach,
+      }));
+
+  const byDay: Record<string, typeof liveItems> = {};
+  for (const item of liveItems) {
     if (!byDay[item.day]) byDay[item.day] = [];
     byDay[item.day].push(item);
   }
@@ -980,7 +996,7 @@ function HomeTimetable() {
             marginBottom: "0",
           }}
         >
-          {LOCATION_ORDER.map((loc) => {
+          {tabs.map((loc) => {
             const isActive = activeTab === loc;
             return (
               <button
@@ -1032,8 +1048,8 @@ function HomeTimetable() {
                   </div>
                   {byDay[day].map((item, i) => (
                     <div key={i} style={{ background: i % 2 === 0 ? "#111111" : "#141414", border: "1px solid #1f1f1f", borderTop: "none", padding: "0.65em 0.75em", display: "flex", flexDirection: "column", gap: "0.3em" }}>
-                      <span style={{ fontFamily: '"Archivo Black", sans-serif', fontSize: "0.72em", color: "#EFEFEF", textTransform: "uppercase", lineHeight: 1.3 }}>{item.name}</span>
-                      <span style={{ fontFamily: "Inter, sans-serif", fontSize: "0.7em", color: "#AAAAAA" }}>{item.time}</span>
+                      <span style={{ fontFamily: '"Archivo Black", sans-serif', fontSize: "0.72em", color: "#EFEFEF", textTransform: "uppercase", lineHeight: 1.3 }}>{item.className}</span>
+                      <span style={{ fontFamily: "Inter, sans-serif", fontSize: "0.7em", color: "#AAAAAA" }}>{item.timeStart}–{item.timeEnd}</span>
                       <span style={{ fontFamily: "Inter, sans-serif", fontSize: "0.68em", color: "#888888" }}>{item.coach}</span>
                     </div>
                   ))}
@@ -1056,8 +1072,8 @@ function HomeTimetable() {
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0" }}>
                   {byDay[day].map((item, i) => (
                     <div key={i} style={{ background: i % 2 === 0 ? "#111111" : "#141414", border: "1px solid #1f1f1f", padding: "0.65em 0.75em", display: "flex", flexDirection: "column", gap: "0.25em" }}>
-                      <span style={{ fontFamily: '"Archivo Black", sans-serif', fontSize: "0.7em", color: "#EFEFEF", textTransform: "uppercase", lineHeight: 1.3 }}>{item.name}</span>
-                      <span style={{ fontFamily: "Inter, sans-serif", fontSize: "0.68em", color: "#AAAAAA" }}>{item.time}</span>
+                      <span style={{ fontFamily: '"Archivo Black", sans-serif', fontSize: "0.7em", color: "#EFEFEF", textTransform: "uppercase", lineHeight: 1.3 }}>{item.className}</span>
+                      <span style={{ fontFamily: "Inter, sans-serif", fontSize: "0.68em", color: "#AAAAAA" }}>{item.timeStart}–{item.timeEnd}</span>
                       <span style={{ fontFamily: "Inter, sans-serif", fontSize: "0.65em", color: "#888888" }}>{item.coach}</span>
                     </div>
                   ))}
@@ -1525,12 +1541,21 @@ function HomeAboutEva() {
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
 export default function HomePage() {
+  const [schedules, setSchedules] = useState<StudioSchedule[]>([]);
+
+  useEffect(() => {
+    fetch("/api/schedules")
+      .then((r) => r.json())
+      .then((data: StudioSchedule[]) => setSchedules(data))
+      .catch(() => { /* silently fall back to MOCK_SCHEDULE */ });
+  }, []);
+
   return (
     <main>
       <HomeHero />
       <HomeAbout />
       <HomePricing />
-      <HomeTimetable />
+      <HomeTimetable schedules={schedules} />
       <HomeLocation />
       <HomeAboutEva />
     </main>

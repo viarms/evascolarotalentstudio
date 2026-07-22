@@ -227,3 +227,70 @@ export async function fetchScheduleForClass(
     items: grouped[location],
   }));
 }
+
+// ─── Homepage: all schedules ──────────────────────────────────────────────────
+
+/**
+ * Fetches ALL events from WP and returns a schedule grouped by location.
+ * No keyword filter. Only includes the 4 known active locations.
+ *
+ * Live location strings (audited 22 Jul 2026):
+ *   "Sanur Studio" | "Canggu Studio" | "AIS School CCAs" | "Dyatmika School ECAs"
+ *   Toki Hub / Parklife will be disabled in WP — excluded from order list.
+ *   "Event Venue/Location, City" → always excluded (WP placeholder).
+ *
+ * Tab order: Sanur → Canggu → AIS → Dyatmika
+ */
+const HOMEPAGE_LOCATION_ORDER = [
+  "Sanur Studio",
+  "Canggu Studio",
+  "AIS School CCAs",
+  "Dyatmika School ECAs",
+];
+
+export async function fetchAllSchedules(): Promise<StudioSchedule[]> {
+  const res = await fetch(
+    `${WP_BASE}/event?per_page=100&_fields=id,slug,title,schedule,acf`,
+    { next: { revalidate: 3600 } }
+  );
+  if (!res.ok) return [];
+
+  const events: WpEvent[] = await res.json();
+
+  const DAY_ORDER = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+
+  const grouped: Record<string, ScheduleItem[]> = {};
+
+  for (const event of events) {
+    const loc = event.acf.event_location;
+    // Skip placeholder and locations not in our known list
+    if (!loc || loc === PLACEHOLDER_LOCATION) continue;
+    if (!HOMEPAGE_LOCATION_ORDER.includes(loc)) continue;
+
+    const dayId = event.schedule?.[0];
+    const day = dayId ? (SCHEDULE_ID_TO_DAY[dayId] ?? "") : "";
+
+    if (!grouped[loc]) grouped[loc] = [];
+    grouped[loc].push({
+      day,
+      className: event.acf.event_name ?? event.title.rendered,
+      timeStart: formatTime(event.acf.Time_Start),
+      timeEnd:   formatTime(event.acf.Time_End),
+      coach:     event.acf.event_featuring ?? "",
+    });
+  }
+
+  // Sort within each location: day order then timeStart
+  for (const items of Object.values(grouped)) {
+    items.sort((a, b) => {
+      const dayDiff = DAY_ORDER.indexOf(a.day) - DAY_ORDER.indexOf(b.day);
+      if (dayDiff !== 0) return dayDiff;
+      return a.timeStart.localeCompare(b.timeStart);
+    });
+  }
+
+  // Return in defined order; skip any location with no events
+  return HOMEPAGE_LOCATION_ORDER
+    .filter((l) => grouped[l])
+    .map((location) => ({ location, items: grouped[location] }));
+}
