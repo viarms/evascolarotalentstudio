@@ -1,6 +1,6 @@
 # Project Tracker — Eva Scolaro Talent Studio
-**Last updated:** 22 July 2026 (rev 8)
-**Phase:** Homepage built → staging + go-live pending
+**Last updated:** 22 July 2026 (rev 9)
+**Phase:** Homepage live ✅ → Phase 2 (Studio + blog) up next
 
 ---
 
@@ -8,7 +8,7 @@
 
 ```
 Phase 1 (9 class pages)  ████████████████████  100% done ✅
-Homepage (Next.js)       ████████████████░░░░  ~80% — built, mock schedule, staging pending
+Homepage (Next.js)       ████████████████████  100% done ✅
 Phase 2 (Studio + blog)  ░░░░░░░░░░░░░░░░░░░░  not started
 Full migration           ░░░░░░░░░░░░░░░░░░░░  not started
 ```
@@ -143,6 +143,7 @@ Full migration           ░░░░░░░░░░░░░░░░░░�
 - [x] **22 Jul 2026** — `sitemap.ts` updated: `/` added at priority 1.0 (10 entries total).
 - [x] **22 Jul 2026** — Watzap chat widget live on all pages. Plain `<script async data-watzapkey="rAMU1787">` in `<head>`. Verified in production.
 - [x] **22 Jul 2026** — `fetchAllSchedules()` added to `classQueries.ts`. `/api/schedules` route created (ISR 1h). Homepage timetable wired to live WP data. All 4 tabs live: Sanur (20) · Canggu (20) · AIS (9) · Dyatmika (4). `MOCK_SCHEDULE` retained as graceful fallback.
+- [x] **22 Jul 2026** — **DNS cutover complete.** `www.evascolarotalentstudio.com` CNAME pointed to Vercel. Site live on Next.js.
 
 ---
 
@@ -157,8 +158,8 @@ Full migration           ░░░░░░░░░░░░░░░░░░�
 | **3** | **`npm run build` — verify clean** | Terminal | 5 min |
 | **4** | **Add Watzap script** | `src/app/layout.tsx` | 10 min |
 | **5** | **Deploy Cloudflare Worker** | Cloudflare dashboard | ✅ Done |
-| **6** | **Staging test: all routes** | Vercel preview URL | 1h |
-| **7** | **DNS cutover** | Vercel / registrar | — |
+| **6** | **Staging test: all routes** | Vercel preview URL | ✅ Done |
+| **7** | **DNS cutover** | Vercel / registrar | ✅ Done — 22 Jul 2026 |
 
 ### P0 detail
 
