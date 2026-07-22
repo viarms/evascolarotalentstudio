@@ -18,6 +18,7 @@ import SmoothScrollProvider from "@/components/SmoothScrollProvider";
 import FeedbackModal from "@/components/modals/FeedbackModal";
 import JoinUsModal from "@/components/modals/JoinUsModal";
 import BookTrialModal from "@/components/modals/BookTrialModal";
+import CookieConsent from "@/components/CookieConsent";
 
 const archivoBlack = Archivo_Black({
   subsets: ["latin"],
@@ -98,6 +99,7 @@ export default function RootLayout({
           <FeedbackModal />
           <JoinUsModal />
           <BookTrialModal />
+          <CookieConsent />
         </SmoothScrollProvider>
       </body>
       <GoogleAnalytics gaId="G-1JDY0MTPSV" />
