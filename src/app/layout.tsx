@@ -50,11 +50,11 @@ const alumniSans = Alumni_Sans({
 
 export const metadata: Metadata = {
   title: {
-    default: "Eva Scolaro Talent Studio",
+    default: "Bali's #1 Performing Arts Studio for Kids in Sanur & Canggu! | Eva Scolaro Studio",
     template: "%s | Eva Scolaro Talent Studio",
   },
   description:
-    "Dance and performing arts classes for children in Sanur and Canggu, Bali. Ballet, Hip-Hop, Contemporary, Acrobatics and more.",
+    "Dance and performing arts classes for children in Sanur and Canggu, Bali. Ballet, Hip-Hop, K-Pop, Contemporary, Acrobatics and more. Join us now!",
   metadataBase: new URL("https://www.evascolarotalentstudio.com"),
   icons: {
     icon: [
