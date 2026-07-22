@@ -102,7 +102,7 @@ Full migration           ░░░░░░░░░░░░░░░░░░�
 - [x] All sections inline in `page.tsx` (no separate `src/components/home/` directory — all co-located)
 - [x] Cloudflare Worker already routes `pathname === "/"` to Vercel
 - [x] `public/og-home.webp` exists (1024×682)
-- ⚠️ **Schedule: hardcoded `MOCK_SCHEDULE`** — `fetchAllSchedules()` not yet written; live WP data not wired in
+- ✅ **Schedule: live WP data via `fetchAllSchedules()`** — 4 tabs: Sanur · Canggu · AIS (9) · Dyatmika (4). `MOCK_SCHEDULE` retained as graceful fallback.
 - ⚠️ **`sitemap.ts`** — does not include `/` yet
 - ⚠️ **No `generateMetadata()` or `LocalBusiness` JSON-LD** — page is `"use client"`, metadata lives in root `layout.tsx`
 - ⚠️ **`revalidate` export missing** — page is client component, ISR not applicable; root layout metadata used instead
@@ -140,6 +140,9 @@ Full migration           ░░░░░░░░░░░░░░░░░░�
 - [x] **22 Jul 2026** — Cloudflare Worker updated: `pathname === "/"` routes to Vercel; `/slideshow/*` and `/api/*` added to Vercel routes
 - [x] **22 Jul 2026** — `public/og-home.webp` added (1024×682); referenced in root layout OG metadata
 - [x] **22 Jul 2026** — **Cloudflare Worker deployed to production.** `/class/* → /classes/*` 301 redirect live. Homepage (`/`) routes to Vercel. All routing rules active.
+- [x] **22 Jul 2026** — `sitemap.ts` updated: `/` added at priority 1.0 (10 entries total).
+- [x] **22 Jul 2026** — Watzap chat widget live on all pages. Plain `<script async data-watzapkey="rAMU1787">` in `<head>`. Verified in production.
+- [x] **22 Jul 2026** — `fetchAllSchedules()` added to `classQueries.ts`. `/api/schedules` route created (ISR 1h). Homepage timetable wired to live WP data. All 4 tabs live: Sanur (20) · Canggu (20) · AIS (9) · Dyatmika (4). `MOCK_SCHEDULE` retained as graceful fallback.
 
 ---
 
@@ -229,11 +232,11 @@ Worker source (`_docs/cloudflare-worker.js`) is already correct — `pathname ==
 
 | Issue | Status | Detail |
 |---|---|---|
-| Homepage uses `MOCK_SCHEDULE` | ⚠️ Active | `fetchAllSchedules()` not yet written. Timetable shows hardcoded data. Fix: Task P0 #1. |
+| Homepage uses `MOCK_SCHEDULE` as fallback | ✅ Live data active | `fetchAllSchedules()` wired. MOCK_SCHEDULE kept as graceful fallback if API fails. |
 | `/` not in `sitemap.ts` | ⚠️ Active | 5-min fix. Task P0 #2. |
 | Cloudflare Worker not deployed to production | ✅ Deployed 22 Jul 2026 | Live. `/class/* → /classes/*` redirects active. `pathname === "/"` routes to Vercel. |
 | `page.tsx` is `"use client"` — no ISR / `generateMetadata` | ℹ️ By design | Homepage metadata lives in root `layout.tsx`. OG image is set. Acceptable for now; can refactor to server component after launch. |
-| Watzap widget not showing | ⚠️ Blocked | Script tag placed in `<head>` (identical to live WP snippet) but widget doesn't render in Next.js. Likely a CSP, hydration, or `document.currentScript` issue in SSR context. Needs deeper investigation. Postponed — WP pages still show the widget via Cloudflare passthrough. |
+| Watzap widget not showing | ✅ Fixed 22 Jul 2026 | Plain `<script async data-watzapkey="rAMU1787">` placed in `<head>` (between `<html>` and `<body>` in App Router layout). Works in production — `document.currentScript` requires a real HTTP environment, not Next.js dev server. |
 | Yoast custom title write blocked on `class` CPT | ⚠️ Workaround active | `generateMetadata()` handles correctly. Fix via `mu-plugins/yoast-rest-meta.php`. |
 | `classMock.ts` is dead code | ℹ️ Low priority | P2 #11. |
 
