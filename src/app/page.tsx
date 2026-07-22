@@ -425,12 +425,7 @@ function AboutCarousel() {
           justifyContent: "center",
         }}
       >
-        {/* Outer orbit ring */}
-        <div style={{
-          position: "relative",
-          width: 64,
-          height: 64,
-        }}>
+        <div style={{ position: "relative", width: 44, height: 44 }}>
           {/* Spinning dashed ring */}
           <div style={{
             position: "absolute",
@@ -442,18 +437,18 @@ function AboutCarousel() {
           {/* Orbiting dot */}
           <div style={{
             position: "absolute",
-            top: -4,
+            top: -3,
             left: "50%",
             transform: "translateX(-50%)",
-            width: 8,
-            height: 8,
+            width: 6,
+            height: 6,
             borderRadius: "50%",
             background: "#B20001",
-            boxShadow: "0 0 8px rgba(178,0,1,0.8)",
+            boxShadow: "0 0 6px rgba(178,0,1,0.9)",
             animation: "spinOrbit 3s linear infinite",
-            transformOrigin: "50% 36px",
+            transformOrigin: "50% 25px",
           }} />
-          {/* Centre music note */}
+          {/* Centre icon */}
           <div style={{
             position: "absolute",
             inset: 0,
@@ -462,11 +457,7 @@ function AboutCarousel() {
             justifyContent: "center",
             animation: "noteBounce 1.2s ease-in-out infinite",
           }}>
-            <svg viewBox="0 0 24 24" width="22" height="22" fill="#B20001" xmlns="http://www.w3.org/2000/svg">
-              <path d="M9 18V5l12-2v13" />
-              <circle cx="6" cy="18" r="3" />
-              <circle cx="18" cy="16" r="3" />
-            </svg>
+            <AudioLinesIcon size={18} color="#B20001" isAnimated />
           </div>
         </div>
       </div>
