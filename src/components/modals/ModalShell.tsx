@@ -6,6 +6,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import { useLenis } from "@/components/SmoothScrollProvider";
 
 const ENTER_MS = 320;
 const EXIT_MS  = 190;
@@ -23,6 +24,7 @@ export default function ModalShell({
   isOpen, onClose, title, titleId, maxWidth = "560px", children,
 }: Props) {
   const [mounted, setMounted] = useState(isOpen);
+  const lenis = useLenis();
 
   useEffect(() => {
     if (isOpen) {
@@ -34,9 +36,18 @@ export default function ModalShell({
   }, [isOpen]);
 
   useEffect(() => {
-    document.body.style.overflow = isOpen ? "hidden" : "";
-    return () => { document.body.style.overflow = ""; };
-  }, [isOpen]);
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+      lenis?.stop();
+    } else {
+      document.body.style.overflow = "";
+      lenis?.start();
+    }
+    return () => {
+      document.body.style.overflow = "";
+      lenis?.start();
+    };
+  }, [isOpen, lenis]);
 
   useEffect(() => {
     if (!isOpen) return;
