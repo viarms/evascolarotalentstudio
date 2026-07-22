@@ -14,6 +14,9 @@
   */
   --font-display: var(--font-archivo-black), ui-sans-serif, system-ui, sans-serif;
   --font-sans:    var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  /* Header entrance animation */
+  --animate-nav-slide-down: navSlideDown 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.15s both;
 }
 
 /* ─── Base ─── */
@@ -33,6 +36,17 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* ─── Animation keyframes ─── */
+@keyframes navSlideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 @keyframes heroReveal {
   from {
     opacity: 0;

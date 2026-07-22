@@ -10,8 +10,7 @@
 // Gallery has dropdown: Photo | Concerts Documentary.
 // Classes has dropdown: all 9 class pages.
 
-import { useState, useRef, useEffect } from "react";
-import { gsap } from "gsap";
+import { useState } from "react";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
@@ -243,37 +242,18 @@ function MobileNavItem({ item, onClose }: { item: NavLinkItem; onClose: () => vo
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const desktopRef = useRef<HTMLElement>(null);
-  const mobileRef  = useRef<HTMLElement>(null);
-
-  // Entrance animation — slide down from -100% + fade in
-  useEffect(() => {
-    const targets = [desktopRef.current, mobileRef.current].filter(Boolean);
-    gsap.fromTo(
-      targets,
-      { y: "-100%", opacity: 0 },
-      {
-        y: "0%",
-        opacity: 1,
-        duration: 1.05,
-        ease: "power3.out",
-        delay: 0.2,
-        clearProps: "transform,opacity",
-      }
-    );
-  }, []);
 
   return (
     <>
       {/* ── Desktop header (xl and above only) ── */}
       <header
-        ref={desktopRef}
         className="
           fixed top-0 left-0 right-0 z-50
           hidden xl:flex items-center
           py-[1em] px-0
           transition-colors duration-[250ms]
           bg-black/50 hover:bg-black
+          animate-nav-slide-down
         "
       >
         {/* ── Inner content container: max-width 1140px, centered ── */}
@@ -340,7 +320,7 @@ export default function Header() {
       </header>
 
       {/* ── Mobile / tablet header ── */}
-      <header ref={mobileRef} className="fixed top-0 left-0 right-0 z-50 xl:hidden bg-black/80">
+      <header className="fixed top-0 left-0 right-0 z-50 xl:hidden bg-black/80 animate-nav-slide-down">
         <div className="flex items-center justify-between px-4 py-3">
 
           {/* Social icons (mobile) */}
