@@ -455,7 +455,6 @@ function AboutCarousel() {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            animation: "noteBounce 1.2s ease-in-out infinite",
           }}>
             <AudioLinesIcon size={18} color="#B20001" isAnimated />
           </div>
