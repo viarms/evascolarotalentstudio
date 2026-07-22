@@ -19,10 +19,18 @@ const CLASS_SLUGS = [
 ] as const;
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  return CLASS_SLUGS.map((slug) => ({
-    url: `${BASE}/classes/${slug}`,
-    lastModified: new Date(),
-    changeFrequency: "monthly" as const,
-    priority: slug === "public-speaking" ? 0.6 : 0.8,
-  }));
+  return [
+    {
+      url: `${BASE}/`,
+      lastModified: new Date(),
+      changeFrequency: "weekly" as const,
+      priority: 1.0,
+    },
+    ...CLASS_SLUGS.map((slug) => ({
+      url: `${BASE}/classes/${slug}`,
+      lastModified: new Date(),
+      changeFrequency: "monthly" as const,
+      priority: slug === "public-speaking" ? 0.6 : 0.8,
+    })),
+  ];
 }

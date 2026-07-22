@@ -86,6 +86,8 @@ export default function RootLayout({
   return (
     <html lang="id" className={`${archivoBlack.variable} ${inter.variable} ${licorice.variable} ${alumniSans.variable}`}>
       <GoogleTagManager gtmId="GTM-NKCTQ2DW" />
+      {/* Watzap WhatsApp chat widget — exact same snippet as live WP site */}
+      <script async data-watzapkey="rAMU1787" src="https://cdn.watzap.id/widget-api.js" />
       <body className="min-h-screen flex flex-col text-[#DDDDDD] antialiased bg-[#121212]">
         <SmoothScrollProvider>
           <Header />

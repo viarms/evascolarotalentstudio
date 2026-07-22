@@ -1,6 +1,6 @@
 # Project Tracker — Eva Scolaro Talent Studio
-**Last updated:** 22 July 2026 (rev 6)
-**Phase:** Phase 1 complete → Homepage migration active
+**Last updated:** 22 July 2026 (rev 8)
+**Phase:** Homepage built → staging + go-live pending
 
 ---
 
@@ -8,7 +8,7 @@
 
 ```
 Phase 1 (9 class pages)  ████████████████████  100% done ✅
-Homepage (Next.js)       ░░░░░░░░░░░░░░░░░░░░  0% — starting now
+Homepage (Next.js)       ████████████████░░░░  ~80% — built, mock schedule, staging pending
 Phase 2 (Studio + blog)  ░░░░░░░░░░░░░░░░░░░░  not started
 Full migration           ░░░░░░░░░░░░░░░░░░░░  not started
 ```
@@ -17,177 +17,182 @@ Full migration           ░░░░░░░░░░░░░░░░░░�
 
 ## Build Status
 
-✅ `npm run build` — clean. All 15 routes compile and pre-render successfully (Next.js 16.2.10 / Turbopack).
+⚠️ `npm run build` — last confirmed clean on 19 Jul 2026 (15 routes). Homepage (`"use client"`) added since then — **re-verify before deploy.**
 
 ```
 /classes/[slug]   ISR (revalidate 1h / expire 1y)
 /classes          Static (class index page)
-/                 ⚠️  No page.tsx yet — falls through to WP proxy (by design until homepage is built)
+/                 ✅ page.tsx exists — Next.js homepage (client component, GSAP + mock schedule)
 /robots.txt       Static
 /sitemap.xml      Static
 ```
 
 ---
 
-## Phase 1 — What's Built ✅
+## What's Built ✅ (complete audit as of 22 Jul 2026)
 
 ### Infrastructure
-- [x] Next.js 16 + TypeScript + Tailwind v4 project scaffolded
-- [x] `next.config.ts` — rewrite proxy: all non-`/classes/*` paths forward to WordPress origin
-- [x] `_docs/cloudflare-worker.js` — Cloudflare Worker (production routing layer):
-  1. **Redirects `/class/*` → `/classes/*`** (301 permanent) — handles WP CPT URL pattern before Next.js sees the request
-  2. Forwards Next.js routes (`/classes/*`, `/_next/*`, static assets, `sitemap.xml`, `robots.txt`) to Vercel
-  3. Passes everything else through to WordPress unchanged
-- [x] Fonts loaded via `next/font/google` — Archivo Black (display, `--font-archivo-black`) + Inter (body, `--font-inter`); exposed as CSS variables in `globals.css @theme`
-- [x] Root layout (`app/layout.tsx`) with Header + Footer + Google Tag Manager + Google Analytics
+- [x] Next.js 16 + TypeScript + Tailwind v4 scaffolded
+- [x] `next.config.ts` — rewrite proxy for all non-Next.js paths → WordPress origin
+- [x] `_docs/cloudflare-worker.js` — Cloudflare Worker **fully updated**:
+  - Redirects `/class/*` → `/classes/*` (301)
+  - Routes `/` to Vercel (homepage)
+  - Routes `/classes/*`, `/slideshow/*`, `/api/*`, `/_next/*`, favicons, root-level assets, `sitemap.xml`, `robots.txt` to Vercel
+  - Everything else passthrough to WordPress
+  - `isRootLevelFile()` helper prevents WP asset paths being misrouted
+- [x] Fonts: Archivo Black (`--font-archivo-black`), Inter (`--font-inter`), Licorice (`--font-licorice`), Alumni Sans (`--font-alumni-sans`) — all via `next/font/google`
+- [x] Root layout (`app/layout.tsx`): Header + Footer + GTM (`GTM-NKCTQ2DW`) + GA (`G-1JDY0MTPSV`) + SmoothScrollProvider + all 3 modals mounted globally
 - [x] `.env.local.example` with all required variables documented
 - [x] ISR configured globally (`revalidate = 3600`, 1h)
-- [x] Favicon assets in `public/`: `favicon-16.png`, `favicon-32.png`, `apple-touch-icon.png`
-- [x] Brand color tokens in `globals.css`: `--color-brand-red: #B20001`, `--color-brand-red-dark: #8a0001`
-- [x] Animation keyframes in `globals.css`: `heroReveal`, `fadeIn`, `ctaPulse`
+- [x] Favicon assets: `favicon-16.png`, `favicon-32.png`, `apple-touch-icon.png`
+- [x] Brand color tokens: `--color-brand-red: #B20001`, `--color-brand-red-dark: #8a0001`
+- [x] Animation keyframes: `heroReveal`, `fadeIn`, `ctaPulse`
+- [x] OG image: `public/og-home.webp` (1024×682) — referenced in root layout metadata
 
-### Components (all in `src/components/`)
-- [x] `layout/Header.tsx` — sticky header, nav links (with Classes + Gallery dropdowns), Join Us WA CTA, mobile hamburger menu; social icons (IG, FB, YT); no logo (matches live WP design); desktop 3-col layout (15% social | 70% nav | 15% Join Us)
-- [x] `layout/Footer.tsx` — white ESTS logo, "Trusted by" + partner logos (AIS, Secana, Dyatmika), real address, phone/WA, PT EVA SCOLARO ENTERTAINMENT, footer links, FireStone Studio credit
-- [x] `classes/ClassHero.tsx` — full-bleed `next/image`, dark `#121212` fallback, bottom scrim gradient, title pinned bottom-left with `heroReveal` animation
-- [x] `classes/ClassIntro.tsx` — scroll-reveal fade+slide via `useInView`
-- [x] `classes/BenefitsList.tsx` — staggered left-slide reveal per item
-- [x] `classes/AgeGroupTable.tsx`
-- [x] `classes/ScheduleTabs.tsx` — dynamic tabs per studio location, stagger-reveal, fade on tab switch, accessible ARIA roles, horizontal scroll on small screens
-- [x] `classes/CoachNote.tsx` — left-border accent, slide-in from left
-- [x] `classes/PriceNote.tsx` — fade+lift reveal, gray card
-- [x] `classes/FaqAccordion.tsx` — CSS grid-rows height transition (no layout thrash), accessible expand/collapse, stagger reveal
-- [x] `classes/CtaButton.tsx` — WhatsApp link with pre-filled message per class, `ctaPulse` animation
+### Layout / routing
+- [x] `src/app/classes/layout.tsx` — white card wrapper (`max-w-[960px]`, `bg-white`, shadow) isolated to `/classes/*` routes only
+- [x] `src/app/layout.tsx` — clean: Header, Footer, SmoothScrollProvider, modals, GTM/GA only. No white card.
+
+### Components
+- [x] `layout/Header.tsx` — sticky, CSS `navSlideDown` entrance (no GSAP), 3-col desktop (15% social | 70% nav | 15% Join Us), Classes + Gallery dropdowns, mobile hamburger, social icons (IG, FB, YT). "Join Us" button dispatches `open-join-us-modal` event. Mobile nav also triggers `open-join-us-modal`.
+- [x] `layout/Footer.tsx` — white ESTS logo, "Trusted by" + partner logos (AIS, Secana, Dyatmika), address, phone/WA, PT EVA SCOLARO ENTERTAINMENT, footer links, FireStone Studio credit
+- [x] `classes/ClassHero.tsx` — full-bleed `next/image`, `#121212` fallback, bottom scrim, `heroReveal` animation
+- [x] `classes/ClassIntro.tsx`, `classes/BenefitsList.tsx`, `classes/AgeGroupTable.tsx`
+- [x] `classes/ScheduleTabs.tsx` — dynamic tabs, stagger-reveal, fade on tab switch, ARIA roles, horizontal scroll
+- [x] `classes/CoachNote.tsx`, `classes/PriceNote.tsx`, `classes/FaqAccordion.tsx` (CSS grid-rows transition)
+- [x] `classes/CtaButton.tsx` — WA link with pre-filled message, `ctaPulse` animation
 - [x] `classes/ComingSoonBanner.tsx` — used for Public Speaking
-- [x] `hooks/useInView.ts` — lightweight `IntersectionObserver` hook for all scroll-reveal animations; fires once then disconnects
+- [x] `classes/ClassBreadcrumb.tsx` — breadcrumb nav for class pages
+- [x] `hooks/useInView.ts` — `IntersectionObserver` scroll-reveal hook
+- [x] `SmoothScrollProvider.tsx` — Lenis smooth scroll, exposes `LenisContext` / `useLenis()` hook
+- [x] `modals/ModalShell.tsx` — `<dialog>`-based shell, calls `lenis.stop()` on open / `lenis.start()` on close, `data-lenis-prevent` on modal body, top-right radial gradient
+- [x] `modals/JoinUsModal.tsx` — registration form (parentName, childName, age, classes, studio, WA, email, notes), client validation, dispatched by `open-join-us-modal` event
+- [x] `modals/BookTrialModal.tsx` — free trial form (same fields + preferredDay), dispatched by `open-book-trial-modal` event
+- [x] `modals/FeedbackModal.tsx` — feedback/contact form, dispatched by `open-feedback-modal` event
+- [x] `AboutEvaShader.tsx` + `AboutEvaNavyShader.tsx` — WebGL shader components used in homepage About section
 
 ### Data layer
-- [x] `src/lib/types/class.ts` — full TypeScript types matching intended ACF structure
+- [x] `src/lib/types/class.ts` — TypeScript types
 - [x] `src/lib/queries/classQueries.ts`:
-  - `fetchScheduleForClass(slug)` — WP REST API `/wp/v2/event` CPT; groups by location, sorts by day+time; filters to Sanur Studio + Canggu Studio only (partner school venues excluded); keyword matching via `SLUG_TO_KEYWORDS`
-  - `fetchYoastMeta(slug)` — Yoast SEO head JSON from `/wp/v2/class` endpoint
-  - `fetchFeaturedImage(slug)` — featured image URL from `_embedded` `wp:featuredmedia`
-- [x] `src/lib/schema.ts` — JSON-LD builders: `Course` (with `CourseInstance` + `Schedule` per location), `FAQPage`, combined `@graph` output
-- [x] `src/lib/mock/classMock.ts` — dev mock data (superseded by `STATIC_CONTENT` in `page.tsx`; kept as dev reference)
-- [x] `src/lib/apollo-client.ts` — Apollo client ready for WPGraphQL if/when preferred over REST
+  - `fetchScheduleForClass(slug)` — WP REST API, Sanur + Canggu only, keyword-matched
+  - `fetchYoastMeta(slug)` — Yoast SEO head JSON
+  - `fetchFeaturedImage(slug)` — featured image URL
+- [x] `src/lib/schema.ts` — `Course` + `FAQPage` JSON-LD builders
+- [x] `src/lib/email.ts` — Resend utility (`sendEmail()`), FROM + CC from env vars
+- [x] `src/lib/apollo-client.ts` — Apollo client (ready for WPGraphQL)
+- [x] `src/lib/mock/classMock.ts` — superseded dev reference
+
+### API routes (all via Resend)
+- [x] `src/app/api/join-us/route.ts` — Registration form → `FORM_RECIPIENT_AGENT3`, CC `FORM_CC`
+- [x] `src/app/api/book-trial/route.ts` — Free Trial form → `FORM_RECIPIENT_AGENT3`, CC `FORM_CC`
+- [x] `src/app/api/feedback/route.ts` — Feedback form → `FORM_RECIPIENT_AGENT2`, CC `FORM_CC`
 
 ### Class pages
-- [x] `src/app/classes/[slug]/page.tsx` — dynamic route for all 9 slugs
-  - [x] `STATIC_CONTENT` map: all 9 classes fully populated (intro, benefits, age groups, FAQ, CTA, coachNote, priceNote)
-  - [x] Live schedule fetched from WP REST API, grouped by location, sorted by day+time
-  - [x] `generateMetadata()` — Yoast override with auto-title detection guard (handles Yoast's fallback title pattern `"Title — Site Name"` correctly; falls back to `seoTitle` from `STATIC_CONTENT`)
-  - [x] `generateStaticParams()` — pre-renders all 9 slugs at build time
-  - [x] Schema.org `Course` + `FAQPage` JSON-LD on every page
-  - [x] `public-speaking` renders `ComingSoonBanner` correctly (status: `coming_soon`)
-  - [x] All 8 active classes render full layout
-  - [x] `fetchFeaturedImage()` called per page; hero shows WP featured image when set
+- [x] `src/app/classes/[slug]/page.tsx` — all 9 slugs, `STATIC_CONTENT`, live schedule, `generateMetadata()` with Yoast guard, `generateStaticParams()`, `Course` + `FAQPage` JSON-LD, `ClassBreadcrumb`
+- [x] `src/app/classes/page.tsx` — `/classes` index / catalogue
+
+### Homepage (`src/app/page.tsx`) — 80% complete ⚠️
+- [x] `"use client"` — GSAP + SplitText animations, crossfade carousel
+- [x] `HomeHero` — video background (WP hosted .webm), 85% black overlay, ESTS logo, SplitText word-mask reveal on h1, Join Us CTA button (opens `JoinUsModal`)
+- [x] `HomeAbout` — about copy, studio intro, crossfade photo carousel (`public/slideshow/`), WebGL shader (AboutEvaShader)
+- [x] `HomePricing` — 3 pricing cards (180K / 140K / 110K), `id="pricing"`, Book Free Trial CTA
+- [x] `HomeTimetable` — 5-tab timetable (Sanur, Canggu, AIS, Dyatmika, Toki Hub), `id="timetable"`, day-grouped rows
+- [x] `HomeLocation` — 2 studio cards (Sanur + Canggu), addresses, `id="location"`
+- [x] `HomeAboutEva` — Eva bio (3 paragraphs, SplitText), Licorice font, AboutEvaNavyShader, Spotify CTA
+- [x] All sections inline in `page.tsx` (no separate `src/components/home/` directory — all co-located)
+- [x] Cloudflare Worker already routes `pathname === "/"` to Vercel
+- [x] `public/og-home.webp` exists (1024×682)
+- ⚠️ **Schedule: hardcoded `MOCK_SCHEDULE`** — `fetchAllSchedules()` not yet written; live WP data not wired in
+- ⚠️ **`sitemap.ts`** — does not include `/` yet
+- ⚠️ **No `generateMetadata()` or `LocalBusiness` JSON-LD** — page is `"use client"`, metadata lives in root `layout.tsx`
+- ⚠️ **`revalidate` export missing** — page is client component, ISR not applicable; root layout metadata used instead
 
 ### SEO files
-- [x] `src/app/sitemap.ts` — all 9 `/classes/*` slugs; `public-speaking` at 0.6 priority, rest at 0.8
-- [x] `src/app/robots.ts` — allows `/classes/`, points to sitemap URL
+- [x] `src/app/sitemap.ts` — all 9 `/classes/*` slugs; ⚠️ `/` not yet included
+- [x] `src/app/robots.ts` — allows `/classes/`, points to sitemap
 
 ### Public assets
-- [x] `public/logo.svg` — main ESTS logo
-- [x] `public/logo-white.svg` — white ESTS logo (used in Footer)
-- [x] `public/ests-logo-white.svg` — alternate white logo variant
-- [x] `public/ais-logo.svg`, `public/secana-logo.svg`, `public/dyatmika-logo.svg` — partner logos in Footer
-- [x] `public/favicon-16.png`, `public/favicon-32.png`, `public/apple-touch-icon.png` — favicon assets
+- [x] `public/logo.svg`, `public/logo-white.svg`, `public/ests-logo-white.svg`
+- [x] `public/ais-logo.svg`, `public/secana-logo.svg`, `public/dyatmika-logo.svg`
+- [x] `public/favicon-16.png`, `public/favicon-32.png`, `public/apple-touch-icon.png`
+- [x] `public/og-home.webp` (1024×682) ✅ exists
+- [x] `public/slideshow/` — 12 class photos (`.webp` + `.jpg`) used by About carousel
+- [x] `public/classes/` — class hero images directory
 
 ### Tooling
-- [x] `scripts/seed-classes.mjs` — idempotent: creates/updates 9 WP class CPT posts + Yoast SEO meta; reads `.env.local` automatically
+- [x] `scripts/seed-classes.mjs` — creates/updates 9 WP class CPT posts + Yoast SEO meta
 
 ### Completed milestones
-- [x] **18 Jul 2026** — `npm run seed:classes` run: all 9 class CPT posts created (IDs 7102–7110). Yoast custom title write blocked by WP (P1 #12 below); fallback in `generateMetadata()` handles this correctly for all 9 pages.
-- [x] **18 Jul 2026** — Live schedule verified: all 8 active classes show correct Sanur/Canggu data. Toki Hub/Parklife filtered out correctly.
-- [x] **18 Jul 2026** — WP data entry error fixed: TOTS BALLET Canggu Saturday `Time_End` corrected to `10:45` (was `22:45`). Verified via REST API.
-- [x] **18 Jul 2026** — Hero images: all 9 class CPT posts have featured images assigned in WP Media. Verified via REST API.
-- [x] **18 Jul 2026** — YouTube channel URL confirmed correct in `Header.tsx`: `https://www.youtube.com/@evascolarotalentstudio8290`
-- [x] **19 Jul 2026** — `npm run build` clean. All 15 routes pre-render without errors or TypeScript warnings.
-- [x] **19 Jul 2026** — Cloudflare Worker (`_docs/cloudflare-worker.js`) updated: added `/class/* → /classes/*` 301 redirect (step 1 in routing order) so WP CPT canonical URLs auto-redirect to Next.js slugs. Routing order clarified: redirect → Vercel → WP passthrough.
+- [x] **18 Jul 2026** — 9 class CPT posts created (IDs 7102–7110), hero images assigned, schedule verified
+- [x] **18 Jul 2026** — TOTS BALLET Canggu Saturday `Time_End` fixed (`10:45`, was `22:45`)
+- [x] **18 Jul 2026** — YouTube URL confirmed in `Header.tsx`
+- [x] **19 Jul 2026** — `npm run build` clean (15 routes)
+- [x] **19 Jul 2026** — Cloudflare Worker: `/class/* → /classes/*` redirect added
+- [x] **20 Jul 2026** — `src/app/classes/layout.tsx` created; white card moved out of root layout (Step 0 ✅)
+- [x] **20–21 Jul 2026** — Homepage `src/app/page.tsx` built (GSAP, video hero, carousel, pricing, timetable, location, About Eva — all sections complete with mock schedule data)
+- [x] **21 Jul 2026** — All 3 modal components built (`JoinUsModal`, `BookTrialModal`, `FeedbackModal`) + `ModalShell`
+- [x] **21 Jul 2026** — All 3 API routes built (`/api/join-us`, `/api/book-trial`, `/api/feedback`) with Resend + server-side validation
+- [x] **21 Jul 2026** — `src/lib/email.ts` — Resend utility wired; all 3 routes use `sendEmail()`
+- [x] **21 Jul 2026** — `ClassBreadcrumb.tsx` added to class pages
+- [x] **22 Jul 2026** — Navbar GSAP entrance replaced with pure CSS `navSlideDown` keyframe
+- [x] **22 Jul 2026** — Lenis smooth scroll live: `SmoothScrollProvider`, `LenisContext`, `useLenis()`; `ModalShell` stops/starts Lenis correctly
+- [x] **22 Jul 2026** — Modal body radial gradient moved to top-right
+- [x] **22 Jul 2026** — Cloudflare Worker updated: `pathname === "/"` routes to Vercel; `/slideshow/*` and `/api/*` added to Vercel routes
+- [x] **22 Jul 2026** — `public/og-home.webp` added (1024×682); referenced in root layout OG metadata
+- [x] **22 Jul 2026** — **Cloudflare Worker deployed to production.** `/class/* → /classes/*` 301 redirect live. Homepage (`/`) routes to Vercel. All routing rules active.
 
 ---
 
-## Phase 1 — What's Remaining ⏳
+## What's Remaining ⏳
 
-### P0 — Needed before DNS cutover to Vercel
+### P0 — Needed before DNS cutover
 
-| # | Task | Where | Notes |
+| # | Task | Where | Est. |
 |---|---|---|---|
-| **1** | **Deploy Cloudflare Worker to production** | Cloudflare dashboard | `_docs/cloudflare-worker.js` is ready. Go to Cloudflare → Workers → Create → paste code → Deploy. Once live: `https://www.evascolarotalentstudio.com/class/ballet/` should 301 → `/classes/ballet/`. |
-| **2** | **Staging test: all routes** | Vercel preview URL | Set `WP_ORIGIN`, `NEXT_PUBLIC_WA_NUMBER`, `NEXT_PUBLIC_GTM_ID`, `NEXT_PUBLIC_GA_ID` in Vercel env vars. Verify: `/` proxies to WP, `/gallery/` proxies to WP, all 9 `/classes/*` pages render with live schedule data. |
-| **3** | **DNS cutover** | Vercel / domain registrar | Point `www` CNAME to `cname.vercel-dns.com`. After live: submit sitemap to GSC, run Lighthouse baseline. |
+| **1** | **`fetchAllSchedules()` → wire into homepage** | `src/lib/queries/classQueries.ts` + `src/app/page.tsx` | 1h |
+| **2** | **Add `/` to `sitemap.ts`** | `src/app/sitemap.ts` | 5 min |
+| **3** | **`npm run build` — verify clean** | Terminal | 5 min |
+| **4** | **Add Watzap script** | `src/app/layout.tsx` | 10 min |
+| **5** | **Deploy Cloudflare Worker** | Cloudflare dashboard | ✅ Done |
+| **6** | **Staging test: all routes** | Vercel preview URL | 1h |
+| **7** | **DNS cutover** | Vercel / registrar | — |
 
-These can happen in parallel with or after the homepage build — they don't block each other.
+### P0 detail
 
----
+**Task 1 — `fetchAllSchedules()`**
 
-## Homepage Migration — Next Steps 🚀
-
-**Full plan:** `Plan-Homepage-Nextjs.md`
-
-### Step 0 — Layout refactor (prerequisite, ~30 min)
-
-The white card wrapper is currently in `src/app/layout.tsx`, which means it would wrap the homepage too. Must be moved first.
-
-**What to do:**
-1. Create `src/app/classes/layout.tsx` — move the `<div className="flex-1 w-full max-w-[960px]...bg-white...">` wrapper here
-2. Update `src/app/layout.tsx` — remove that wrapper div; keep only `<Header>`, `<body>` base styles, `<Footer>`
-3. `npm run build` — verify all 9 class pages and `/classes` index still render (they inherit the new `classes/layout.tsx`)
-
-**File diff:**
-- `src/app/layout.tsx` — remove inner wrapper div
-- New `src/app/classes/layout.tsx` — contains the white card
-
-### Step 1 — Data layer (~1 hour)
-
-Add to `src/lib/queries/classQueries.ts`:
-
-```ts
-// Fetches ALL events grouped by location (no keyword filter, no location filter)
-// Used by the homepage timetable.
-export async function fetchAllSchedules(): Promise<StudioSchedule[]>
-```
-
-**Before coding:** audit the WP REST API for the exact `event_location` strings for the 3 school-partner venues:
+First, audit exact WP location strings:
 ```bash
 curl "https://www.evascolarotalentstudio.com/wp-json/wp/v2/event?per_page=100&_fields=acf" | \
   jq '[.[].acf.event_location] | unique'
 ```
-Use the returned strings to set `HOMEPAGE_LOCATION_ORDER` (Sanur → Canggu → AIS → Dyatmika → Toki Hub).
-
-### Step 2 — Components (~4–6 hours)
-
-New directory: `src/components/home/`
-
-| File | Description |
-|---|---|
-| `HomeHero.tsx` | Full-bleed, WP featured image via `fetchFeaturedImage`, headline, "Join Us" WA CTA |
-| `HomeAbout.tsx` | 2-para studio description + partner logos row |
-| `PricingSection.tsx` | 3 pricing cards (180K / 140K / 110K), features list, "Book Free Trial" WA CTA; `id="pricing"` |
-| `LocationSection.tsx` | 2 studio cards with address + static map image; `id="location"` |
-| `HomeTimetable.tsx` | 5-tab timetable, day-header grouping rows; `id="timetable"` |
-
-### Step 3 — `src/app/page.tsx` (~1–2 hours)
-
-Create the homepage route:
-- `HOMEPAGE_CONTENT` constant (hero text, about copy, pricing packs, studio addresses)
-- `fetchAllSchedules()` for timetable
-- `generateMetadata()` — homepage title/description/OG
-- `LocalBusiness` JSON-LD for both studios (Sanur + Canggu)
-- `export const revalidate = 3600`
-- Update `src/app/sitemap.ts` to include `'/'` (priority 1.0)
-
-### Step 4 — Cloudflare Worker update (~15 min)
-
-In `_docs/cloudflare-worker.js`, add to `shouldRouteToVercel()`:
-```js
-pathname === "/" ||    // homepage
+Then add to `src/lib/queries/classQueries.ts`:
+```ts
+// Returns ALL events grouped by location (no keyword filter).
+// Used by the homepage timetable.
+export async function fetchAllSchedules(): Promise<StudioSchedule[]>
 ```
-Deploy updated Worker.
+Then convert `page.tsx` from `"use client"` to a server component that calls `fetchAllSchedules()` at build time — or keep it client and fetch via `useEffect`. **Preferred:** extract the timetable into its own server component, keep the rest of the page client-side for GSAP animations.
 
-### Step 5 — QA (~1–2 hours)
+**Task 2 — Sitemap**
+```ts
+// Add to sitemap() return array:
+{ url: `${BASE}/`, lastModified: new Date(), changeFrequency: "weekly", priority: 1.0 }
+```
 
-Desktop + 375/390/428px mobile. Verify all 5 timetable tabs, anchor scroll for `/#pricing` and `/#timetable`, WA CTAs, all 9 class page nav links, `npm run build` clean.
+**Task 4 — Watzap**
+Add to `src/app/layout.tsx` (inside `<body>`, after `</SmoothScrollProvider>`):
+```tsx
+import Script from "next/script";
+<Script
+  src="https://cdn.watzap.id/widget-api.js"
+  data-watzapkey="rAMU1787"
+  strategy="lazyOnload"
+/>
+```
+
+**Task 5 — Cloudflare Worker**
+Worker source (`_docs/cloudflare-worker.js`) is already correct — `pathname === "/"` is in. Just needs to be deployed via Cloudflare dashboard (Workers → Create → paste → Deploy).
 
 ---
 
@@ -195,85 +200,28 @@ Desktop + 375/390/428px mobile. Verify all 5 timetable tabs, anchor scroll for `
 
 | # | Task | Notes |
 |---|---|---|
-| **2** | **Mobile QA** | Test at 375px, 390px, 428px. Focus: ScheduleTabs horizontal scroll on small screens; hero image scaling; Footer partner logos on narrow viewports. |
-| **3** | **Lighthouse audit** | Target ≥ 90 mobile for each class page. Run after DNS is pointed (real domain + CDN makes a real difference). |
-| **4** | **Business decision: Public Speaking** | Keep `coming_soon` this term or flip to `active`? One-line change: `status: "active"` in `STATIC_CONTENT["public-speaking"]` in `src/app/classes/[slug]/page.tsx`. If flipped, schedule data will load automatically from WP `event` CPT — no other code change needed. |
-| **5** | **Enable Yoast custom title write on `class` CPT** | Current workaround in `generateMetadata()` works correctly. To fix permanently in WP, add this to a must-use plugin at `wp-content/mu-plugins/yoast-rest-meta.php`: |
-
-```php
-// Allow Yoast SEO meta fields to be written via REST API on the 'class' CPT.
-add_action( 'init', function () {
-    foreach ( [ '_yoast_wpseo_title', '_yoast_wpseo_metadesc' ] as $key ) {
-        register_meta( 'post', $key, [
-            'object_subtype' => 'class',
-            'type'           => 'string',
-            'single'         => true,
-            'show_in_rest'   => true,
-            'auth_callback'  => fn() => current_user_can( 'edit_posts' ),
-        ] );
-    }
-} );
-```
-
-After adding, re-run `npm run seed:classes` to write titles correctly. The auto-title detection guard in `page.tsx` can then be simplified (but leaving it in does no harm).
-
-### P2 — Phase 2 items (after homepage go-live)
-
-| # | Task | Doc reference |
-|---|---|---|
-| **6** | **Homepage → Next.js** | ✅ Plan ready in `Plan-Homepage-Nextjs.md`. Active work — see "Homepage Migration — Next Steps" above. |
-| **7** | Studio location pages — `/studio/canggu/` and `/studio/sanur/` | `PRD-SEO-Eva-Scolaro-Talent-Studio.md` §10 |
-| **8** | ACF field group for static content | Migrate `STATIC_CONTENT` from `page.tsx` into WP ACF so client can edit without a developer. Types in `class.ts` already mirror the intended structure. |
-| **9** | Blog / educational content (min. 8 articles) | `PRD-SEO-Eva-Scolaro-Talent-Studio.md` §6 Phase 2 |
-| **10** | School Partnerships page (`/school-partnerships/`) | Social proof + E-E-A-T signal for SEO |
-| **11** | Breakdance Sanur — open if demand grows | Add events in WP `event` CPT only; no frontend code change needed |
-| **12** | `classMock.ts` cleanup | Superseded by `STATIC_CONTENT` in `page.tsx`; can be deleted or kept as dev reference |
-| **13** | **Forms — modal system with Resend** | Replicate all 3 live WP popup forms (Join Us / Registration, Book Free Trial, Feedback) as native Next.js modal components. Use the existing `<dialog>`-based modal pattern (`FeedbackModal.tsx`). Route each trigger CTA to the correct modal. Send emails via **Resend** (key in `.env.local` as `RESEND_API_KEY`). Recipient routing: Join Us + Book Free Trial → `agent3.evascolaro@gmail.com`; Feedback + Contact + RSVP → `agent2.evascolaro@gmail.com`; all forms CC `firestone.stdo@gmail.com`. Full spec: `Plan-Forms-Modal-Resend.md`. |
-| **14** | Full WordPress → Next.js migration | Migrate remaining pages (Gallery, Practice, Dancewear, News, Contact, T&C); move WP to `cms.evascolarotalentstudio.com`. See `Migration-Plan-Nextjs-Eva-Scolaro.md`. |
-| **15** | **Dance Studio for Rent page** (`/studio-rental/`) | New page draft. Facilities: full wall mirrors, hi-fi sound system, changing room & toilet, cafeteria, parking. Pricing: 1st floor 400k/hr, 2nd floor 250k/hr. Availability: Mon–Fri 10:00 AM – 1:00 PM. Location: Jl. Bypass Ngurah Rai No. 88A, Sanur, Denpasar Selatan. Booking: WhatsApp +62 821-4628-4464 with preferred date, time, and duration. |
-| **16** | **Concert page** (`/concert/`) | New page draft. Content TBD — showcase upcoming/past concert events. |
-| **17** | **Privacy Notice page** (`/privacy-notice/`) | Draft Privacy Notice covering data collected via forms (Join Us, Book Free Trial, Feedback), WhatsApp contact, cookies, and third-party services (GTM, GA). |
-| **18** | **Cookie consent banner** | Lightweight banner shown on first visit with a link to `/privacy-notice/`. Stores consent in `localStorage`. No third-party cookie library — build as a simple client component. |
-| **19** | **WhatsApp chat widget (Watzap)** | Re-implement the live site's Watzap widget in Next.js. Live site snippet: `<script async data-watzapkey="rAMU1787" src="https://cdn.watzap.id/widget-api.js"></script>`. Add as a `<Script strategy="lazyOnload">` in `src/app/layout.tsx` so it loads after the page is interactive. Widget label: "Hi it's Lola, let's have a chat!" (configured in the Watzap dashboard — no code change needed for the label). |
+| **1** | **Cookie consent banner** | Simple client component, `localStorage`, link to `/privacy-notice/`. No third-party library. ~45 min. |
+| **2** | **Mobile QA** | 375px / 390px / 428px. Focus: ScheduleTabs horizontal scroll, hero video scaling, Footer partner logos, timetable tabs. |
+| **3** | **Lighthouse audit** | Target ≥ 90 mobile per class page. Run after DNS (real CDN matters). |
+| **4** | **Business decision: Public Speaking** | One-line flip: `status: "active"` in `STATIC_CONTENT["public-speaking"]` in `classes/[slug]/page.tsx`. Schedule auto-loads from WP. |
+| **5** | **Enable Yoast custom title write on `class` CPT** | Workaround in `generateMetadata()` is correct. Permanent fix: `wp-content/mu-plugins/yoast-rest-meta.php` (snippet unchanged from rev 7). |
 
 ---
 
-## Next Steps Right Now
+### P2 — After homepage go-live
 
-**Two parallel tracks:**
-
-### Track A — Phase 1 go-live (can be done any time, independent of Track B)
-
-1. **Deploy Cloudflare Worker** — paste `_docs/cloudflare-worker.js` into Cloudflare dashboard (Workers → Create → paste → Deploy).
-2. **Staging test** — add env vars to Vercel, walk through proxy pages + all 9 class pages on preview URL.
-3. **DNS cutover** — point `www` CNAME to Vercel. Submit sitemap to GSC. Run Lighthouse baseline.
-
-### Track B — Homepage build (start now)
-
-Do these in order:
-
-**Step 0 — Layout refactor** (30 min, prerequisite)
-- Create `src/app/classes/layout.tsx` with the white card wrapper
-- Remove white card wrapper from `src/app/layout.tsx`
-- `npm run build` — confirm all class pages still render
-
-**Step 1 — Audit WP location strings** (5 min)
-```bash
-curl "https://www.evascolarotalentstudio.com/wp-json/wp/v2/event?per_page=100&_fields=acf" | \
-  jq '[.[].acf.event_location] | unique'
-```
-Note exact strings for AIS / Dyatmika / Toki Hub before writing `fetchAllSchedules()`.
-
-**Step 2 — `fetchAllSchedules()`** (1 hour)
-Add to `src/lib/queries/classQueries.ts`.
-
-**Step 3 — Components** (4–6 hours)
-`src/components/home/`: HomeHero → HomeAbout → PricingSection → LocationSection → HomeTimetable.
-
-**Step 4 — `src/app/page.tsx`** (1–2 hours)
-Wire everything together with `HOMEPAGE_CONTENT`, metadata, JSON-LD, ISR.
-
-**Step 5 — Worker update + QA + deploy**
+| # | Task | Notes |
+|---|---|---|
+| **6** | Studio location pages `/studio/canggu/` + `/studio/sanur/` | `PRD-SEO-Eva-Scolaro-Talent-Studio.md` §10 |
+| **7** | ACF field group for static content | Migrate `STATIC_CONTENT` from `page.tsx` into WP ACF |
+| **8** | Blog / educational content (min. 8 articles) | `PRD-SEO-Eva-Scolaro-Talent-Studio.md` §6 Phase 2 |
+| **9** | School Partnerships page (`/school-partnerships/`) | Social proof + E-E-A-T |
+| **10** | Breakdance Sanur — open if demand grows | Add events in WP only; no code change |
+| **11** | `classMock.ts` cleanup | Superseded by `STATIC_CONTENT`. Safe to delete. |
+| **12** | **Privacy Notice page** (`/privacy-notice/`) | Cover forms (Join Us, Book Free Trial, Feedback), WA, cookies, GTM/GA |
+| **13** | **Dance Studio for Rent** (`/studio-rental/`) | Facilities, pricing (1F: 400k/hr, 2F: 250k/hr), availability (Mon–Fri 10:00–13:00), Jl. Bypass Ngurah Rai 88A Sanur, WA booking |
+| **14** | **Concert page** (`/concert/`) | Content TBD |
+| **15** | Full WordPress → Next.js migration | Gallery, Practice, Dancewear, News, Contact, T&C; WP moves to `cms.evascolarotalentstudio.com` |
 
 ---
 
@@ -281,11 +229,13 @@ Wire everything together with `HOMEPAGE_CONTENT`, metadata, JSON-LD, ISR.
 
 | Issue | Status | Detail |
 |---|---|---|
-| Yoast custom title write blocked on `class` CPT | ⚠️ Workaround active | `generateMetadata()` auto-detects Yoast's fallback title pattern and ignores it, using `STATIC_CONTENT.seoTitle` instead. All 9 pages render correct titles. Fix: add `mu-plugin` snippet above (P1 #5). |
-| Cloudflare Worker not yet deployed to production | ⏳ Pending | `_docs/cloudflare-worker.js` is ready. Needs to be deployed via Cloudflare dashboard (Workers → Create → paste code → Deploy). The `/class/* → /classes/*` redirect and homepage routing will only be live once deployed. |
-| Worker bug fixed: `*.png`/`*.svg`/`*.ico` were matching WP deep asset paths | ✅ Fixed in Worker source | Original `pathname.endsWith(".svg")` etc. matched `/wp-content/uploads/photo.png` → routed to Vercel → returned HTML → browser MIME error ("Refused to apply style... MIME type 'text/html'"). Fixed with `isRootLevelFile()` helper that only matches root-level paths (e.g. `/logo.svg`), not paths with subdirectories. |
-| `layout.tsx` white card wraps `{children}` | ⏳ Fix in progress | The `<div className="max-w-[960px] ... bg-white">` in `layout.tsx` will be moved to `src/app/classes/layout.tsx` as Step 0 of the homepage build. This unblocks full-bleed homepage sections (hero, timetable, location). |
-| `classMock.ts` is dead code | ℹ️ Low priority | Superseded by `STATIC_CONTENT` in `page.tsx`. No component imports it. Safe to delete in cleanup (P2 #11). |
+| Homepage uses `MOCK_SCHEDULE` | ⚠️ Active | `fetchAllSchedules()` not yet written. Timetable shows hardcoded data. Fix: Task P0 #1. |
+| `/` not in `sitemap.ts` | ⚠️ Active | 5-min fix. Task P0 #2. |
+| Cloudflare Worker not deployed to production | ✅ Deployed 22 Jul 2026 | Live. `/class/* → /classes/*` redirects active. `pathname === "/"` routes to Vercel. |
+| `page.tsx` is `"use client"` — no ISR / `generateMetadata` | ℹ️ By design | Homepage metadata lives in root `layout.tsx`. OG image is set. Acceptable for now; can refactor to server component after launch. |
+| Watzap widget not showing | ⚠️ Blocked | Script tag placed in `<head>` (identical to live WP snippet) but widget doesn't render in Next.js. Likely a CSP, hydration, or `document.currentScript` issue in SSR context. Needs deeper investigation. Postponed — WP pages still show the widget via Cloudflare passthrough. |
+| Yoast custom title write blocked on `class` CPT | ⚠️ Workaround active | `generateMetadata()` handles correctly. Fix via `mu-plugins/yoast-rest-meta.php`. |
+| `classMock.ts` is dead code | ℹ️ Low priority | P2 #11. |
 
 ---
 
@@ -295,64 +245,90 @@ Wire everything together with `HOMEPAGE_CONTENT`, metadata, JSON-LD, ISR.
 src/
 ├── app/
 │   ├── classes/
-│   │   ├── layout.tsx             ← 🔜 Step 0: white card wrapper (move from root layout)
-│   │   ├── page.tsx               ← ✅ /classes index (class catalogue)
-│   │   └── [slug]/page.tsx        ← ✅ all 9 class pages, STATIC_CONTENT, fetchScheduleForClass
-│   ├── layout.tsx                 ← ✅ fonts, GTM/GA, Header, Footer (white card moves out in Step 0)
-│   ├── page.tsx                   ← 🔜 Step 3: homepage (doesn't exist yet — / falls to WP proxy)
-│   ├── globals.css                ← ✅ brand tokens, base styles, keyframes
-│   ├── sitemap.ts                 ← ✅ /classes/* (update in Step 3 to add /)
-│   └── robots.ts                  ← ✅ allows /classes/
+│   │   ├── layout.tsx             ← ✅ white card wrapper (moved from root layout — done)
+│   │   ├── page.tsx               ← ✅ /classes index
+│   │   └── [slug]/page.tsx        ← ✅ all 9 class pages
+│   ├── api/
+│   │   ├── join-us/route.ts       ← ✅ Registration form → Resend
+│   │   ├── book-trial/route.ts    ← ✅ Free Trial form → Resend
+│   │   └── feedback/route.ts      ← ✅ Feedback form → Resend
+│   ├── layout.tsx                 ← ✅ fonts, GTM/GA, Header, Footer, SmoothScrollProvider, 3 modals
+│   ├── page.tsx                   ← ✅ homepage (client component, mock schedule ⚠️)
+│   ├── globals.css                ← ✅ brand tokens, keyframes
+│   ├── sitemap.ts                 ← ✅ /classes/* — ⚠️ add / (P0 #2)
+│   └── robots.ts                  ← ✅
 ├── components/
 │   ├── layout/
-│   │   ├── Header.tsx             ← ✅ complete
-│   │   └── Footer.tsx             ← ✅ complete
+│   │   ├── Header.tsx             ← ✅ CSS navSlideDown, modal triggers wired
+│   │   └── Footer.tsx             ← ✅
 │   ├── classes/
-│   │   ├── ClassHero.tsx          ← ✅ WP featured image, heroReveal animation
-│   │   ├── ClassIntro.tsx         ← ✅ scroll-reveal
-│   │   ├── BenefitsList.tsx       ← ✅ stagger reveal
+│   │   ├── ClassHero.tsx          ← ✅
+│   │   ├── ClassBreadcrumb.tsx    ← ✅
+│   │   ├── ClassIntro.tsx         ← ✅
+│   │   ├── BenefitsList.tsx       ← ✅
 │   │   ├── AgeGroupTable.tsx      ← ✅
-│   │   ├── ScheduleTabs.tsx       ← ✅ dynamic tabs, fade on switch
-│   │   ├── CoachNote.tsx          ← ✅ slide-in
-│   │   ├── PriceNote.tsx          ← ✅ fade+lift
-│   │   ├── FaqAccordion.tsx       ← ✅ grid-rows transition
-│   │   ├── CtaButton.tsx          ← ✅ ctaPulse animation
+│   │   ├── ScheduleTabs.tsx       ← ✅
+│   │   ├── CoachNote.tsx          ← ✅
+│   │   ├── PriceNote.tsx          ← ✅
+│   │   ├── FaqAccordion.tsx       ← ✅
+│   │   ├── CtaButton.tsx          ← ✅
 │   │   └── ComingSoonBanner.tsx   ← ✅
-│   └── home/                      ← 🔜 Step 2: create this directory + all 5 components
-│       ├── HomeHero.tsx
-│       ├── HomeAbout.tsx
-│       ├── PricingSection.tsx
-│       ├── HomeTimetable.tsx
-│       └── LocationSection.tsx
+│   ├── modals/
+│   │   ├── ModalShell.tsx         ← ✅ Lenis stop/start, top-right gradient
+│   │   ├── JoinUsModal.tsx        ← ✅ registration form, Resend
+│   │   ├── BookTrialModal.tsx     ← ✅ free trial form, Resend
+│   │   └── FeedbackModal.tsx      ← ✅ feedback form, Resend
+│   ├── SmoothScrollProvider.tsx   ← ✅ Lenis, LenisContext, useLenis()
+│   ├── AboutEvaShader.tsx         ← ✅ WebGL shader (light bg)
+│   └── AboutEvaNavyShader.tsx     ← ✅ WebGL shader (dark bg)
 ├── hooks/
-│   └── useInView.ts               ← ✅ IntersectionObserver scroll-reveal hook
+│   └── useInView.ts               ← ✅
 ├── lib/
-│   ├── apollo-client.ts           ← ✅ (ready for WPGraphQL if needed)
-│   ├── queries/classQueries.ts    ← ✅ existing fetchers; 🔜 Step 1: add fetchAllSchedules()
-│   ├── schema.ts                  ← ✅ Course + FAQPage JSON-LD builders
+│   ├── email.ts                   ← ✅ Resend sendEmail() utility
+│   ├── apollo-client.ts           ← ✅
+│   ├── queries/classQueries.ts    ← ✅ 3 fetchers — ⚠️ fetchAllSchedules() not yet added
+│   ├── schema.ts                  ← ✅ Course + FAQPage JSON-LD
 │   ├── mock/classMock.ts          ← superseded, P2 cleanup
 │   └── types/class.ts             ← ✅
 public/
-│   ├── logo.svg                   ← ✅
-│   ├── logo-white.svg             ← ✅
-│   ├── ests-logo-white.svg        ← ✅
-│   ├── ais-logo.svg               ← ✅
-│   ├── secana-logo.svg            ← ✅
-│   ├── dyatmika-logo.svg          ← ✅
-│   ├── favicon-16.png             ← ✅
-│   ├── favicon-32.png             ← ✅
-│   ├── apple-touch-icon.png       ← ✅
-│   └── og-home.jpg                ← 🔜 needed for Step 3 OG meta (export from Canva, 1200×630)
+├── logo.svg, logo-white.svg, ests-logo-white.svg  ← ✅
+├── ais-logo.svg, secana-logo.svg, dyatmika-logo.svg  ← ✅
+├── og-home.webp                   ← ✅ (1024×682)
+├── favicon-16.png, favicon-32.png, apple-touch-icon.png  ← ✅
+├── slideshow/                     ← ✅ 12 class photos for homepage carousel
+└── classes/                       ← ✅ class hero images
 scripts/
-└── seed-classes.mjs               ← ✅ run once per environment
+└── seed-classes.mjs               ← ✅
 _docs/
-├── PROJECT-TRACKER.md             ← this file (rev 5, 20 Jul 2026)
-├── cloudflare-worker.js           ← ✅ ready; 🔜 Step 4: add pathname === "/" then deploy
-├── Plan-Homepage-Nextjs.md        ← 📋 Homepage migration plan (active)
-├── class-pages-seo.md             ← SEO titles & meta descriptions for all 9 class pages
+├── PROJECT-TRACKER.md             ← this file (rev 8, 22 Jul 2026)
+├── cloudflare-worker.js           ← ✅ deployed to production (22 Jul 2026)
+├── Plan-Homepage-Nextjs.md
+├── Plan-Forms-Modal-Resend.md
+├── class-pages-seo.md
 ├── Draft-Konten-Halaman-Kelas-Eva-Scolaro.md
 ├── Frontend-Plan-Fase1-Halaman-Kelas.md
 ├── Migration-Plan-Fase1-Halaman-Kelas.md
 ├── Migration-Plan-Nextjs-Eva-Scolaro.md
 └── PRD-SEO-Eva-Scolaro-Talent-Studio.md
 ```
+
+---
+
+## Next Steps Right Now
+
+**Three tasks tonight (in order, ~90 min total):**
+
+### 1. `fetchAllSchedules()` + wire into homepage (1h)
+1. Audit WP location strings: `curl ".../wp/v2/event?per_page=100&_fields=acf" | jq '[.[].acf.event_location] | unique'`
+2. Add `fetchAllSchedules()` to `classQueries.ts` (no keyword filter, no location filter — returns all)
+3. Convert `MOCK_SCHEDULE` in `page.tsx` to live data — either via `useEffect` fetch (stays client) or extract `HomeTimetable` as a server component (preferred for ISR)
+
+### 2. Sitemap + build check (10 min)
+1. Add `{ url: BASE + "/", ... priority: 1.0 }` to `sitemap.ts`
+2. `npm run build` — confirm clean
+
+### 3. Watzap + deploy (20 min)
+1. Add `<Script src="https://cdn.watzap.id/widget-api.js" data-watzapkey="rAMU1787" strategy="lazyOnload" />` to `layout.tsx`
+2. Set Vercel env vars (`WP_ORIGIN`, `NEXT_PUBLIC_WA_NUMBER`, `NEXT_PUBLIC_GTM_ID`, `NEXT_PUBLIC_GA_ID`, `RESEND_API_KEY`, `RESEND_FROM`, `FORM_CC`, `FORM_RECIPIENT_AGENT2`, `FORM_RECIPIENT_AGENT3`)
+3. Deploy Cloudflare Worker via dashboard
+4. Test staging URL → DNS cutover
