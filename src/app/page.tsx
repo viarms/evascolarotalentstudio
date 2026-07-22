@@ -317,7 +317,7 @@ function HomeHero() {
 // ─── About carousel photos ────────────────────────────────────────────────────
 // Class photos from the studio — showcasing the range of disciplines offered.
 const ABOUT_SLIDES = [
-  "/slideshow/ballet-junior.jpg",
+  "/slideshow/ballet-junior.webp",
   "/slideshow/ballet-tots.jpg",
   "/slideshow/drama-musical-theatre.jpg",
   "/slideshow/hiphop-junior.jpg",
@@ -337,12 +337,36 @@ const DISSOLVE_MS    = 1400;
 function AboutCarousel() {
   const [current, setCurrent] = useState(0);
   const [next,    setNext]    = useState<number | null>(null);
-  // 0 = both at rest, progresses 0→1 during the dissolve
   const [progress, setProgress] = useState(0);
+  const [ready,   setReady]   = useState(false); // true once all images are loaded
   const rafRef  = useRef<number>(0);
   const startRef= useRef<number>(0);
 
+  // Preload all slides; reveal carousel only after every image has loaded
   useEffect(() => {
+    let loaded = 0;
+    const total = ABOUT_SLIDES.length;
+    const imgs: HTMLImageElement[] = [];
+
+    ABOUT_SLIDES.forEach((src) => {
+      const img = new window.Image();
+      img.onload = img.onerror = () => {
+        loaded += 1;
+        if (loaded === total) setReady(true);
+      };
+      img.src = src;
+      imgs.push(img);
+    });
+
+    return () => {
+      // Let GC collect — nothing to explicitly cancel on HTMLImageElement
+      imgs.length = 0;
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!ready) return;
+
     const hold = setTimeout(() => {
       const nextSlide = (current + 1) % ABOUT_SLIDES.length;
       setNext(nextSlide);
@@ -352,14 +376,12 @@ function AboutCarousel() {
 
       function tick(now: number) {
         const p = Math.min((now - startRef.current) / DISSOLVE_MS, 1);
-        // ease-in-out cubic for a silky dissolve
         const eased = p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2;
         setProgress(eased);
 
         if (p < 1) {
           rafRef.current = requestAnimationFrame(tick);
         } else {
-          // Dissolve complete — promote next to current
           setCurrent(nextSlide);
           setNext(null);
           setProgress(0);
@@ -373,7 +395,7 @@ function AboutCarousel() {
       clearTimeout(hold);
       cancelAnimationFrame(rafRef.current);
     };
-  }, [current]);
+  }, [current, ready]);
 
   return (
     <div
@@ -388,7 +410,28 @@ function AboutCarousel() {
         overflow: "hidden",
       }}
     >
-      {/* Current slide — fades out as next comes in */}
+      {/* Shimmer preloader — shown until all images are loaded */}
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          zIndex: 10,
+          opacity: ready ? 0 : 1,
+          transition: ready ? "opacity 600ms ease-out" : "none",
+          pointerEvents: "none",
+          background: "#0d0808",
+        }}
+      >
+        <div style={{
+          position: "absolute",
+          inset: 0,
+          background: "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.04) 50%, transparent 100%)",
+          backgroundSize: "200% 100%",
+          animation: "shimmer 1.6s infinite",
+        }} />
+      </div>
+
+      {/* Current slide */}
       <div
         style={{
           position: "absolute",
@@ -401,7 +444,7 @@ function AboutCarousel() {
         }}
       />
 
-      {/* Next slide — fades in simultaneously */}
+      {/* Next slide */}
       {next !== null && (
         <div
           style={{
@@ -415,7 +458,7 @@ function AboutCarousel() {
           }}
         />
       )}
-      {/* Vignette overlay — dark at all edges, transparent at centre */}
+      {/* Vignette overlay */}
       <div
         style={{
           position: "absolute",
@@ -424,7 +467,7 @@ function AboutCarousel() {
           zIndex: 3,
         }}
       />
-      {/* Bottom scrim — fades carousel into the section below */}
+      {/* Bottom scrim */}
       <div
         style={{
           position: "absolute",
