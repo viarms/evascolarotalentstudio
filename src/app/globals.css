@@ -70,6 +70,16 @@ h1, h2, h3, h4, h5, h6 {
   to   { background-position: -200% 0; }
 }
 
+@keyframes spinOrbit {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes noteBounce {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50%      { transform: translateY(-4px) scale(1.08); }
+}
+
 @keyframes ctaPulse {
   0%, 100% { box-shadow: 0 2px 12px rgba(178, 0, 1, 0.25); opacity: 1; }
   50%       { box-shadow: 0 4px 28px rgba(178, 0, 1, 0.55); opacity: 0.88; }
