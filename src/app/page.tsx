@@ -274,19 +274,18 @@ function HomeHero() {
 
 
 // ─── About carousel photos ────────────────────────────────────────────────────
-// Kids & teens performing on stage — Christmas Term Concert (The Trans Resort Bali)
-// Selected by visual inspection: all show students mid-performance on stage.
+// Class photos from the studio — showcasing the range of disciplines offered.
 const ABOUT_SLIDES = [
-  // Tots hip-hop — red tracksuits, hands raised on stage
-  "https://www.evascolarotalentstudio.com/wp-content/uploads/2026/03/SMY00246.webp",
-  // Girls in red dresses singing with microphones on stage
-  "https://www.evascolarotalentstudio.com/wp-content/uploads/2026/03/SMY05921.webp",
-  // Teens drama performance on stage
-  "https://www.evascolarotalentstudio.com/wp-content/uploads/2026/03/SMY00449.webp",
-  // Tots pink hip-hop uniforms dancing on stage
-  "https://www.evascolarotalentstudio.com/wp-content/uploads/2026/03/SMY05861.webp",
-  // Hip-hop kids mid-dance on stage
-  "https://www.evascolarotalentstudio.com/wp-content/uploads/2026/03/SMY05984.webp",
+  "/slideshow/ballet-junior.jpg",
+  "/slideshow/ballet-tots.jpg",
+  "/slideshow/drama-musical-theatre.jpg",
+  "/slideshow/hiphop-junior.jpg",
+  "/slideshow/jazz-dance.jpg",
+  "/slideshow/kpop-teen.jpg",
+  "/slideshow/modeling-junior.jpg",
+  "/slideshow/singing-junior.jpg",
+  "/slideshow/singing-teen.jpg",
+  "/slideshow/singing-tots.jpg",
 ];
 
 // Crossfade interval in ms — time each slide is fully visible
