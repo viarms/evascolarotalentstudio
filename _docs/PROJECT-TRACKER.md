@@ -1,5 +1,5 @@
 # Project Tracker — Eva Scolaro Talent Studio
-**Last updated:** 20 July 2026 (rev 5)
+**Last updated:** 22 July 2026 (rev 6)
 **Phase:** Phase 1 complete → Homepage migration active
 
 ---
@@ -230,6 +230,11 @@ After adding, re-run `npm run seed:classes` to write titles correctly. The auto-
 | **12** | `classMock.ts` cleanup | Superseded by `STATIC_CONTENT` in `page.tsx`; can be deleted or kept as dev reference |
 | **13** | **Forms — modal system with Resend** | Replicate all 3 live WP popup forms (Join Us / Registration, Book Free Trial, Feedback) as native Next.js modal components. Use the existing `<dialog>`-based modal pattern (`FeedbackModal.tsx`). Route each trigger CTA to the correct modal. Send emails via **Resend** (key in `.env.local` as `RESEND_API_KEY`). Recipient routing: Join Us + Book Free Trial → `agent3.evascolaro@gmail.com`; Feedback + Contact + RSVP → `agent2.evascolaro@gmail.com`; all forms CC `firestone.stdo@gmail.com`. Full spec: `Plan-Forms-Modal-Resend.md`. |
 | **14** | Full WordPress → Next.js migration | Migrate remaining pages (Gallery, Practice, Dancewear, News, Contact, T&C); move WP to `cms.evascolarotalentstudio.com`. See `Migration-Plan-Nextjs-Eva-Scolaro.md`. |
+| **15** | **Dance Studio for Rent page** (`/studio-rental/`) | New page draft. Facilities: full wall mirrors, hi-fi sound system, changing room & toilet, cafeteria, parking. Pricing: 1st floor 400k/hr, 2nd floor 250k/hr. Availability: Mon–Fri 10:00 AM – 1:00 PM. Location: Jl. Bypass Ngurah Rai No. 88A, Sanur, Denpasar Selatan. Booking: WhatsApp +62 821-4628-4464 with preferred date, time, and duration. |
+| **16** | **Concert page** (`/concert/`) | New page draft. Content TBD — showcase upcoming/past concert events. |
+| **17** | **Privacy Notice page** (`/privacy-notice/`) | Draft Privacy Notice covering data collected via forms (Join Us, Book Free Trial, Feedback), WhatsApp contact, cookies, and third-party services (GTM, GA). |
+| **18** | **Cookie consent banner** | Lightweight banner shown on first visit with a link to `/privacy-notice/`. Stores consent in `localStorage`. No third-party cookie library — build as a simple client component. |
+| **19** | **WhatsApp chat widget (Watzap)** | Re-implement the live site's Watzap widget in Next.js. Live site snippet: `<script async data-watzapkey="rAMU1787" src="https://cdn.watzap.id/widget-api.js"></script>`. Add as a `<Script strategy="lazyOnload">` in `src/app/layout.tsx` so it loads after the page is interactive. Widget label: "Hi it's Lola, let's have a chat!" (configured in the Watzap dashboard — no code change needed for the label). |
 
 ---
 

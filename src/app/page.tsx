@@ -15,7 +15,8 @@ gsap.registerPlugin(ScrollTrigger, SplitText);
 import {
   ZapIcon,
   CheckIcon,
-  RocketIcon,
+  SparklesIcon,
+  BellRingIcon,
   AudioLinesIcon,
   MicIcon,
   CompassIcon,
@@ -109,6 +110,67 @@ const DAY_ORDER      = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", 
 // Source: elementor-element-50c1893 (min-height:100vh, overlay 0.85)
 //         headings: c5bd5cf (1em Inter 600 uppercase), 18b3370 (3em Archivo Black uppercase),
 //         9f14ff9 (1.6em Archivo Black uppercase brand-red), 9e14629 (1em Inter 600 uppercase)
+
+// ─── JoinUsButton ─────────────────────────────────────────────────────────────
+// Flat style, thin border, micro-movement on hover.
+// Icon animation triggered by button hover, not by the icon itself.
+
+function JoinUsButton() {
+  const iconRef = useRef<{ startAnimation: () => void; stopAnimation: () => void }>(null);
+
+  return (
+    <>
+      <style>{`
+        @keyframes ju-lift {
+          0%   { transform: translateY(0) scale(1); }
+          40%  { transform: translateY(-3px) scale(1.015); }
+          70%  { transform: translateY(-1px) scale(1.01); }
+          100% { transform: translateY(0) scale(1); }
+        }
+        .ju-btn {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.4em;
+          font-family: "Archivo Black", sans-serif;
+          font-size: 1.2em;
+          font-weight: 400;
+          color: #EFEFEF;
+          background: transparent;
+          border: 1.5px solid rgba(34,34,34,0.9);
+          border-radius: 2px;
+          padding: 0.5em 1.2em;
+          cursor: pointer;
+          animation: ctaPulse 2.5s ease-in-out infinite;
+          transition: background 0.22s ease, border-color 0.22s ease;
+          will-change: transform;
+        }
+        .ju-btn:hover {
+          background: #B20001;
+          border-color: rgba(178,0,1,0.6);
+          animation: ju-lift 0.38s ease forwards;
+        }
+        .ju-btn:active {
+          transform: translateY(0) scale(0.98);
+        }
+      `}</style>
+      <button
+        type="button"
+        className="ju-btn"
+        onClick={() => window.dispatchEvent(new Event("open-join-us-modal"))}
+        onMouseEnter={() => iconRef.current?.startAnimation()}
+        onMouseLeave={() => iconRef.current?.stopAnimation()}
+      >
+        <BellRingIcon
+          ref={iconRef}
+          size={18}
+          color="#EFEFEF"
+          isAnimated={false}
+        />
+        Join Us
+      </button>
+    </>
+  );
+}
 
 function HomeHero() {
   const contentRef = useRef<HTMLDivElement>(null);
@@ -243,29 +305,7 @@ function HomeHero() {
         </p>
 
         {/* Join Us CTA — opens registration modal */}
-        <button
-          type="button"
-          onClick={() => window.dispatchEvent(new Event("open-join-us-modal"))}
-          className="inline-block transition-colors duration-300 cursor-pointer"
-          style={{
-            background: "rgba(0,0,0,0.39)",
-            fontFamily: '"Archivo Black", sans-serif',
-            fontSize: "1.2em",
-            fontWeight: 400,
-            color: "#EFEFEF",
-            border: "1px solid #222222",
-            borderRadius: "1px",
-            padding: "0.5em 1.2em",
-            animation: "ctaPulse 2.5s ease-in-out infinite",
-          }}
-          onMouseEnter={e => (e.currentTarget.style.background = "#B20001")}
-          onMouseLeave={e => (e.currentTarget.style.background = "rgba(0,0,0,0.39)")}
-        >
-          <span style={{ display: "flex", alignItems: "center", gap: "0.4em" }}>
-            <ZapIcon size={18} color="#EFEFEF" />
-            Join Us
-          </span>
-        </button>
+        <JoinUsButton />
       </div>
     </section>
   );
@@ -555,6 +595,66 @@ const PACKS = [
   },
 ];
 
+// ─── BookFreeTrialButton ──────────────────────────────────────────────────────
+// Flat style, thin border, micro-movement on hover.
+// Icon animation is triggered by button hover, not by the icon itself.
+
+function BookFreeTrialButton() {
+  const iconRef = useRef<{ startAnimation: () => void; stopAnimation: () => void }>(null);
+
+  return (
+    <>
+      <style>{`
+        @keyframes bft-lift {
+          0%   { transform: translateY(0) scale(1); }
+          40%  { transform: translateY(-3px) scale(1.015); }
+          70%  { transform: translateY(-1px) scale(1.01); }
+          100% { transform: translateY(0) scale(1); }
+        }
+        .bft-btn {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.45em;
+          font-family: Inter, sans-serif;
+          font-size: 1.4em;
+          font-weight: 800;
+          color: #EFEFEF;
+          background: transparent;
+          border: 1.5px solid rgba(239,239,239,0.55);
+          border-radius: 2px;
+          padding: 0.42em 1.6em;
+          cursor: pointer;
+          transition: background 0.22s ease, border-color 0.22s ease;
+          will-change: transform;
+        }
+        .bft-btn:hover {
+          background: rgba(178,0,1,0.72);
+          border-color: rgba(239,239,239,0.9);
+          animation: bft-lift 0.38s ease forwards;
+        }
+        .bft-btn:active {
+          transform: translateY(0) scale(0.98);
+        }
+      `}</style>
+      <button
+        type="button"
+        className="bft-btn"
+        onClick={() => window.dispatchEvent(new Event("open-book-trial-modal"))}
+        onMouseEnter={() => iconRef.current?.startAnimation()}
+        onMouseLeave={() => iconRef.current?.stopAnimation()}
+      >
+        <SparklesIcon
+          ref={iconRef}
+          size={20}
+          color="#EFEFEF"
+          isAnimated={false}
+        />
+        Book Free Trial
+      </button>
+    </>
+  );
+}
+
 function HomePricing() {
   const sectionRef  = useRef<HTMLElement>(null);
   const headingRef  = useRef<HTMLDivElement>(null);
@@ -678,30 +778,7 @@ function HomePricing() {
 
         {/* Book Free Trial CTA — opens trial modal */}
         <div style={{ display: "flex", justifyContent: "center", marginTop: "2em" }}>
-          <button
-            type="button"
-            onClick={() => window.dispatchEvent(new Event("open-book-trial-modal"))}
-            className="inline-block transition-colors duration-300 cursor-pointer"
-            style={{
-              background: "rgba(178,0,1,0.5)",
-              fontFamily: "Inter, sans-serif",
-              fontSize: "1.5em",
-              fontWeight: 800,
-              color: "#EFEFEF",
-              border: "5px solid rgba(239,239,239,0.75)",
-              borderRadius: "1px",
-              padding: "0.4em 1.5em",
-              display: "inline-block",
-            }}
-            onMouseEnter={e => (e.currentTarget.style.background = "#B20001")}
-            onMouseLeave={e => (e.currentTarget.style.background = "rgba(178,0,1,0.5)")}
-          >
-            <span style={{ display: "flex", alignItems: "center", gap: "0.4em" }}>
-              <RocketIcon size={20} color="#EFEFEF" />
-              Book Free Trial
-            </span>
-          </button>
-        </div>
+          <BookFreeTrialButton /></div>
       </div>
     </section>
   );
