@@ -1035,7 +1035,7 @@ function DirectionButton({ href }: { href: string }) {
           letter-spacing: 2px;
           color: #DDDDDD;
           background: transparent;
-          border: 1.5px solid rgba(221,221,221,0.5);
+          border: 1px solid #DDDDDD;
           border-radius: 2px;
           padding: 0.5em 1.5em;
           text-decoration: none;
