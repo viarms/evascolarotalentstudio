@@ -52,16 +52,26 @@ function validate(f: FormFields): FieldErrors {
   return e;
 }
 
-const inputBase =
-  "w-full px-3 py-2.5 text-sm text-gray-900 bg-white border rounded-sm " +
-  "placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#b91c1c] " +
-  "focus:border-transparent transition-colors duration-150 disabled:opacity-50";
+// ── Dark glass form primitives ────────────────────────────────────────────────
+const inputBase = [
+  "w-full px-3 py-2.5 text-sm rounded-md",
+  "bg-white/[0.07] border",
+  "text-white/90 placeholder:text-white/25",
+  "focus:outline-none focus:ring-2 focus:ring-[#e53935]/60 focus:border-[#e53935]/50",
+  "transition-all duration-150 disabled:opacity-40",
+  "[-webkit-appearance:none]",
+].join(" ");
+
 const cls = {
-  ok:    `${inputBase} border-gray-300`,
-  err:   `${inputBase} border-red-500 bg-red-50`,
-  label: "block text-xs font-medium text-gray-700 mb-1",
+  ok:    `${inputBase} border-white/[0.12] hover:border-white/25 hover:bg-white/[0.10]`,
+  err:   `${inputBase} border-red-500/60 bg-red-500/[0.12]`,
+  label: "block text-[10px] font-semibold mb-1.5 tracking-[0.1em] uppercase text-white/45",
   field: "mb-4",
+  hint:  "mt-1 text-[11px] text-white/28",
+  error: "mt-1 text-[11px] text-red-400",
+  intro: "text-sm text-white/40 mb-5",
 };
+// ─────────────────────────────────────────────────────────────────────────────
 
 export default function JoinUsModal() {
   const uid = useId();
@@ -77,7 +87,6 @@ export default function JoinUsModal() {
     setStatus("idle"); setServerMsg("");
     setIsOpen(true);
   }, []);
-
   const close = useCallback(() => setIsOpen(false), []);
 
   useEffect(() => {
@@ -129,87 +138,148 @@ export default function JoinUsModal() {
     <ModalShell isOpen={isOpen} onClose={close} title="Join Us — Registration" titleId={`${uid}-title`} maxWidth="580px">
       {status === "success" ? (
         <div className="flex flex-col items-center gap-4 py-8 text-center">
-          <div className="flex items-center justify-center w-14 h-14 rounded-full bg-green-100">
-            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round" className="w-7 h-7 text-green-600"><path d="M20 6L9 17l-5-5" /></svg>
+          <div className="flex items-center justify-center w-14 h-14 rounded-full"
+               style={{ background: "rgba(34,197,94,0.15)", border: "1px solid rgba(34,197,94,0.3)" }}>
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5}
+                 strokeLinecap="round" strokeLinejoin="round" className="w-7 h-7 text-green-400">
+              <path d="M20 6L9 17l-5-5" />
+            </svg>
           </div>
-          <p className="text-gray-900 font-medium">{serverMsg}</p>
-          <p className="text-sm text-gray-500">We&apos;ll be in touch soon. Or reach us on <a href={WA_HREF} target="_blank" rel="noopener noreferrer" className="text-green-600 underline">WhatsApp</a>.</p>
-          <button type="button" onClick={close} className="mt-2 px-6 py-2.5 text-sm font-medium text-white rounded-sm bg-[#b91c1c] hover:bg-[#991b1b] transition-colors">Close</button>
+          <p className="text-white/90 font-medium">{serverMsg}</p>
+          <p className="text-sm text-white/40">
+            We&apos;ll be in touch soon. Or reach us on{" "}
+            <a href={WA_HREF} target="_blank" rel="noopener noreferrer" className="text-green-400 underline">WhatsApp</a>.
+          </p>
+          <button type="button" onClick={close}
+            className="mt-2 px-6 py-2.5 text-sm font-normal text-white rounded-md bg-[#b91c1c] hover:bg-[#991b1b] transition-colors">
+            Close
+          </button>
         </div>
       ) : (
         <form onSubmit={handleSubmit} noValidate>
-          <p className="text-sm text-gray-500 mb-5">Fields marked <span className="text-red-600 font-medium">*</span> are required.</p>
+          <p className={cls.intro}>
+            Fields marked <span className="text-red-400 font-semibold">*</span> are required.
+          </p>
 
           <div className={cls.field}>
-            <label htmlFor={`${uid}-parentName`} className={cls.label}>Parent / Guardian Name <span className="text-red-600">*</span></label>
-            <input id={`${uid}-parentName`} name="parentName" type="text" autoComplete="name" value={fields.parentName} onChange={handleChange} onBlur={handleBlur} disabled={status === "submitting"} className={errors.parentName ? cls.err : cls.ok} placeholder="Full name" />
-            {errors.parentName && <p role="alert" className="mt-1 text-xs text-red-600">{errors.parentName}</p>}
+            <label htmlFor={`${uid}-parentName`} className={cls.label}>
+              Parent / Guardian Name <span className="text-red-400">*</span>
+            </label>
+            <input id={`${uid}-parentName`} name="parentName" type="text" autoComplete="name"
+              value={fields.parentName} onChange={handleChange} onBlur={handleBlur}
+              disabled={status === "submitting"} className={errors.parentName ? cls.err : cls.ok}
+              placeholder="Full name" />
+            {errors.parentName && <p role="alert" className={cls.error}>{errors.parentName}</p>}
           </div>
 
           <div className="flex gap-3 mb-4">
             <div className="flex-1">
-              <label htmlFor={`${uid}-childName`} className={cls.label}>Child&apos;s Name <span className="text-red-600">*</span></label>
-              <input id={`${uid}-childName`} name="childName" type="text" value={fields.childName} onChange={handleChange} onBlur={handleBlur} disabled={status === "submitting"} className={errors.childName ? cls.err : cls.ok} placeholder="Child's full name" />
-              {errors.childName && <p role="alert" className="mt-1 text-xs text-red-600">{errors.childName}</p>}
+              <label htmlFor={`${uid}-childName`} className={cls.label}>Child&apos;s Name <span className="text-red-400">*</span></label>
+              <input id={`${uid}-childName`} name="childName" type="text"
+                value={fields.childName} onChange={handleChange} onBlur={handleBlur}
+                disabled={status === "submitting"} className={errors.childName ? cls.err : cls.ok}
+                placeholder="Child's full name" />
+              {errors.childName && <p role="alert" className={cls.error}>{errors.childName}</p>}
             </div>
             <div style={{ width: "100px" }}>
-              <label htmlFor={`${uid}-childAge`} className={cls.label}>Age <span className="text-red-600">*</span></label>
-              <input id={`${uid}-childAge`} name="childAge" type="number" min={3} max={16} value={fields.childAge} onChange={handleChange} onBlur={handleBlur} disabled={status === "submitting"} className={errors.childAge ? cls.err : cls.ok} placeholder="3–16" />
-              {errors.childAge && <p role="alert" className="mt-1 text-xs text-red-600">{errors.childAge}</p>}
+              <label htmlFor={`${uid}-childAge`} className={cls.label}>Age <span className="text-red-400">*</span></label>
+              <input id={`${uid}-childAge`} name="childAge" type="number" min={3} max={16}
+                value={fields.childAge} onChange={handleChange} onBlur={handleBlur}
+                disabled={status === "submitting"} className={errors.childAge ? cls.err : cls.ok}
+                placeholder="3–16" />
+              {errors.childAge && <p role="alert" className={cls.error}>{errors.childAge}</p>}
             </div>
           </div>
 
           <div className="mb-4">
-            <p className={cls.label}>Class Interest <span className="text-red-600">*</span></p>
-            <div className="grid gap-x-4 gap-y-2 mt-1" style={{ gridTemplateColumns: "repeat(auto-fill, minmax(160px, 1fr))" }} role="group" aria-label="Select classes">
+            <p className={cls.label}>Class Interest <span className="text-red-400">*</span></p>
+            <div
+              className="grid gap-x-4 gap-y-2.5 mt-2"
+              style={{ gridTemplateColumns: "repeat(auto-fill, minmax(155px, 1fr))" }}
+              role="group"
+              aria-label="Select classes"
+            >
               {CLASSES.map(c => (
-                <label key={c} className="flex items-center gap-2 text-sm text-gray-800 cursor-pointer select-none">
-                  <input type="checkbox" checked={fields.classes.includes(c)} onChange={() => handleClassToggle(c)} disabled={status === "submitting"} className="w-4 h-4 accent-[#b91c1c] cursor-pointer" />
+                <label key={c} className="flex items-center gap-2.5 text-sm text-white/80 cursor-pointer select-none">
+                  <input
+                    type="checkbox"
+                    checked={fields.classes.includes(c)}
+                    onChange={() => handleClassToggle(c)}
+                    disabled={status === "submitting"}
+                    className="w-4 h-4 accent-[#b91c1c] cursor-pointer rounded"
+                  />
                   {c}
                 </label>
               ))}
             </div>
-            {touched.classes && errors.classes && <p role="alert" className="mt-1 text-xs text-red-600">{errors.classes}</p>}
+            {touched.classes && errors.classes && (
+              <p role="alert" className={cls.error}>{errors.classes}</p>
+            )}
           </div>
 
           <div className={cls.field}>
-            <label htmlFor={`${uid}-studio`} className={cls.label}>Preferred Studio <span className="text-red-600">*</span></label>
-            <select id={`${uid}-studio`} name="studio" value={fields.studio} onChange={handleChange} onBlur={handleBlur} disabled={status === "submitting"} className={`${errors.studio ? cls.err : cls.ok} cursor-pointer`}>
+            <label htmlFor={`${uid}-studio`} className={cls.label}>Preferred Studio <span className="text-red-400">*</span></label>
+            <select id={`${uid}-studio`} name="studio"
+              value={fields.studio} onChange={handleChange} onBlur={handleBlur}
+              disabled={status === "submitting"} className={`${errors.studio ? cls.err : cls.ok} cursor-pointer`}>
               <option value="">— Select studio —</option>
               {STUDIOS.map(s => <option key={s} value={s}>{s}</option>)}
             </select>
-            {errors.studio && <p role="alert" className="mt-1 text-xs text-red-600">{errors.studio}</p>}
+            {errors.studio && <p role="alert" className={cls.error}>{errors.studio}</p>}
           </div>
 
           <div className="flex gap-3 mb-4">
             <div className="flex-1">
-              <label htmlFor={`${uid}-whatsapp`} className={cls.label}>WhatsApp Number <span className="text-red-600">*</span></label>
-              <input id={`${uid}-whatsapp`} name="whatsapp" type="tel" autoComplete="tel" value={fields.whatsapp} onChange={handleChange} onBlur={handleBlur} disabled={status === "submitting"} className={errors.whatsapp ? cls.err : cls.ok} placeholder="628xxxxxxxxxx" />
-              {errors.whatsapp ? <p role="alert" className="mt-1 text-xs text-red-600">{errors.whatsapp}</p> : <p className="mt-1 text-xs text-gray-400">No + prefix. E.g. 628xxxxxxxxxx</p>}
+              <label htmlFor={`${uid}-whatsapp`} className={cls.label}>WhatsApp Number <span className="text-red-400">*</span></label>
+              <input id={`${uid}-whatsapp`} name="whatsapp" type="tel" autoComplete="tel"
+                value={fields.whatsapp} onChange={handleChange} onBlur={handleBlur}
+                disabled={status === "submitting"} className={errors.whatsapp ? cls.err : cls.ok}
+                placeholder="628xxxxxxxxxx" />
+              {errors.whatsapp
+                ? <p role="alert" className={cls.error}>{errors.whatsapp}</p>
+                : <p className={cls.hint}>No + prefix. E.g. 628xxxxxxxxxx</p>}
             </div>
             <div className="flex-1">
               <label htmlFor={`${uid}-email`} className={cls.label}>Email</label>
-              <input id={`${uid}-email`} name="email" type="email" autoComplete="email" value={fields.email} onChange={handleChange} onBlur={handleBlur} disabled={status === "submitting"} className={errors.email ? cls.err : cls.ok} placeholder="you@example.com (optional)" />
-              {errors.email && <p role="alert" className="mt-1 text-xs text-red-600">{errors.email}</p>}
+              <input id={`${uid}-email`} name="email" type="email" autoComplete="email"
+                value={fields.email} onChange={handleChange} onBlur={handleBlur}
+                disabled={status === "submitting"} className={errors.email ? cls.err : cls.ok}
+                placeholder="you@example.com (optional)" />
+              {errors.email && <p role="alert" className={cls.error}>{errors.email}</p>}
             </div>
           </div>
 
           <div className={cls.field}>
             <label htmlFor={`${uid}-notes`} className={cls.label}>Additional Notes</label>
-            <textarea id={`${uid}-notes`} name="notes" rows={3} value={fields.notes} onChange={handleChange} onBlur={handleBlur} disabled={status === "submitting"} className={`${cls.ok} resize-y min-h-[72px]`} placeholder="Any additional information…" />
+            <textarea id={`${uid}-notes`} name="notes" rows={3}
+              value={fields.notes} onChange={handleChange} onBlur={handleBlur}
+              disabled={status === "submitting"}
+              className={`${cls.ok} resize-y min-h-[72px]`}
+              placeholder="Any additional information…" />
           </div>
 
           {status === "error" && serverMsg && (
-            <div role="alert" className="flex items-start gap-2 mb-4 px-3 py-2.5 rounded-sm bg-red-50 border border-red-200 text-sm text-red-700">
-              <svg aria-hidden="true" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4 flex-shrink-0 mt-0.5"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm-.75-4.75a.75.75 0 001.5 0v-4.5a.75.75 0 00-1.5 0v4.5zm.75-7a1 1 0 110 2 1 1 0 010-2z" clipRule="evenodd" /></svg>
+            <div role="alert"
+              className="flex items-start gap-2 mb-4 px-3 py-2.5 rounded-md text-sm text-red-300"
+              style={{ background: "rgba(220,38,38,0.14)", border: "1px solid rgba(220,38,38,0.28)" }}>
+              <svg aria-hidden="true" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4 flex-shrink-0 mt-0.5 text-red-400">
+                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm-.75-4.75a.75.75 0 001.5 0v-4.5a.75.75 0 00-1.5 0v4.5zm.75-7a1 1 0 110 2 1 1 0 010-2z" clipRule="evenodd" />
+              </svg>
               {serverMsg}
             </div>
           )}
 
           <button type="submit" disabled={status === "submitting"}
-            className="w-full flex items-center justify-center gap-2 px-6 py-3 text-sm font-semibold text-white rounded-sm bg-[#b91c1c] hover:bg-[#991b1b] active:bg-[#7f1d1d] disabled:opacity-60 disabled:cursor-not-allowed transition-colors"
+            className="w-full flex items-center justify-center gap-2 px-6 py-3 text-sm font-normal text-white rounded-md bg-[#b91c1c] hover:bg-[#991b1b] active:bg-[#7f1d1d] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
             style={{ fontFamily: "var(--font-archivo-black, sans-serif)" }}>
-            {status === "submitting" ? (<><svg aria-hidden="true" className="w-4 h-4 animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" /></svg>Sending…</>) : "Submit Registration"}
+            {status === "submitting" ? (
+              <>
+                <svg aria-hidden="true" className="w-4 h-4 animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                  <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
+                </svg>
+                Sending…
+              </>
+            ) : "Submit Registration"}
           </button>
         </form>
       )}

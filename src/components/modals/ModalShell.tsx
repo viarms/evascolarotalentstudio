@@ -1,34 +1,43 @@
 "use client";
 // src/components/modals/ModalShell.tsx
-// Shared modal overlay shell. State-driven — renders nothing when closed.
-// No <dialog> element, no showModal(), no browser DOM state.
+// Glassmorphism modal shell.
+// Header : near-black solid.
+// Body   : dark frosted glass — light text for clear contrast.
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
+const ENTER_MS = 320;
+const EXIT_MS  = 190;
+
 interface Props {
-  isOpen:       boolean;
-  onClose:      () => void;
-  title:        string;
-  titleId:      string;
-  maxWidth?:    string;
-  children:     React.ReactNode;
+  isOpen:    boolean;
+  onClose:   () => void;
+  title:     string;
+  titleId:   string;
+  maxWidth?: string;
+  children:  React.ReactNode;
 }
 
 export default function ModalShell({
   isOpen, onClose, title, titleId, maxWidth = "560px", children,
 }: Props) {
-  // Lock body scroll while open
+  const [mounted, setMounted] = useState(isOpen);
+
   useEffect(() => {
     if (isOpen) {
-      document.body.style.overflow = "hidden";
+      setMounted(true);
     } else {
-      document.body.style.overflow = "";
+      const t = setTimeout(() => setMounted(false), EXIT_MS);
+      return () => clearTimeout(t);
     }
+  }, [isOpen]);
+
+  useEffect(() => {
+    document.body.style.overflow = isOpen ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
   }, [isOpen]);
 
-  // Close on Escape
   useEffect(() => {
     if (!isOpen) return;
     const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
@@ -36,23 +45,33 @@ export default function ModalShell({
     return () => window.removeEventListener("keydown", onKey);
   }, [isOpen, onClose]);
 
-  // Focus trap — move focus inside when opened
   const panelRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    if (isOpen) {
-      // Defer so the element is painted first
-      requestAnimationFrame(() => panelRef.current?.focus());
-    }
+    if (isOpen) requestAnimationFrame(() => panelRef.current?.focus());
   }, [isOpen]);
 
-  if (!isOpen) return null;
+  if (!mounted) return null;
+
+  const overlayT = isOpen
+    ? `opacity ${ENTER_MS}ms cubic-bezier(0.22, 1, 0.36, 1)`
+    : `opacity ${EXIT_MS}ms ease-out`;
+
+  const panelT = isOpen
+    ? `opacity ${ENTER_MS}ms cubic-bezier(0.22, 1, 0.36, 1), transform ${ENTER_MS}ms cubic-bezier(0.22, 1, 0.36, 1)`
+    : `opacity ${EXIT_MS}ms ease-out, transform ${EXIT_MS}ms ease-out`;
 
   return createPortal(
     <div
       role="presentation"
       className="fixed inset-0 z-[9999] flex items-center justify-center p-4"
       onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
-      style={{ background: "rgba(0,0,0,0.6)", backdropFilter: "blur(4px)" }}
+      style={{
+        background: "rgba(6, 3, 14, 0.68)",
+        backdropFilter: "blur(12px) saturate(1.3)",
+        WebkitBackdropFilter: "blur(12px) saturate(1.3)",
+        opacity:    isOpen ? 1 : 0,
+        transition: overlayT,
+      }}
     >
       <div
         ref={panelRef}
@@ -60,39 +79,78 @@ export default function ModalShell({
         aria-modal="true"
         aria-labelledby={titleId}
         tabIndex={-1}
-        className="relative w-full bg-white rounded-sm shadow-2xl flex flex-col outline-none"
-        style={{ maxWidth, maxHeight: "90dvh" }}
+        className="relative w-full flex flex-col outline-none overflow-hidden"
+        style={{
+          maxWidth,
+          maxHeight: "90dvh",
+          borderRadius: "10px",
+          // Glass edge: white top-highlight + faint border
+          border: "1px solid rgba(255, 255, 255, 0.11)",
+          boxShadow:
+            "0 1px 0 rgba(255,255,255,0.14) inset, " +
+            "0 24px 60px rgba(0,0,0,0.60), " +
+            "0 6px 20px rgba(0,0,0,0.40)",
+          opacity:    isOpen ? 1 : 0,
+          transform:  isOpen ? "translateY(0) scale(1)" : "translateY(18px) scale(0.96)",
+          transition: panelT,
+        }}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Header */}
+        {/* ── Header — near-black, solid ── */}
         <div
-          className="flex items-center justify-between px-6 py-4 flex-shrink-0 rounded-t-sm"
-          style={{ backgroundColor: "#121212" }}
+          className="flex items-center justify-between px-6 py-4 flex-shrink-0"
+          style={{
+            background: "#080808",
+            borderBottom: "1px solid rgba(255, 255, 255, 0.07)",
+          }}
         >
           <h2
             id={titleId}
-            className="text-base font-semibold tracking-wide text-white m-0"
-            style={{ fontFamily: "var(--font-archivo-black, sans-serif)" }}
+            className="m-0 text-[15px] font-semibold tracking-wide"
+            style={{
+              fontFamily: "var(--font-archivo-black, sans-serif)",
+              color: "#fff",
+              letterSpacing: "0.04em",
+            }}
           >
             {title}
           </h2>
+
           <button
             type="button"
             onClick={onClose}
             aria-label="Close"
-            className="flex items-center justify-center w-8 h-8 rounded-full text-gray-400
-              hover:text-white hover:bg-white/10 transition-colors duration-150
-              focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40"
+            className="flex items-center justify-center w-8 h-8 rounded-full transition-all duration-150
+              focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/20"
+            style={{ color: "rgba(255,255,255,0.38)", background: "transparent" }}
+            onMouseEnter={e => {
+              (e.currentTarget as HTMLButtonElement).style.background = "rgba(255,255,255,0.09)";
+              (e.currentTarget as HTMLButtonElement).style.color      = "rgba(255,255,255,0.85)";
+            }}
+            onMouseLeave={e => {
+              (e.currentTarget as HTMLButtonElement).style.background = "transparent";
+              (e.currentTarget as HTMLButtonElement).style.color      = "rgba(255,255,255,0.38)";
+            }}
           >
             <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                 strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4">
+                 strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="w-[15px] h-[15px]">
               <path d="M18 6L6 18M6 6l12 12" />
             </svg>
           </button>
         </div>
 
-        {/* Scrollable body */}
-        <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain">
+        {/* ── Body — frost black + corner accent ── */}
+        <div
+          className="flex-1 min-h-0 overflow-y-auto overscroll-contain"
+          style={{
+            // #080808 base + visible radial glow anchored to bottom-right corner
+            background:
+              "radial-gradient(ellipse 60% 50% at 100% 100%, rgba(185,28,28,0.28) 0%, rgba(185,28,28,0.08) 40%, transparent 70%), " +
+              "#080808",
+            backdropFilter: "blur(32px) saturate(1.3)",
+            WebkitBackdropFilter: "blur(32px) saturate(1.3)",
+          }}
+        >
           <div className="px-6 py-6">
             {children}
           </div>
