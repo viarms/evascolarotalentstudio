@@ -319,15 +319,15 @@ function HomeHero() {
 // Class photos from the studio — showcasing the range of disciplines offered.
 const ABOUT_SLIDES = [
   "/slideshow/ballet-junior.webp",
-  "/slideshow/ballet-tots.jpg",
-  "/slideshow/drama-musical-theatre.jpg",
-  "/slideshow/hiphop-junior.jpg",
-  "/slideshow/jazz-dance.jpg",
-  "/slideshow/kpop-teen.jpg",
-  "/slideshow/modeling-junior.jpg",
-  "/slideshow/singing-junior.jpg",
-  "/slideshow/singing-teen.jpg",
-  "/slideshow/singing-tots.jpg",
+  "/slideshow/ballet-tots.webp",
+  "/slideshow/drama-musical-theatre.webp",
+  "/slideshow/hiphop-junior.webp",
+  "/slideshow/jazz-dance.webp",
+  "/slideshow/kpop-teen.webp",
+  "/slideshow/modeling-junior.webp",
+  "/slideshow/singing-junior.webp",
+  "/slideshow/singing-teen.webp",
+  "/slideshow/singing-tots.webp",
 ];
 
 // Crossfade interval in ms — time each slide is fully visible
