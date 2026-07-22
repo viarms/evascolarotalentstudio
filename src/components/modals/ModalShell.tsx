@@ -151,12 +151,14 @@ export default function ModalShell({
         </div>
 
         {/* ── Body — frost black + corner accent ── */}
+        {/* data-lenis-prevent tells Lenis to leave scroll events inside this element alone */}
         <div
+          data-lenis-prevent
           className="flex-1 min-h-0 overflow-y-auto overscroll-contain"
           style={{
             // #080808 base + visible radial glow anchored to bottom-right corner
             background:
-              "radial-gradient(ellipse 60% 50% at 100% 100%, rgba(185,28,28,0.28) 0%, rgba(185,28,28,0.08) 40%, transparent 70%), " +
+              "radial-gradient(ellipse 60% 50% at 100% 0%, rgba(185,28,28,0.28) 0%, rgba(185,28,28,0.08) 40%, transparent 70%), " +
               "#080808",
             backdropFilter: "blur(32px) saturate(1.3)",
             WebkitBackdropFilter: "blur(32px) saturate(1.3)",
