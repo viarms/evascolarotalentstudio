@@ -4,20 +4,22 @@
  * 1. Redirects /class/* → /classes/* (WordPress CPT → Next.js, 301 permanent)
  *
  * 2. Routes to Vercel (evascolarotalentstudio.vercel.app):
- *   - /classes/*         Next.js class pages
- *   - /api/*             Next.js API route handlers
- *   - /_next/*           Next.js JS/CSS/font assets
- *   - /favicon*          Favicons served by Next.js
- *   - /*.svg             Root-level SVG assets from Next.js /public (no subdirectory)
- *   - /*.png             Root-level PNG assets from Next.js /public (no subdirectory)
- *   - /*.ico             Root-level ICO files from Next.js /public (no subdirectory)
- *   - /sitemap.xml       Next.js sitemap
- *   - /robots.txt        Next.js robots
+ *   - /              Next.js homepage
+ *   - /classes/*     Next.js class pages
+ *   - /api/*         Next.js API route handlers
+ *   - /_next/*       Next.js JS/CSS/font assets
+ *   - /favicon*      Favicons served by Next.js
+ *   - /*.svg         Root-level SVG assets from Next.js /public (no subdirectory)
+ *   - /*.png         Root-level PNG assets from Next.js /public (no subdirectory)
+ *   - /*.webp        Root-level WebP assets from Next.js /public (no subdirectory)
+ *   - /*.ico         Root-level ICO files from Next.js /public (no subdirectory)
+ *   - /sitemap.xml   Next.js sitemap
+ *   - /robots.txt    Next.js robots
  *
  * 3. Everything else passes through to WordPress unchanged.
  *
- * NOTE: The static asset rules (*.svg, *.png, *.ico) intentionally match ONLY
- * root-level paths (e.g. /logo.svg) — NOT paths with subdirectories like
+ * NOTE: The static asset rules (*.svg, *.png, *.webp, *.ico) intentionally match
+ * ONLY root-level paths (e.g. /og-home.webp) — NOT paths with subdirectories like
  * /wp-content/uploads/photo.png. This prevents WP assets from being incorrectly
  * routed to Vercel.
  */
@@ -32,12 +34,14 @@ function isRootLevelFile(pathname, ext) {
 
 function shouldRouteToVercel(pathname) {
   return (
+    pathname === "/" ||
     pathname.startsWith("/classes") ||
     pathname.startsWith("/api/") ||
     pathname.startsWith("/_next/") ||
     pathname.startsWith("/favicon") ||
     isRootLevelFile(pathname, ".svg") ||
     isRootLevelFile(pathname, ".png") ||
+    isRootLevelFile(pathname, ".webp") ||
     isRootLevelFile(pathname, ".ico") ||
     pathname === "/sitemap.xml" ||
     pathname === "/robots.txt"
