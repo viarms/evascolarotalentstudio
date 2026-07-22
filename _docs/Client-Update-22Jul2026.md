@@ -3,20 +3,20 @@
 
 ---
 
-**What's live now**
+**Homepage — now live ✅**
 
-9 class pages are fully built and ready — Ballet, Hip-Hop, Singing, K-Pop Dance, Jazz Dance, Drama & Musical Theatre, Modeling, Breakdance, and Public Speaking. Each page has class descriptions, schedules by studio location, age groups, pricing notes, and FAQs. They're live on the staging server and ready to go public once DNS is switched over.
+The homepage has been fully migrated from WordPress to the new Next.js platform. Visitors to evascolarotalentstudio.com now see the redesigned homepage with the new hero section, photo carousel, about section, pricing, timetable, and studio locations. The WordPress homepage is no longer active.
 
-**Homepage**
+**Class pages — live ✅**
 
-The current homepage still runs on WordPress. A full redesign plan is ready — new hero section, pricing, studio locations, and full timetable. This is the next major build.
+9 class pages are fully live — Ballet, Hip-Hop, Singing, K-Pop Dance, Jazz Dance, Drama & Musical Theatre, Modeling, Breakdance, and Public Speaking. Each page has class descriptions, schedules by studio location, age groups, pricing notes, and FAQs.
 
 **Planned new pages**
 
 - **Studio Rental** — dedicated page for the dance studio hire service (Sanur, pricing, availability, WhatsApp booking)
 - **Concert** — showcase page for upcoming and past events
-- **Privacy Notice** — required for GDPR/data compliance given the contact forms
+- **Privacy Notice** — required for data compliance given the contact forms
 
-**Coming soon on the live site**
+**What's next**
 
-The class pages will go live for visitors once a small technical routing step is completed (estimated: 1 session). After that, the homepage redesign begins.
+Studio Rental page is the immediate priority, followed by the Concert page.
