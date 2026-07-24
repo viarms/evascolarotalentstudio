@@ -6,6 +6,8 @@
  * 2. Routes to Vercel (evascolarotalentstudio.vercel.app):
  *   - /              Next.js homepage
  *   - /classes/*     Next.js class pages
+ *   - /privacy-notice/   Next.js privacy notice page
+ *   - /studio-rental/    Next.js studio rental page
  *   - /slideshow/*   Slideshow images served from Next.js /public/slideshow/
  *   - /api/*         Next.js API route handlers
  *   - /_next/*       Next.js JS/CSS/font assets
@@ -37,6 +39,8 @@ function shouldRouteToVercel(pathname) {
   return (
     pathname === "/" ||
     pathname.startsWith("/classes") ||
+    pathname.startsWith("/privacy-notice") ||
+    pathname.startsWith("/studio-rental") ||
     pathname.startsWith("/slideshow/") ||
     pathname.startsWith("/api/") ||
     pathname.startsWith("/_next/") ||
