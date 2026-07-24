@@ -318,7 +318,7 @@ function HomeHero() {
 // ─── About carousel photos ────────────────────────────────────────────────────
 // Class photos from the studio — showcasing the range of disciplines offered.
 const ABOUT_SLIDES = [
-  "/slideshow/ballet-junior.webp",
+  "/slideshow/evascolarotalentstudio.webp",
   "/slideshow/ballet-tots.webp",
   "/slideshow/drama-musical-theatre.webp",
   "/slideshow/hiphop-junior.webp",
