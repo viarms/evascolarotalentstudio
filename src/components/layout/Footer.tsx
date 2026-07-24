@@ -157,6 +157,15 @@ export default function Footer() {
           </li>
           <li>
             <a
+              href="/announcement/"
+              className="text-[#A5A5A5] hover:text-[#EFEFEF] transition-colors duration-300 no-underline"
+              style={{ fontSize: "0.8em" }}
+            >
+              News
+            </a>
+          </li>
+          <li>
+            <a
               href="/contact/"
               className="text-[#A5A5A5] hover:text-[#EFEFEF] transition-colors duration-300 no-underline"
               style={{ fontSize: "0.8em" }}

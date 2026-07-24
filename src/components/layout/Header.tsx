@@ -39,11 +39,10 @@ const NAV_LINKS = [
     children: [
       { label: "Photo",                 href: "/gallery/" },
       { label: "Concerts Documentary",  href: "/concerts-documentary/" },
+      { label: "Practice",              href: "/practice/" },
     ],
   },
-  { label: "Practice",  href: "/practice/" },
   { label: "Dancewear", href: "/dancewear/" },
-  { label: "News",      href: "/announcement/" },
   { label: "Studio Rental", href: "/studio-rental/" },
 ] as const;
 
