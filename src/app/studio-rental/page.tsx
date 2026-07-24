@@ -14,6 +14,7 @@ import Link from "next/link";
 import BookingButton from "./BookingButton";
 import AvailabilityGrid from "./AvailabilityGrid";
 import HeroCTAs from "./HeroCTAs";
+import { buildStudioRentalSchema } from "@/lib/schema";
 
 export const metadata: Metadata = {
   title: "Dance Studio for Rent in Sanur, Bali",
@@ -423,6 +424,12 @@ export default function StudioRentalPage() {
           ← Back to homepage
         </Link>
       </div>
+
+      {/* JSON-LD Schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(buildStudioRentalSchema()) }}
+      />
 
     </main>
   );

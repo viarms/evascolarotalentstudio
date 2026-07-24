@@ -227,3 +227,132 @@ export function buildClassPageSchema(cls: ClassData): JsonLdObject {
     "@graph": nodes,
   };
 }
+
+// ─── Studio Rental schema builder ────────────────────────────────────────────
+
+/**
+ * Returns JSON-LD schema for the studio rental page:
+ *   - LocalBusiness (Sanur studio location)
+ *   - Service (Ground Floor rental)
+ *   - Service (Second Floor rental)
+ */
+export function buildStudioRentalSchema(): JsonLdObject {
+  const pageUrl = `${SITE_URL}/studio-rental/`;
+
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "LocalBusiness",
+        "@id": `${SITE_URL}/#sanur-studio`,
+        name: "Eva Scolaro Talent Studio — Sanur",
+        url: SITE_URL,
+        logo: `${SITE_URL}/logo-evascolaro.svg`,
+        telephone: "+62821-4628-4464",
+        address: {
+          "@type": "PostalAddress",
+          streetAddress: "Jl. Bypass Ngurah Rai No.88A",
+          addressLocality: "Sanur",
+          addressRegion: "Denpasar Selatan",
+          addressCountry: "ID",
+        },
+        geo: {
+          "@type": "GeoCoordinates",
+          latitude: "-8.6875",
+          longitude: "115.2606",
+        },
+        priceRange: "IDR 250,000 - 400,000 per hour",
+        openingHoursSpecification: [
+          {
+            "@type": "OpeningHoursSpecification",
+            dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+            opens: "10:00",
+            closes: "13:00",
+          },
+        ],
+        hasMap: "https://maps.app.goo.gl/Esoa9MtswJxsoN3R7",
+        sameAs: [
+          "https://www.instagram.com/evascolarotalentstudio",
+          "https://www.facebook.com/evascolarotalentstudio",
+          "https://www.youtube.com/@evascolarotalentstudio",
+        ],
+      },
+      {
+        "@type": "Service",
+        "@id": `${pageUrl}#ground-floor`,
+        name: "Ground Floor Dance Studio Rental",
+        description:
+          "Professional dance studio rental in Sanur, Bali. Full-length mirrored walls, sprung hardwood floor, built-in sound system, air conditioning. Ideal for group classes, rehearsals, photo shoots, and workshops. Accommodates up to 20 people.",
+        provider: {
+          "@type": "LocalBusiness",
+          name: "Eva Scolaro Talent Studio",
+          url: SITE_URL,
+        },
+        areaServed: {
+          "@type": "Place",
+          name: "Sanur, Bali, Indonesia",
+        },
+        availableChannel: {
+          "@type": "ServiceChannel",
+          serviceUrl: `https://wa.me/6282146284464?text=${encodeURIComponent(
+            "Hi, I'd like to book the dance studio for rental. Could you please share available slots?"
+          )}`,
+          serviceType: "WhatsApp",
+        },
+        offers: {
+          "@type": "Offer",
+          price: "400000",
+          priceCurrency: "IDR",
+          priceSpecification: {
+            "@type": "UnitPriceSpecification",
+            price: "400000",
+            priceCurrency: "IDR",
+            unitText: "per hour",
+          },
+          availability: "https://schema.org/LimitedAvailability",
+          availabilityStarts: "10:00",
+          availabilityEnds: "13:00",
+          validFrom: "2026-01-01",
+        },
+      },
+      {
+        "@type": "Service",
+        "@id": `${pageUrl}#second-floor`,
+        name: "Second Floor Practice Studio Rental",
+        description:
+          "Intimate practice studio rental in Sanur, Bali. Mirror wall, portable speaker, air conditioning. Perfect for solo rehearsals, small group sessions, tutoring, or movement coaching. Ideal for 1–8 people.",
+        provider: {
+          "@type": "LocalBusiness",
+          name: "Eva Scolaro Talent Studio",
+          url: SITE_URL,
+        },
+        areaServed: {
+          "@type": "Place",
+          name: "Sanur, Bali, Indonesia",
+        },
+        availableChannel: {
+          "@type": "ServiceChannel",
+          serviceUrl: `https://wa.me/6282146284464?text=${encodeURIComponent(
+            "Hi, I'd like to book the dance studio for rental. Could you please share available slots?"
+          )}`,
+          serviceType: "WhatsApp",
+        },
+        offers: {
+          "@type": "Offer",
+          price: "250000",
+          priceCurrency: "IDR",
+          priceSpecification: {
+            "@type": "UnitPriceSpecification",
+            price: "250000",
+            priceCurrency: "IDR",
+            unitText: "per hour",
+          },
+          availability: "https://schema.org/LimitedAvailability",
+          availabilityStarts: "10:00",
+          availabilityEnds: "13:00",
+          validFrom: "2026-01-01",
+        },
+      },
+    ],
+  };
+}
