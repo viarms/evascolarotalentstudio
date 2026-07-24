@@ -41,12 +41,17 @@ interface Props {
 }
 
 export default function HeroCTAs({ waHref }: Props) {
+  function scrollToAvailability(e: React.MouseEvent<HTMLAnchorElement>) {
+    e.preventDefault();
+    document.getElementById("availability")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
   return (
     <>
       <style>{KEYFRAMES}</style>
       <div style={{ display: "flex", justifyContent: "center", gap: "1rem", flexWrap: "wrap", marginTop: "2rem" }}>
         <BookingButton href={waHref} />
-        <a href="#availability" className="sr-ghost-btn">
+        <a href="#availability" className="sr-ghost-btn" onClick={scrollToAvailability}>
           See availability ↓
         </a>
       </div>
