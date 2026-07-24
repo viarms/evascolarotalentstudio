@@ -339,47 +339,48 @@ function AboutCarousel() {
   const [current, setCurrent] = useState(0);
   const [next,    setNext]    = useState<number | null>(null);
   const [progress, setProgress] = useState(0);
-  const [ready,   setReady]   = useState(false); // true once all images are loaded
-  const rafRef  = useRef<number>(0);
-  const startRef= useRef<number>(0);
+  const [ready,    setReady]   = useState(false); // drives spinner visibility
+  const rafRef    = useRef<number>(0);
+  const startRef  = useRef<number>(0);
+  const wrapRef   = useRef<HTMLDivElement>(null);
+  const visibleRef = useRef(true);
 
-  // Preload all slides; reveal carousel only after every image has loaded
+  // Timed preloader — show spinner briefly, then reveal carousel
   useEffect(() => {
-    let loaded = 0;
-    const total = ABOUT_SLIDES.length;
-    const imgs: HTMLImageElement[] = [];
+    const t = setTimeout(() => setReady(true), 900);
+    return () => clearTimeout(t);
+  }, []);
 
-    ABOUT_SLIDES.forEach((src) => {
-      const img = new window.Image();
-      img.onload = img.onerror = () => {
-        loaded += 1;
-        if (loaded === total) setReady(true);
-      };
-      img.src = src;
-      imgs.push(img);
-    });
-
-    return () => {
-      // Let GC collect — nothing to explicitly cancel on HTMLImageElement
-      imgs.length = 0;
-    };
+  // Pause crossfade RAF when off-screen
+  useEffect(() => {
+    const el = wrapRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([entry]) => { visibleRef.current = entry.isIntersecting; },
+      { threshold: 0.1 }
+    );
+    io.observe(el);
+    return () => io.disconnect();
   }, []);
 
   useEffect(() => {
-    if (!ready) return;
-
     const hold = setTimeout(() => {
       const nextSlide = (current + 1) % ABOUT_SLIDES.length;
       setNext(nextSlide);
       setProgress(0);
-
       startRef.current = performance.now();
 
       function tick(now: number) {
+        if (!visibleRef.current) {
+          // Went off-screen mid-dissolve — snap to next and stop
+          setCurrent(nextSlide);
+          setNext(null);
+          setProgress(0);
+          return;
+        }
         const p = Math.min((now - startRef.current) / DISSOLVE_MS, 1);
         const eased = p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2;
         setProgress(eased);
-
         if (p < 1) {
           rafRef.current = requestAnimationFrame(tick);
         } else {
@@ -396,10 +397,11 @@ function AboutCarousel() {
       clearTimeout(hold);
       cancelAnimationFrame(rafRef.current);
     };
-  }, [current, ready]);
+  }, [current]);
 
   return (
     <div
+      ref={wrapRef}
       aria-hidden="true"
       style={{
         width: "50%",
@@ -411,7 +413,7 @@ function AboutCarousel() {
         overflow: "hidden",
       }}
     >
-      {/* Spinner preloader — shown until all images are loaded */}
+      {/* Spinner preloader — fades out after 900ms */}
       <div
         style={{
           position: "absolute",
@@ -427,7 +429,6 @@ function AboutCarousel() {
         }}
       >
         <div style={{ position: "relative", width: 44, height: 44 }}>
-          {/* Spinning dashed ring */}
           <div style={{
             position: "absolute",
             inset: 0,
@@ -435,7 +436,6 @@ function AboutCarousel() {
             border: "2px dashed rgba(178,0,1,0.35)",
             animation: "spinOrbit 3s linear infinite",
           }} />
-          {/* Orbiting dot */}
           <div style={{
             position: "absolute",
             top: -3,
@@ -449,7 +449,6 @@ function AboutCarousel() {
             animation: "spinOrbit 3s linear infinite",
             transformOrigin: "50% 25px",
           }} />
-          {/* Centre icon */}
           <div style={{
             position: "absolute",
             inset: 0,
@@ -463,32 +462,40 @@ function AboutCarousel() {
       </div>
 
       {/* Current slide */}
-      <div
+      <Image
+        key={`cur-${current}`}
+        src={ABOUT_SLIDES[current]}
+        alt=""
+        fill
+        sizes="(max-width: 768px) 100vw, 50vw"
+        priority={current === 0}
         style={{
-          position: "absolute",
-          inset: 0,
-          backgroundImage: `url('${ABOUT_SLIDES[current]}')`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
+          objectFit: "cover",
+          objectPosition: "center",
           opacity: next !== null ? 1 - progress : 1,
           zIndex: 1,
+          transition: "none",
         }}
       />
 
-      {/* Next slide */}
+      {/* Next slide — lazy, fades in over the current */}
       {next !== null && (
-        <div
+        <Image
+          key={`next-${next}`}
+          src={ABOUT_SLIDES[next]}
+          alt=""
+          fill
+          sizes="(max-width: 768px) 100vw, 50vw"
           style={{
-            position: "absolute",
-            inset: 0,
-            backgroundImage: `url('${ABOUT_SLIDES[next]}')`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
+            objectFit: "cover",
+            objectPosition: "center",
             opacity: progress,
             zIndex: 2,
+            transition: "none",
           }}
         />
       )}
+
       {/* Vignette overlay */}
       <div
         style={{

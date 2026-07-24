@@ -3,17 +3,19 @@
 //
 // Pixel-perfect match of the live WP site footer (elementor-6804).
 //
-// Bottom strip links: Terms & Conditions | Contact | Feedback
+// Bottom strip links: Terms & Conditions | Privacy Notice | Contact | Feedback
 // Link text color: #A5A5A5, hover: #EFEFEF
 
 import Image from "next/image";
+import Link from "next/link";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
 const WA_NUMBER = process.env.NEXT_PUBLIC_WA_NUMBER ?? "6282146284464";
 
 const FOOTER_LINKS = [
-  { label: "Terms & Conditions", href: "https://www.evascolarotalentstudio.com/terms-conditions/" },
+  { label: "Terms & Conditions", href: "https://www.evascolarotalentstudio.com/terms-conditions/", external: true },
+  { label: "Privacy Notice", href: "/privacy-notice/", external: false },
 ] as const;
 
 // ─── Footer ───────────────────────────────────────────────────────────────────
@@ -119,15 +121,27 @@ export default function Footer() {
 
         {/* Footer links */}
         <ul className="flex flex-row flex-wrap items-center justify-center gap-x-4 gap-y-1 list-none m-0 p-0">
-          {FOOTER_LINKS.map(({ label, href }) => (
+          {FOOTER_LINKS.map(({ label, href, external }) => (
             <li key={label}>
-              <a
-                href={href}
-                className="text-[#A5A5A5] hover:text-[#EFEFEF] transition-colors duration-300 no-underline"
-                style={{ fontSize: "0.8em" }}
-              >
-                {label}
-              </a>
+              {external ? (
+                <a
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[#A5A5A5] hover:text-[#EFEFEF] transition-colors duration-300 no-underline"
+                  style={{ fontSize: "0.8em" }}
+                >
+                  {label}
+                </a>
+              ) : (
+                <Link
+                  href={href}
+                  className="text-[#A5A5A5] hover:text-[#EFEFEF] transition-colors duration-300 no-underline"
+                  style={{ fontSize: "0.8em" }}
+                >
+                  {label}
+                </Link>
+              )}
             </li>
           ))}
           <li>

@@ -1,5 +1,5 @@
 # Project Tracker — Eva Scolaro Talent Studio
-**Last updated:** 22 July 2026 (rev 9)
+**Last updated:** 24 July 2026 (rev 10)
 **Phase:** Homepage live ✅ → Phase 2 (Studio + blog) up next
 
 ---
@@ -17,12 +17,13 @@ Full migration           ░░░░░░░░░░░░░░░░░░�
 
 ## Build Status
 
-⚠️ `npm run build` — last confirmed clean on 19 Jul 2026 (15 routes). Homepage (`"use client"`) added since then — **re-verify before deploy.**
+✅ `npm run build` — clean on 24 Jul 2026 (21 routes).
 
 ```
-/classes/[slug]   ISR (revalidate 1h / expire 1y)
+/classes/[slug]   ISR (revalidate 5m / expire 1y)
 /classes          Static (class index page)
-/                 ✅ page.tsx exists — Next.js homepage (client component, GSAP + mock schedule)
+/                 Static (client component, GSAP + live schedule)
+/privacy-notice   Static ✅ (added 24 Jul 2026)
 /robots.txt       Static
 /sitemap.xml      Static
 ```
@@ -90,6 +91,7 @@ Full migration           ░░░░░░░░░░░░░░░░░░�
 ### Class pages
 - [x] `src/app/classes/[slug]/page.tsx` — all 9 slugs, `STATIC_CONTENT`, live schedule, `generateMetadata()` with Yoast guard, `generateStaticParams()`, `Course` + `FAQPage` JSON-LD, `ClassBreadcrumb`
 - [x] `src/app/classes/page.tsx` — `/classes` index / catalogue
+- [x] `src/app/privacy-notice/page.tsx` — Privacy Notice (Static, dark-themed, 11 sections)
 
 ### Homepage (`src/app/page.tsx`) — 80% complete ⚠️
 - [x] `"use client"` — GSAP + SplitText animations, crossfade carousel
@@ -144,6 +146,7 @@ Full migration           ░░░░░░░░░░░░░░░░░░�
 - [x] **22 Jul 2026** — Watzap chat widget live on all pages. Plain `<script async data-watzapkey="rAMU1787">` in `<head>`. Verified in production.
 - [x] **22 Jul 2026** — `fetchAllSchedules()` added to `classQueries.ts`. `/api/schedules` route created (ISR 1h). Homepage timetable wired to live WP data. All 4 tabs live: Sanur (20) · Canggu (20) · AIS (9) · Dyatmika (4). `MOCK_SCHEDULE` retained as graceful fallback.
 - [x] **22 Jul 2026** — **DNS cutover complete.** `www.evascolarotalentstudio.com` CNAME pointed to Vercel. Site live on Next.js.
+- [x] **24 Jul 2026** — `src/app/privacy-notice/page.tsx` built (Static, 11 sections: data collected, usage, retention, children's privacy, rights, security, third-party links). Cookie banner `/privacy-notice/` link no longer 404s. Footer updated with Privacy Notice link (internal `<Link>`). Build clean at 21 routes.
 
 ---
 
@@ -204,7 +207,7 @@ Worker source (`_docs/cloudflare-worker.js`) is already correct — `pathname ==
 
 | # | Task | Notes |
 |---|---|---|
-| **1** | **Cookie consent banner** | Simple client component, `localStorage`, link to `/privacy-notice/`. No third-party library. ~45 min. |
+| **1** | **Cookie consent banner** | ✅ Done (`CookieConsent.tsx` built, imported in layout, links to `/privacy-notice/`) |
 | **2** | **Mobile QA** | 375px / 390px / 428px. Focus: ScheduleTabs horizontal scroll, hero video scaling, Footer partner logos, timetable tabs. |
 | **3** | **Lighthouse audit** | Target ≥ 90 mobile per class page. Run after DNS (real CDN matters). |
 | **4** | **Business decision: Public Speaking** | One-line flip: `status: "active"` in `STATIC_CONTENT["public-speaking"]` in `classes/[slug]/page.tsx`. Schedule auto-loads from WP. |
@@ -222,7 +225,7 @@ Worker source (`_docs/cloudflare-worker.js`) is already correct — `pathname ==
 | **9** | School Partnerships page (`/school-partnerships/`) | Social proof + E-E-A-T |
 | **10** | Breakdance Sanur — open if demand grows | Add events in WP only; no code change |
 | **11** | `classMock.ts` cleanup | Superseded by `STATIC_CONTENT`. Safe to delete. |
-| **12** | **Privacy Notice page** (`/privacy-notice/`) | Cover forms (Join Us, Book Free Trial, Feedback), WA, cookies, GTM/GA |
+| **12** | ~~**Privacy Notice page** (`/privacy-notice/`)~~ | ✅ Done 24 Jul 2026 — Static page, 11 sections, Footer link added |
 | **13** | **Dance Studio for Rent** (`/studio-rental/`) | Facilities, pricing (1F: 400k/hr, 2F: 250k/hr), availability (Mon–Fri 10:00–13:00), Jl. Bypass Ngurah Rai 88A Sanur, WA booking |
 | **14** | **Concert page** (`/concert/`) | Content TBD |
 | **15** | Full WordPress → Next.js migration | Gallery, Practice, Dancewear, News, Contact, T&C; WP moves to `cms.evascolarotalentstudio.com` |
@@ -252,6 +255,9 @@ src/
 │   │   ├── layout.tsx             ← ✅ white card wrapper (moved from root layout — done)
 │   │   ├── page.tsx               ← ✅ /classes index
 │   │   └── [slug]/page.tsx        ← ✅ all 9 class pages
+│   ├── privacy-notice/
+│   │   ├── page.tsx               ← ✅ /privacy-notice (Static, 11 sections)
+│   │   └── FeedbackButton.tsx     ← ✅ "use client" modal trigger
 │   ├── api/
 │   │   ├── join-us/route.ts       ← ✅ Registration form → Resend
 │   │   ├── book-trial/route.ts    ← ✅ Free Trial form → Resend

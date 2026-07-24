@@ -419,11 +419,28 @@ export default function AboutEvaNavyShader() {
     raf = requestAnimationFrame(frame);
     document.addEventListener("visibilitychange", onVisibility);
 
+    // ── IntersectionObserver — pause when scrolled out of view ───────────────
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          if (pausedAt > 0) { start += performance.now() - pausedAt; pausedAt = 0; }
+          if (!raf) raf = requestAnimationFrame(frame);
+        } else {
+          cancelAnimationFrame(raf);
+          raf = 0;
+          pausedAt = performance.now();
+        }
+      },
+      { threshold: 0.1 }
+    );
+    io.observe(canvas);
+
     // ── Cleanup ───────────────────────────────────────────────────────────────
     return () => {
       cancelAnimationFrame(raf);
       document.removeEventListener("visibilitychange", onVisibility);
       ro.disconnect();
+      io.disconnect();
       gl.deleteBuffer(buf);
       gl.deleteProgram(prog);
     };
