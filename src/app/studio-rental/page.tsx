@@ -14,6 +14,7 @@ import Link from "next/link";
 import BookingButton from "./BookingButton";
 import AvailabilityGrid from "./AvailabilityGrid";
 import HeroCTAs from "./HeroCTAs";
+import AnimatedSection from "./AnimatedSection";
 import { buildStudioRentalSchema } from "@/lib/schema";
 
 export const metadata: Metadata = {
@@ -134,16 +135,17 @@ export default function StudioRentalPage() {
       </section>
 
       {/* ── Floor cards ────────────────────────────────────────────────────── */}
-      <section
-        aria-label="Studio options"
-        style={{ maxWidth: "900px", margin: "0 auto", padding: "3.5rem 1.5rem 2rem" }}
-      >
-        <SectionLabel>Studio Spaces</SectionLabel>
-        <h2 style={s.h2}>Two floors, two price points</h2>
-        <p style={s.bodySub}>
-          Choose the space that fits your session — both floors are fully equipped and available
-          Monday to Friday, 10:00–13:00.
-        </p>
+      <AnimatedSection>
+        <section
+          aria-label="Studio options"
+          style={{ maxWidth: "900px", margin: "0 auto", padding: "3.5rem 1.5rem 2rem" }}
+        >
+          <SectionLabel>Studio Spaces</SectionLabel>
+          <h2 style={s.h2}>Two floors, two price points</h2>
+          <p style={s.bodySub}>
+            Choose the space that fits your session — both floors are fully equipped and available
+            Monday to Friday, 10:00–13:00.
+          </p>
 
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "1.25rem", marginTop: "2rem" }}>
           {FLOORS.map((floor) => (
@@ -243,13 +245,15 @@ export default function StudioRentalPage() {
           ))}
         </div>
       </section>
+      </AnimatedSection>
 
       {/* ── Availability ───────────────────────────────────────────────────── */}
-      <section
-        id="availability"
-        aria-label="Rental availability"
-        style={{
-          maxWidth: "900px",
+      <AnimatedSection delay={0.1}>
+        <section
+          id="availability"
+          aria-label="Rental availability"
+          style={{
+            maxWidth: "900px",
           margin: "0 auto",
           padding: "2rem 1.5rem 3rem",
           borderTop: "1px solid #1a1a1a",
@@ -308,34 +312,38 @@ export default function StudioRentalPage() {
           </a>
         </div>
       </section>
+      </AnimatedSection>
 
       {/* ── Booking CTA ────────────────────────────────────────────────────── */}
-      <section
-        aria-label="Booking call to action"
-        style={{
-          background: "radial-gradient(ellipse 70% 120% at 100% 50%, #2a0001 0%, #111111 60%)",
-          borderTop: "1px solid #1e1e1e",
-          borderBottom: "1px solid #1e1e1e",
-          padding: "3.5rem 1.5rem",
-          textAlign: "center",
-        }}
-      >
-        <p style={s.eyebrow}>Book your session</p>
-        <h2 style={{ ...s.h2, marginBottom: "0.75rem" }}>Reserve via WhatsApp</h2>
-        <p style={{ ...s.bodySub, maxWidth: "480px", margin: "0 auto 2rem" }}>
-          Tell us which floor, your preferred date, start time, and duration.
-          We'll confirm within a few hours.
-        </p>
-        <BookingButton href={WA_HREF} large />
-      </section>
+      <AnimatedSection delay={0.15}>
+        <section
+          aria-label="Booking call to action"
+          style={{
+            background: "radial-gradient(ellipse 70% 120% at 100% 50%, #2a0001 0%, #111111 60%)",
+            borderTop: "1px solid #1e1e1e",
+            borderBottom: "1px solid #1e1e1e",
+            padding: "3.5rem 1.5rem",
+            textAlign: "center",
+          }}
+        >
+          <p style={s.eyebrow}>Book your session</p>
+          <h2 style={{ ...s.h2, marginBottom: "0.75rem" }}>Reserve via WhatsApp</h2>
+          <p style={{ ...s.bodySub, maxWidth: "480px", margin: "0 auto 2rem" }}>
+            Tell us which floor, your preferred date, start time, and duration.
+            We'll confirm within a few hours.
+          </p>
+          <BookingButton href={WA_HREF} large />
+        </section>
+      </AnimatedSection>
 
       {/* ── FAQ ────────────────────────────────────────────────────────────── */}
-      <section
-        aria-label="Frequently asked questions"
-        style={{ maxWidth: "760px", margin: "0 auto", padding: "3.5rem 1.5rem 2rem" }}
-      >
-        <SectionLabel>FAQ</SectionLabel>
-        <h2 style={s.h2}>Common questions</h2>
+      <AnimatedSection delay={0.2}>
+        <section
+          aria-label="Frequently asked questions"
+          style={{ maxWidth: "760px", margin: "0 auto", padding: "3.5rem 1.5rem 2rem" }}
+        >
+          <SectionLabel>FAQ</SectionLabel>
+          <h2 style={s.h2}>Common questions</h2>
 
         <div style={{ marginTop: "1.75rem" }}>
           {FAQS.map((faq, i) => (
@@ -369,12 +377,14 @@ export default function StudioRentalPage() {
           ))}
         </div>
       </section>
+      </AnimatedSection>
 
       {/* ── Also at ESTS ────────────────────────────────────────────────────── */}
-      <section
-        aria-label="Also at Eva Scolaro Talent Studio"
-        style={{ maxWidth: "900px", margin: "0 auto", padding: "2rem 1.5rem 4rem" }}
-      >
+      <AnimatedSection delay={0.25}>
+        <section
+          aria-label="Also at Eva Scolaro Talent Studio"
+          style={{ maxWidth: "900px", margin: "0 auto", padding: "2rem 1.5rem 4rem" }}
+        >
         <div style={{
           background: "#111111",
           border: "1px solid #1e1e1e",
@@ -417,6 +427,7 @@ export default function StudioRentalPage() {
           </Link>
         </div>
       </section>
+      </AnimatedSection>
 
       {/* Back link */}
       <div style={{ textAlign: "center", paddingBottom: "3rem" }}>
