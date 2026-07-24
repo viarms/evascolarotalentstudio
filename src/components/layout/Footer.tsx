@@ -16,6 +16,7 @@ const WA_NUMBER = process.env.NEXT_PUBLIC_WA_NUMBER ?? "6282146284464";
 const FOOTER_LINKS = [
   { label: "Terms & Conditions", href: "https://www.evascolarotalentstudio.com/terms-conditions/", external: true },
   { label: "Privacy Notice", href: "/privacy-notice/", external: false },
+  { label: "Studio Rental", href: "/studio-rental/", external: false },
 ] as const;
 
 // ─── Footer ───────────────────────────────────────────────────────────────────

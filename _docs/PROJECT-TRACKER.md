@@ -1,6 +1,6 @@
 # Project Tracker — Eva Scolaro Talent Studio
-**Last updated:** 24 July 2026 (rev 10)
-**Phase:** Homepage live ✅ → Phase 2 (Studio + blog) up next
+**Last updated:** 24 July 2026 (rev 11)
+**Phase:** Homepage live ✅ → Phase 2 (Studio + blog) in progress
 
 ---
 
@@ -17,13 +17,14 @@ Full migration           ░░░░░░░░░░░░░░░░░░�
 
 ## Build Status
 
-✅ `npm run build` — clean on 24 Jul 2026 (21 routes).
+✅ `npm run build` — clean on 24 Jul 2026 (22 routes).
 
 ```
 /classes/[slug]   ISR (revalidate 5m / expire 1y)
 /classes          Static (class index page)
 /                 Static (client component, GSAP + live schedule)
 /privacy-notice   Static ✅ (added 24 Jul 2026)
+/studio-rental    Static ✅ (added 24 Jul 2026)
 /robots.txt       Static
 /sitemap.xml      Static
 ```
@@ -92,6 +93,7 @@ Full migration           ░░░░░░░░░░░░░░░░░░�
 - [x] `src/app/classes/[slug]/page.tsx` — all 9 slugs, `STATIC_CONTENT`, live schedule, `generateMetadata()` with Yoast guard, `generateStaticParams()`, `Course` + `FAQPage` JSON-LD, `ClassBreadcrumb`
 - [x] `src/app/classes/page.tsx` — `/classes` index / catalogue
 - [x] `src/app/privacy-notice/page.tsx` — Privacy Notice (Static, dark-themed, 11 sections)
+- [x] `src/app/studio-rental/page.tsx` — Dance Studio for Rent (Static, 1F 400k/hr · 2F 250k/hr · Mon–Fri 10–13)
 
 ### Homepage (`src/app/page.tsx`) — 80% complete ⚠️
 - [x] `"use client"` — GSAP + SplitText animations, crossfade carousel
@@ -147,6 +149,7 @@ Full migration           ░░░░░░░░░░░░░░░░░░�
 - [x] **22 Jul 2026** — `fetchAllSchedules()` added to `classQueries.ts`. `/api/schedules` route created (ISR 1h). Homepage timetable wired to live WP data. All 4 tabs live: Sanur (20) · Canggu (20) · AIS (9) · Dyatmika (4). `MOCK_SCHEDULE` retained as graceful fallback.
 - [x] **22 Jul 2026** — **DNS cutover complete.** `www.evascolarotalentstudio.com` CNAME pointed to Vercel. Site live on Next.js.
 - [x] **24 Jul 2026** — `src/app/privacy-notice/page.tsx` built (Static, 11 sections: data collected, usage, retention, children's privacy, rights, security, third-party links). Cookie banner `/privacy-notice/` link no longer 404s. Footer updated with Privacy Notice link (internal `<Link>`). Build clean at 21 routes.
+- [x] **24 Jul 2026** — `src/app/studio-rental/page.tsx` built (Static). Two-floor rental: 1F 400k/hr · 2F 250k/hr · Mon–Fri 10:00–13:00 · Sanur. WA booking CTA, availability grid, 6-question FAQ, ESTS cross-link. Header nav + Footer + sitemap updated. Build clean at 22 routes.
 
 ---
 
@@ -226,7 +229,7 @@ Worker source (`_docs/cloudflare-worker.js`) is already correct — `pathname ==
 | **10** | Breakdance Sanur — open if demand grows | Add events in WP only; no code change |
 | **11** | `classMock.ts` cleanup | Superseded by `STATIC_CONTENT`. Safe to delete. |
 | **12** | ~~**Privacy Notice page** (`/privacy-notice/`)~~ | ✅ Done 24 Jul 2026 — Static page, 11 sections, Footer link added |
-| **13** | **Dance Studio for Rent** (`/studio-rental/`) | Facilities, pricing (1F: 400k/hr, 2F: 250k/hr), availability (Mon–Fri 10:00–13:00), Jl. Bypass Ngurah Rai 88A Sanur, WA booking |
+| **13** | ~~**Dance Studio for Rent** (`/studio-rental/`)~~ | ✅ Done 24 Jul 2026 — Static page, 2-floor pricing, availability, FAQ, WA CTA |
 | **14** | **Concert page** (`/concert/`) | Content TBD |
 | **15** | Full WordPress → Next.js migration | Gallery, Practice, Dancewear, News, Contact, T&C; WP moves to `cms.evascolarotalentstudio.com` |
 
@@ -258,6 +261,9 @@ src/
 │   ├── privacy-notice/
 │   │   ├── page.tsx               ← ✅ /privacy-notice (Static, 11 sections)
 │   │   └── FeedbackButton.tsx     ← ✅ "use client" modal trigger
+│   ├── studio-rental/
+│   │   ├── page.tsx               ← ✅ /studio-rental (Static, 2-floor pricing, FAQ, WA CTA)
+│   │   └── BookingButton.tsx      ← ✅ "use client" WA booking button
 │   ├── api/
 │   │   ├── join-us/route.ts       ← ✅ Registration form → Resend
 │   │   ├── book-trial/route.ts    ← ✅ Free Trial form → Resend

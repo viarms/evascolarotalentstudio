@@ -44,6 +44,7 @@ const NAV_LINKS = [
   { label: "Practice",  href: "/practice/" },
   { label: "Dancewear", href: "/dancewear/" },
   { label: "News",      href: "/announcement/" },
+  { label: "Studio Rental", href: "/studio-rental/" },
 ] as const;
 
 // Join Us button dispatches the registration modal event
