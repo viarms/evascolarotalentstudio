@@ -33,8 +33,10 @@ const ORGANIZATION = {
     {
       "@type": "PostalAddress",
       name: "Canggu Studio",
-      addressLocality: "Canggu",
-      addressRegion: "Bali",
+      streetAddress: "Jl. Pemelisan Agung",
+      addressLocality: "Canggu, Kuta Utara",
+      addressRegion: "Badung",
+      postalCode: "80361",
       addressCountry: "ID",
     },
   ],
@@ -272,10 +274,10 @@ export function buildStudioLocationSchema({
             addressRegion: "Denpasar Selatan",
           }
         : {
-            // ⚠ Canggu address TBD — update once confirmed by client
-            streetAddress: "Canggu / Berawa area",
-            addressLocality: "Canggu",
+            streetAddress: "Jl. Pemelisan Agung",
+            addressLocality: "Canggu, Kuta Utara",
             addressRegion: "Badung",
+            postalCode: "80361",
           }),
       addressCountry: "ID",
     },

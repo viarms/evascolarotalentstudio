@@ -47,7 +47,7 @@ const FAQS = [
   {
     question: "Where is the Canggu studio?",
     answer:
-      "Our Canggu studio is located in the Berawa area — easy to reach from Canggu, Seminyak, and Echo Beach. The exact address will be included in your booking confirmation.",
+      "Our Canggu studio is located at Jl. Pemelisan Agung, Canggu, Kuta Utara, Badung, Bali 80361 — easy to reach from Canggu, Seminyak, and Echo Beach. Free parking available on-site.",
   },
   {
     question: "Is parking available?",
@@ -141,7 +141,7 @@ export default async function CangguPage() {
         <h1 style={s.h1}>Kids Dance Studio<br />in Canggu, Bali</h1>
         <p style={s.lead}>
           Right in the heart of Canggu — Eva Scolaro Talent Studio brings Bali&apos;s best
-          performing arts classes for kids to Berawa, Echo Beach, and the surrounding area.
+          performing arts classes for kids to Kuta Utara, Echo Beach, and the surrounding area.
         </p>
         <HeroCTAs />
       </section>
@@ -151,7 +151,7 @@ export default async function CangguPage() {
         <span style={s.sectionLabel}>About the Studio</span>
         <h2 style={s.h2}>Eva Scolaro in Canggu</h2>
         <p style={{ ...s.bodySub, maxWidth: "620px", marginBottom: "1.25rem" }}>
-          Our Canggu studio sits in the heart of Berawa — easy access from Canggu, Seminyak,
+          Our Canggu studio sits on Jl. Pemelisan Agung in Canggu — easy access from Canggu, Seminyak,
           and the surrounding expat neighbourhoods. The same world-class facilities as our
           Sanur flagship: sprung floor, mirrors, AC, and pro sound. Free parking available.
         </p>
@@ -175,10 +175,21 @@ export default async function CangguPage() {
           <div>
             <p style={{ fontFamily: "var(--font-inter, sans-serif)", fontSize: "0.75rem", fontWeight: 600, color: "#666666", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: "0.3rem" }}>Address</p>
             <p style={{ fontFamily: "var(--font-inter, sans-serif)", fontSize: "0.9rem", color: "#DDDDDD", lineHeight: 1.6 }}>
-              Berawa, Canggu, Badung, Bali
+                Jl. Pemelisan Agung<br />Canggu, Kuta Utara, Badung, Bali 80361
             </p>
           </div>
-          {/* Map link added once Canggu address is confirmed */}
+          <a
+            href="https://share.google/ZhCOKdpFJfby710Zr"
+            target="_blank" rel="noopener noreferrer"
+            style={{
+              display: "inline-flex", alignItems: "center", gap: "0.4rem",
+              padding: "0.6rem 1.2rem", background: "#1a1a1a", border: "1px solid #333333",
+              borderRadius: "2px", color: "#AAAAAA", fontSize: "0.8rem",
+              fontFamily: "var(--font-inter, sans-serif)", textDecoration: "none", whiteSpace: "nowrap",
+            }}
+          >
+            📍 Get directions
+          </a>
         </div>
       </section>
 
