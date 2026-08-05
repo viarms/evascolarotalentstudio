@@ -4,6 +4,8 @@
 
 import type { MetadataRoute } from "next";
 
+export const revalidate = 86400; // 24 h
+
 const BASE = "https://www.evascolarotalentstudio.com";
 
 const CLASS_SLUGS = [
