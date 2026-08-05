@@ -228,7 +228,54 @@ export async function fetchScheduleForClass(
   }));
 }
 
-// ─── Homepage: all schedules ──────────────────────────────────────────────────
+// ─── Location page: single-studio schedule ────────────────────────────────────
+
+/**
+ * Fetches all events from WP and returns the schedule for ONE studio location.
+ * Used by /studio/sanur/ and /studio/canggu/ pages.
+ *
+ * Reuses the same WP fetch as fetchAllSchedules() — same revalidate budget.
+ */
+export async function fetchScheduleForLocation(
+  location: "Sanur Studio" | "Canggu Studio"
+): Promise<import("@/lib/types/class").ScheduleItem[]> {
+  const res = await fetch(
+    `${WP_BASE}/event?per_page=100&_fields=id,slug,title,schedule,acf`,
+    { next: { revalidate: 3600 } }
+  );
+  if (!res.ok) return [];
+
+  const events: WpEvent[] = await res.json();
+
+  const DAY_ORDER = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+
+  const items: import("@/lib/types/class").ScheduleItem[] = [];
+
+  for (const event of events) {
+    const loc = event.acf.event_location;
+    if (!loc || loc === PLACEHOLDER_LOCATION) continue;
+    if (loc !== location) continue;
+
+    const dayId = event.schedule?.[0];
+    const day = dayId ? (SCHEDULE_ID_TO_DAY[dayId] ?? "") : "";
+
+    items.push({
+      day,
+      className: event.acf.event_name ?? event.title.rendered,
+      timeStart: formatTime(event.acf.Time_Start),
+      timeEnd:   formatTime(event.acf.Time_End),
+      coach:     event.acf.event_featuring ?? "",
+    });
+  }
+
+  items.sort((a, b) => {
+    const dayDiff = DAY_ORDER.indexOf(a.day) - DAY_ORDER.indexOf(b.day);
+    if (dayDiff !== 0) return dayDiff;
+    return a.timeStart.localeCompare(b.timeStart);
+  });
+
+  return items;
+}
 
 /**
  * Fetches ALL events from WP and returns a schedule grouped by location.

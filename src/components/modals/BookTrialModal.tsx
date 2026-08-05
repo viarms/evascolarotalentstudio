@@ -1,6 +1,7 @@
 "use client";
 // src/components/modals/BookTrialModal.tsx
 // Opened via: window.dispatchEvent(new Event("open-book-trial-modal"))
+// Prefill studio: window.dispatchEvent(new CustomEvent("open-book-trial-modal", { detail: { studio: "Sanur Studio" } }))
 // Submits to: POST /api/book-trial
 
 import { useEffect, useCallback, useState, useId } from "react";
@@ -84,8 +85,13 @@ export default function BookTrialModal() {
   const [status,    setStatus]    = useState<SubmitState>("idle");
   const [serverMsg, setServerMsg] = useState("");
 
-  const open = useCallback(() => {
-    setFields(EMPTY); setErrors({}); setTouched({});
+  const open = useCallback((e?: Event) => {
+    // Support CustomEvent detail: { studio: "Sanur Studio" | "Canggu Studio" }
+    const prefillStudio = (e instanceof CustomEvent && typeof e.detail?.studio === "string")
+      ? e.detail.studio
+      : "";
+    setFields({ ...EMPTY, studio: prefillStudio });
+    setErrors({}); setTouched({});
     setStatus("idle"); setServerMsg("");
     setIsOpen(true);
   }, []);

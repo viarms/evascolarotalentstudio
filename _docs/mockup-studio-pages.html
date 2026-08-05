@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Mockup — Dance Studio Sanur & Canggu | Eva Scolaro Talent Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700&family=Licorice&display=swap" rel="stylesheet" />
+<style>
+/* ── Reset & tokens ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --brand-red:      #B20001;
+  --brand-red-dark: #8a0001;
+  --bg:             #0d0d0d;
+  --bg-card:        #111111;
+  --bg-card-hover:  #161616;
+  --border:         #1e1e1e;
+  --border-mid:     #222222;
+  --text-primary:   #EFEFEF;
+  --text-body:      #DDDDDD;
+  --text-muted:     #999999;
+  --text-dim:       #666666;
+  --text-faint:     #444444;
+  --font-display:   'Archivo Black', sans-serif;
+  --font-body:      'Inter', sans-serif;
+  --font-script:    'Licorice', cursive;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text-body);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Layout switcher ── */
+.page-switcher {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: #080808;
+  border-bottom: 1px solid #1a1a1a;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  padding: 0 1.5rem;
+}
+.page-switcher-label {
+  font-family: var(--font-body);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  margin-right: 1rem;
+  white-space: nowrap;
+}
+.switcher-btn {
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--text-muted);
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 500;
+  padding: 0.75rem 1.25rem;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+  white-space: nowrap;
+}
+.switcher-btn:hover { color: var(--text-primary); }
+.switcher-btn.active {
+  color: var(--text-primary);
+  border-bottom-color: var(--brand-red);
+}
+
+/* ── Page visibility ── */
+.page-sanur, .page-canggu { display: none; }
+.page-sanur.visible, .page-canggu.visible { display: block; }
+
+/* ── Shared page styles ── */
+.section-label {
+  font-family: var(--font-body);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--brand-red);
+  margin-bottom: 0.6rem;
+  display: block;
+}
+
+h1.page-h1 {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5vw, 3.25rem);
+  font-weight: 400;
+  color: var(--text-primary);
+  line-height: 1.1;
+  margin-bottom: 1rem;
+}
+
+h2.section-h2 {
+  font-family: var(--font-display);
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  font-weight: 400;
+  color: var(--text-primary);
+  line-height: 1.2;
+  margin-bottom: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+.lead {
+  font-size: 1rem;
+  color: #AAAAAA;
+  line-height: 1.7;
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+.body-sub {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  line-height: 1.75;
+  margin-bottom: 0.5rem;
+}
+
+.section-wrap {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 3.5rem 1.5rem 2rem;
+}
+
+.section-wrap-narrow {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 3.5rem 1.5rem 2rem;
+}
+
+.section-divider {
+  border-top: 1px solid #1a1a1a;
+}
+
+/* ── Buttons ── */
+.btn-primary {
+  display: inline-block;
+  padding: 0.75rem 1.75rem;
+  background: var(--brand-red);
+  color: #fff;
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  border-radius: 2px;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s;
+  animation: ctaPulse 3s ease-in-out infinite;
+}
+.btn-primary:hover { background: var(--brand-red-dark); animation: none; }
+
+.btn-ghost {
+  display: inline-block;
+  padding: 0.75rem 1.75rem;
+  background: transparent;
+  color: var(--text-muted);
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 500;
+  border: 1px solid #333;
+  border-radius: 2px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+}
+.btn-ghost:hover { color: var(--text-primary); border-color: #555; }
+
+@keyframes ctaPulse {
+  0%,100% { box-shadow: 0 2px 12px rgba(178,0,1,0.25); }
+  50%      { box-shadow: 0 4px 28px rgba(178,0,1,0.55); }
+}
+
+/* ── Address / map card ── */
+.address-card {
+  margin-top: 1.5rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-mid);
+  border-radius: 3px;
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.address-card-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.3rem;
+}
+.address-card-text {
+  font-size: 0.9rem;
+  color: var(--text-body);
+  line-height: 1.6;
+}
+.map-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.6rem 1.2rem;
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 2px;
+  color: #AAAAAA;
+  font-size: 0.8rem;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color 0.15s, border-color 0.15s;
+}
+.map-link:hover { color: var(--text-primary); border-color: #555; }
+
+/* ── Hours grid ── */
+.hours-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+.hours-day {
+  background: var(--bg-card);
+  border: 1px solid var(--border-mid);
+  border-radius: 2px;
+  padding: 0.7rem 0.75rem;
+  text-align: center;
+}
+.hours-day-name {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 0.25rem;
+}
+.hours-day-time {
+  font-size: 0.8rem;
+  color: var(--text-body);
+  font-weight: 500;
+}
+.hours-day.closed .hours-day-time { color: var(--text-faint); }
+
+/* ── Accordion-gallery ── */
+.gallery-strip {
+  display: flex;
+  align-items: stretch;
+  gap: 6px;
+  height: 380px;
+  width: 100%;
+  overflow: hidden;
+}
+.gallery-panel {
+  position: relative;
+  flex: 1 1 80px;
+  min-width: 60px;
+  overflow: hidden;
+  transition: flex 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+}
+.gallery-panel:hover { flex: 4 1 80px; }
+.gallery-panel img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+}
+.gallery-panel:hover img { transform: scale(1.04); }
+.gallery-panel-caption {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  padding: 2rem 1rem 0.9rem;
+  background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 100%);
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.3s ease 0.1s, transform 0.3s ease 0.1s;
+  pointer-events: none;
+}
+.gallery-panel:hover .gallery-panel-caption { opacity: 1; transform: translateY(0); }
+.gallery-caption-label {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #B20001;
+  display: block;
+  margin-bottom: 0.2rem;
+}
+.gallery-caption-name {
+  font-family: 'Archivo Black', sans-serif;
+  font-size: 0.9rem;
+  color: #EFEFEF;
+  line-height: 1.2;
+}
+
+/* ── Class card icon animations ── */
+.cls-icon {
+  width: 20px;
+  height: 20px;
+  display: block;
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+              stroke-dashoffset 0.5s ease,
+              color 0.2s;
+  /* stroke-dash setup for draw-on effect */
+  stroke-dasharray: 80;
+  stroke-dashoffset: 0;
+}
+
+/* polygon (kpop star) needs different dasharray */
+.cls-icon polygon {
+  stroke-dasharray: 120;
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 0.55s ease;
+}
+
+.cls-card {
+  position: relative;
+}
+
+/* On card hover: icon bounces + stroke redraws */
+.cls-card:hover {
+  border-color: #B20001 !important;
+  background: #161616 !important;
+}
+.cls-card:hover .cls-icon {
+  transform: scale(1.25) rotate(-8deg);
+  color: #ff2222;
+}
+/* Star spins instead of tilting */
+.cls-card:hover .cls-icon:has(polygon) {
+  transform: scale(1.2) rotate(20deg);
+}
+.cls-card:hover .cls-arrow {
+  transform: translateX(3px);
+}
+</style>
+</head>
+<body>
+
+<!-- ══ PAGE SWITCHER ══════════════════════════════════════════════════════════ -->
+<nav class="page-switcher" aria-label="Page switcher">
+  <span class="page-switcher-label">Mockup</span>
+  <button class="switcher-btn active" onclick="showPage('sanur')">Dance Studio, Sanur</button>
+  <button class="switcher-btn" onclick="showPage('canggu')">Dance Studio, Canggu</button>
+</nav>
+
+
+<!-- ══ SANUR PAGE ══════════════════════════════════════════════════════════════ -->
+<div class="page-sanur visible" id="page-sanur">
+
+  <!-- Hero -->
+  <section style="
+    background: radial-gradient(ellipse 80% 60% at 50% -10%, #B20001 0%, #6a0001 25%, #2a0000 55%, #0d0d0d 80%);
+    padding: 5rem 1.5rem 3.5rem;
+    text-align: center;
+    border-bottom: 1px solid #1e1e1e;
+  " aria-label="Sanur studio intro">
+    <span class="section-label" style="display:block">Sanur · Bali — Flagship Studio</span>
+    <h1 class="page-h1">Kids Dance Studio<br>in Sanur, Bali</h1>
+    <p class="lead" style="margin-bottom:2rem">
+      Our head office and flagship location — home of Eva Scolaro Talent Studio since day one. Ballet, Hip-Hop, K-Pop, Singing, Drama & more for kids aged 3–16.
+    </p>
+    <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap">
+      <a href="#" class="btn-primary">Book a Free Trial</a>
+      <a href="#timetable-sanur" class="btn-ghost">View Timetable ↓</a>
+    </div>
+    <!-- Keyword chips -->
+    <div style="display:flex;gap:0.5rem;justify-content:center;flex-wrap:wrap;margin-top:2rem">
+      <span style="font-size:0.7rem;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:3px;padding:0.3rem 0.85rem;color:#888">dance studio bali</span>
+      <span style="font-size:0.7rem;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:3px;padding:0.3rem 0.85rem;color:#888">dance studio sanur</span>
+      <span style="font-size:0.7rem;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:3px;padding:0.3rem 0.85rem;color:#888">kids dance class sanur</span>
+      <span style="font-size:0.7rem;background:transparent;border:1px dashed #2a2a2a;border-radius:3px;padding:0.3rem 0.85rem;color:#444;font-style:italic">← keyword chips for SEO context only, not in final page</span>
+    </div>
+  </section>
+
+  <!-- About the Studio -->
+  <section class="section-wrap section-divider" aria-label="About Sanur studio">
+    <span class="section-label">About the Studio</span>
+    <h2 class="section-h2">Our flagship studio in Sanur</h2>
+    <p class="body-sub" style="max-width:620px;margin-bottom:1.25rem">
+      Located on Jl. Bypass Ngurah Rai — easy to reach from Sanur, Renon, and South Denpasar.
+      Our Sanur studio is the home of ESTS: two fully-equipped floors with sprung hardwood floors,
+      full-length mirrors, air conditioning, and professional sound systems. Free parking on-site.
+    </p>
+
+    <!-- Facilities chips -->
+    <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1.75rem">
+      <span style="font-size:0.75rem;background:#111;border:1px solid #222;border-radius:3px;padding:0.3rem 0.7rem;color:#aaa">Sprung hardwood floor</span>
+      <span style="font-size:0.75rem;background:#111;border:1px solid #222;border-radius:3px;padding:0.3rem 0.7rem;color:#aaa">Full-length mirrors</span>
+      <span style="font-size:0.75rem;background:#111;border:1px solid #222;border-radius:3px;padding:0.3rem 0.7rem;color:#aaa">Air conditioning</span>
+      <span style="font-size:0.75rem;background:#111;border:1px solid #222;border-radius:3px;padding:0.3rem 0.7rem;color:#aaa">Pro sound system</span>
+      <span style="font-size:0.75rem;background:#111;border:1px solid #222;border-radius:3px;padding:0.3rem 0.7rem;color:#aaa">Free parking</span>
+      <span style="font-size:0.75rem;background:#111;border:1px solid #222;border-radius:3px;padding:0.3rem 0.7rem;color:#aaa">Changing area</span>
+    </div>
+
+    <!-- Hours -->
+    <p style="font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#555;margin-bottom:0.5rem">Opening Hours</p>
+    <div class="hours-grid">
+      <div class="hours-day"><div class="hours-day-name">Mon</div><div class="hours-day-time">14:00–20:00</div></div>
+      <div class="hours-day"><div class="hours-day-name">Tue</div><div class="hours-day-time">14:00–20:00</div></div>
+      <div class="hours-day"><div class="hours-day-name">Wed</div><div class="hours-day-time">14:00–20:00</div></div>
+      <div class="hours-day"><div class="hours-day-name">Thu</div><div class="hours-day-time">14:00–20:00</div></div>
+      <div class="hours-day"><div class="hours-day-name">Fri</div><div class="hours-day-time">14:00–20:00</div></div>
+      <div class="hours-day"><div class="hours-day-name">Sat</div><div class="hours-day-time">08:00–13:00</div></div>
+      <div class="hours-day closed"><div class="hours-day-name">Sun</div><div class="hours-day-time">Closed</div></div>
+    </div>
+    <p style="font-size:0.7rem;color:#444;margin-top:0.5rem;font-style:italic">⚠ Placeholder hours — confirm with client before build</p>
+
+    <!-- Address card -->
+    <div class="address-card">
+      <div>
+        <p class="address-card-label">Address</p>
+        <p class="address-card-text">Jl. Bypass Ngurah Rai No.88A<br>Sanur, Denpasar Selatan, Bali</p>
+      </div>
+      <a href="#" class="map-link">📍 Get directions</a>
+    </div>
+  </section>
+
+  <!-- Classes at Sanur -->
+  <section class="section-wrap section-divider" aria-label="Classes at Sanur">
+    <span class="section-label">Classes at This Studio</span>
+    <h2 class="section-h2">What we teach in Sanur</h2>
+    <p class="body-sub">All classes run at our Sanur studio. Click any class to see age groups, schedule, and pricing.</p>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:0.75rem;margin-top:1.75rem" id="classes-sanur">
+    </div>
+  </section>
+
+  <!-- Timetable -->
+  <section id="timetable-sanur" class="section-wrap section-divider" aria-label="Sanur timetable">
+    <span class="section-label">Weekly Timetable</span>
+    <h2 class="section-h2">Sanur class schedule</h2>
+    <p class="body-sub">Live data pulled from our booking system — updated automatically.</p>
+
+    <div style="margin-top:1.75rem;overflow-x:auto">
+      <table style="width:100%;border-collapse:collapse;font-size:0.82rem" id="timetable-sanur-table">
+        <thead>
+          <tr style="border-bottom:1px solid #1e1e1e">
+            <th style="text-align:left;padding:0.6rem 1rem 0.6rem 0;font-weight:600;color:#555;font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;white-space:nowrap">Day</th>
+            <th style="text-align:left;padding:0.6rem 1rem;font-weight:600;color:#555;font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase">Class</th>
+            <th style="text-align:left;padding:0.6rem 1rem;font-weight:600;color:#555;font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;white-space:nowrap">Time</th>
+            <th style="text-align:left;padding:0.6rem 0 0.6rem 1rem;font-weight:600;color:#555;font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase">Coach</th>
+          </tr>
+        </thead>
+        <tbody id="sanur-tbody">
+        </tbody>
+      </table>
+      <p style="font-size:0.72rem;color:#444;margin-top:0.75rem;font-style:italic">
+        ℹ Live schedule loaded from WordPress REST API at build time (ISR, revalidate 1h).
+        Rows above are representative sample data for mockup purposes.
+      </p>
+    </div>
+  </section>
+
+  <!-- Gallery — Sanur -->
+  <section class="section-wrap section-divider" aria-label="Studio gallery">
+    <span class="section-label">Gallery</span>
+    <h2 class="section-h2">Life at the Sanur studio</h2>
+    <p class="body-sub">Hover any photo to expand it.</p>
+    <div class="gallery-strip" style="margin-top:1.75rem" id="gallery-sanur"></div>
+    <a href="https://www.evascolarotalentstudio.com/gallery/" target="_blank" rel="noopener noreferrer"
+      style="display:inline-block;margin-top:1rem;font-size:0.8rem;color:#555;text-decoration:none;transition:color 0.15s"
+      onmouseover="this.style.color='#B20001'" onmouseout="this.style.color='#555'">
+      View full gallery →
+    </a>
+  </section>
+
+  <!-- School Partnerships (Sanur-only) -->
+  <section class="section-wrap section-divider" aria-label="School partnerships">
+    <span class="section-label">School Partnerships</span>
+    <h2 class="section-h2">Trusted by Bali's top international schools</h2>
+    <p class="body-sub" style="max-width:580px">Eva Scolaro Talent Studio is the performing arts partner for CCA and ECA programmes at leading international schools in Bali.</p>
+    <div style="display:flex;gap:2rem;flex-wrap:wrap;align-items:center;margin-top:2rem">
+      <div style="background:#111;border:1px solid #1e1e1e;border-radius:3px;padding:1rem 1.5rem;display:flex;flex-direction:column;align-items:center;gap:0.5rem;min-width:140px">
+        <div style="width:80px;height:40px;background:#1e1e1e;border-radius:3px;display:flex;align-items:center;justify-content:center">
+          <span style="font-size:0.65rem;color:#444">AIS logo</span>
+        </div>
+        <span style="font-size:0.72rem;color:#666;text-align:center">Australian International School</span>
+      </div>
+      <div style="background:#111;border:1px solid #1e1e1e;border-radius:3px;padding:1rem 1.5rem;display:flex;flex-direction:column;align-items:center;gap:0.5rem;min-width:140px">
+        <div style="width:80px;height:40px;background:#1e1e1e;border-radius:3px;display:flex;align-items:center;justify-content:center">
+          <span style="font-size:0.65rem;color:#444">Dyatmika logo</span>
+        </div>
+        <span style="font-size:0.72rem;color:#666;text-align:center">Dyatmika School</span>
+      </div>
+      <div style="background:#111;border:1px solid #1e1e1e;border-radius:3px;padding:1rem 1.5rem;display:flex;flex-direction:column;align-items:center;gap:0.5rem;min-width:140px">
+        <div style="width:80px;height:40px;background:#1e1e1e;border-radius:3px;display:flex;align-items:center;justify-content:center">
+          <span style="font-size:0.65rem;color:#444">Toki Hub logo</span>
+        </div>
+        <span style="font-size:0.72rem;color:#666;text-align:center">Toki Hub</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing -->
+  <section class="section-wrap section-divider" aria-label="Pricing">
+    <span class="section-label">Pricing</span>
+    <h2 class="section-h2">Simple, transparent pricing</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:0.75rem;margin-top:1.5rem" id="pricing-cards">
+    </div>
+    <div style="margin-top:1.25rem;background:#111;border:1px solid #1a3a1a;border-radius:3px;padding:1rem 1.25rem;display:flex;align-items:center;gap:0.75rem">
+      <span style="font-size:1.1rem">🎁</span>
+      <p style="font-size:0.85rem;color:#AAAAAA;line-height:1.5">
+        <strong style="color:#EFEFEF">First trial class is free</strong> — no registration fee, no commitment required.
+        <a href="/#pricing" style="color:var(--brand-red);margin-left:0.4rem;text-decoration:none">Full pricing details →</a>
+      </p>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section class="section-wrap section-divider" aria-label="Testimonials">
+    <span class="section-label">What Parents Say</span>
+    <h2 class="section-h2">Sanur families love ESTS</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem;margin-top:1.75rem" id="testimonials-sanur">
+    </div>
+    <p style="font-size:0.7rem;color:#444;margin-top:1rem;font-style:italic">⚠ Placeholder testimonials — source 2–3 real quotes from client before launch.</p>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section-wrap-narrow section-divider" aria-label="FAQ Sanur">
+    <span class="section-label">FAQ</span>
+    <h2 class="section-h2">Common questions — Sanur</h2>
+    <div style="margin-top:1.75rem" id="faq-sanur"></div>
+  </section>
+
+  <!-- Cross-links -->
+  <section class="section-wrap section-divider" aria-label="Other studios">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;max-width:640px">
+      <a href="#" onclick="showPage('canggu');return false" style="
+        background:#111;border:1px solid #1e1e1e;border-radius:3px;
+        padding:1.25rem 1.5rem;text-decoration:none;
+        transition:border-color 0.15s;display:block
+      " onmouseover="this.style.borderColor='#333'" onmouseout="this.style.borderColor='#1e1e1e'">
+        <p style="font-size:0.65rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--brand-red);margin-bottom:0.35rem">Also in Canggu</p>
+        <p style="font-family:var(--font-display);font-size:0.95rem;color:#EFEFEF;margin-bottom:0.3rem">Dance Studio, Canggu →</p>
+        <p style="font-size:0.78rem;color:#666">Same classes, different location.</p>
+      </a>
+      <a href="/classes" style="
+        background:#111;border:1px solid #1e1e1e;border-radius:3px;
+        padding:1.25rem 1.5rem;text-decoration:none;
+        transition:border-color 0.15s;display:block
+      " onmouseover="this.style.borderColor='#333'" onmouseout="this.style.borderColor='#1e1e1e'">
+        <p style="font-size:0.65rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--brand-red);margin-bottom:0.35rem">Explore classes</p>
+        <p style="font-family:var(--font-display);font-size:0.95rem;color:#EFEFEF;margin-bottom:0.3rem">All 9 class types →</p>
+        <p style="font-size:0.78rem;color:#666">Ballet, Hip-Hop, K-Pop & more.</p>
+      </a>
+    </div>
+  </section>
+
+  <div style="text-align:center;padding:3rem 0 4rem">
+    <a href="/" style="font-size:0.8rem;color:#444;text-decoration:none">← Back to homepage</a>
+  </div>
+
+</div><!-- /page-sanur -->
+
+<!-- ══ CANGGU PAGE ══════════════════════════════════════════════════════════════ -->
+<div class="page-canggu" id="page-canggu">
+
+  <!-- Hero -->
+  <section style="
+    background: radial-gradient(ellipse 80% 60% at 50% -10%, #B20001 0%, #6a0001 25%, #2a0000 55%, #0d0d0d 80%);
+    padding: 5rem 1.5rem 3.5rem;
+    text-align: center;
+    border-bottom: 1px solid #1e1e1e;
+  " aria-label="Canggu studio intro">
+    <span class="section-label" style="display:block">Canggu · Bali</span>
+    <h1 class="page-h1">Kids Dance Studio<br>in Canggu, Bali</h1>
+    <p class="lead" style="margin-bottom:2rem">
+      Right in the heart of Canggu — Eva Scolaro Talent Studio brings Bali's best performing arts classes for kids to Berawa, Echo Beach, and the surrounding area.
+    </p>
+    <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap">
+      <a href="#" class="btn-primary">Book a Free Trial</a>
+      <a href="#timetable-canggu" class="btn-ghost">View Timetable ↓</a>
+    </div>
+    <!-- Keyword chips -->
+    <div style="display:flex;gap:0.5rem;justify-content:center;flex-wrap:wrap;margin-top:2rem">
+      <span style="font-size:0.7rem;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:3px;padding:0.3rem 0.85rem;color:#888">dance studio bali</span>
+      <span style="font-size:0.7rem;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:3px;padding:0.3rem 0.85rem;color:#888">dance studio canggu</span>
+      <span style="font-size:0.7rem;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:3px;padding:0.3rem 0.85rem;color:#888">kids dance class canggu</span>
+      <span style="font-size:0.7rem;background:transparent;border:1px dashed #2a2a2a;border-radius:3px;padding:0.3rem 0.85rem;color:#444;font-style:italic">← keyword chips for SEO context only, not in final page</span>
+    </div>
+  </section>
+
+  <!-- About the Studio -->
+  <section class="section-wrap section-divider" aria-label="About Canggu studio">
+    <span class="section-label">About the Studio</span>
+    <h2 class="section-h2">Eva Scolaro in Canggu</h2>
+    <p class="body-sub" style="max-width:620px;margin-bottom:1.25rem">
+      Our Canggu studio sits in the heart of Berawa — easy access from Canggu, Seminyak, and the
+      surrounding expat neighbourhoods. The same world-class facilities as our Sanur flagship:
+      sprung floor, mirrors, AC, and pro sound. Free parking available.
+    </p>
+
+    <!-- Facilities chips -->
+    <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1.75rem">
+      <span style="font-size:0.75rem;background:#111;border:1px solid #222;border-radius:3px;padding:0.3rem 0.7rem;color:#aaa">Sprung hardwood floor</span>
+      <span style="font-size:0.75rem;background:#111;border:1px solid #222;border-radius:3px;padding:0.3rem 0.7rem;color:#aaa">Full-length mirrors</span>
+      <span style="font-size:0.75rem;background:#111;border:1px solid #222;border-radius:3px;padding:0.3rem 0.7rem;color:#aaa">Air conditioning</span>
+      <span style="font-size:0.75rem;background:#111;border:1px solid #222;border-radius:3px;padding:0.3rem 0.7rem;color:#aaa">Pro sound system</span>
+      <span style="font-size:0.75rem;background:#111;border:1px solid #222;border-radius:3px;padding:0.3rem 0.7rem;color:#aaa">Free parking</span>
+      <span style="font-size:0.75rem;background:#111;border:1px solid #222;border-radius:3px;padding:0.3rem 0.7rem;color:#aaa">Changing area</span>
+    </div>
+
+    <!-- Hours -->
+    <p style="font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#555;margin-bottom:0.5rem">Opening Hours</p>
+    <div class="hours-grid">
+      <div class="hours-day"><div class="hours-day-name">Mon</div><div class="hours-day-time">14:00–20:00</div></div>
+      <div class="hours-day"><div class="hours-day-name">Tue</div><div class="hours-day-time">14:00–20:00</div></div>
+      <div class="hours-day"><div class="hours-day-name">Wed</div><div class="hours-day-time">14:00–20:00</div></div>
+      <div class="hours-day"><div class="hours-day-name">Thu</div><div class="hours-day-time">14:00–20:00</div></div>
+      <div class="hours-day"><div class="hours-day-name">Fri</div><div class="hours-day-time">14:00–20:00</div></div>
+      <div class="hours-day"><div class="hours-day-name">Sat</div><div class="hours-day-time">08:00–13:00</div></div>
+      <div class="hours-day closed"><div class="hours-day-name">Sun</div><div class="hours-day-time">Closed</div></div>
+    </div>
+    <p style="font-size:0.7rem;color:#444;margin-top:0.5rem;font-style:italic">⚠ Placeholder hours — confirm with client before build</p>
+
+    <!-- Address card -->
+    <div class="address-card">
+      <div>
+        <p class="address-card-label">Address</p>
+        <p class="address-card-text" style="color:#777;font-style:italic">⚠ Address TBD — needs client input<br><span style="font-size:0.8rem;color:#555">Canggu / Berawa area, Bali</span></p>
+      </div>
+      <a href="#" class="map-link" style="opacity:0.4;pointer-events:none">📍 Get directions</a>
+    </div>
+  </section>
+
+  <!-- Classes at Canggu -->
+  <section class="section-wrap section-divider" aria-label="Classes at Canggu">
+    <span class="section-label">Classes at This Studio</span>
+    <h2 class="section-h2">What we teach in Canggu</h2>
+    <p class="body-sub">Classes running at our Canggu studio. Click any class for full details.</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:0.75rem;margin-top:1.75rem" id="classes-canggu">
+    </div>
+  </section>
+
+  <!-- Timetable -->
+  <section id="timetable-canggu" class="section-wrap section-divider" aria-label="Canggu timetable">
+    <span class="section-label">Weekly Timetable</span>
+    <h2 class="section-h2">Canggu class schedule</h2>
+    <p class="body-sub">Live data pulled from our booking system — updated automatically.</p>
+
+    <div style="margin-top:1.75rem;overflow-x:auto">
+      <table style="width:100%;border-collapse:collapse;font-size:0.82rem">
+        <thead>
+          <tr style="border-bottom:1px solid #1e1e1e">
+            <th style="text-align:left;padding:0.6rem 1rem 0.6rem 0;font-weight:600;color:#555;font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;white-space:nowrap">Day</th>
+            <th style="text-align:left;padding:0.6rem 1rem;font-weight:600;color:#555;font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase">Class</th>
+            <th style="text-align:left;padding:0.6rem 1rem;font-weight:600;color:#555;font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;white-space:nowrap">Time</th>
+            <th style="text-align:left;padding:0.6rem 0 0.6rem 1rem;font-weight:600;color:#555;font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase">Coach</th>
+          </tr>
+        </thead>
+        <tbody id="canggu-tbody">
+        </tbody>
+      </table>
+      <p style="font-size:0.72rem;color:#444;margin-top:0.75rem;font-style:italic">
+        ℹ Live schedule loaded from WordPress REST API at build time (ISR, revalidate 1h).
+      </p>
+    </div>
+  </section>
+
+  <!-- Gallery — Canggu -->
+  <section class="section-wrap section-divider" aria-label="Studio gallery">
+    <span class="section-label">Gallery</span>
+    <h2 class="section-h2">Life at the Canggu studio</h2>
+    <p class="body-sub">Hover any photo to expand it.</p>
+    <div class="gallery-strip" style="margin-top:1.75rem" id="gallery-canggu"></div>
+    <a href="https://www.evascolarotalentstudio.com/gallery/" target="_blank" rel="noopener noreferrer"
+      style="display:inline-block;margin-top:1rem;font-size:0.8rem;color:#555;text-decoration:none;transition:color 0.15s"
+      onmouseover="this.style.color='#B20001'" onmouseout="this.style.color='#555'">
+      View full gallery →
+    </a>
+  </section>
+
+  <!-- Pricing -->
+    </div>
+    <div style="margin-top:1.25rem;background:#111;border:1px solid #1a3a1a;border-radius:3px;padding:1rem 1.25rem;display:flex;align-items:center;gap:0.75rem">
+      <span style="font-size:1.1rem">🎁</span>
+      <p style="font-size:0.85rem;color:#AAAAAA;line-height:1.5">
+        <strong style="color:#EFEFEF">First trial class is free</strong> — no registration fee, no commitment required.
+        <a href="/#pricing" style="color:var(--brand-red);margin-left:0.4rem;text-decoration:none">Full pricing details →</a>
+      </p>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section class="section-wrap section-divider" aria-label="Testimonials">
+    <span class="section-label">What Parents Say</span>
+    <h2 class="section-h2">Canggu families love ESTS</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem;margin-top:1.75rem" id="testimonials-canggu">
+    </div>
+    <p style="font-size:0.7rem;color:#444;margin-top:1rem;font-style:italic">⚠ Placeholder testimonials — source 2–3 real quotes from client before launch.</p>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section-wrap-narrow section-divider" aria-label="FAQ Canggu">
+    <span class="section-label">FAQ</span>
+    <h2 class="section-h2">Common questions — Canggu</h2>
+    <div style="margin-top:1.75rem" id="faq-canggu"></div>
+  </section>
+
+  <!-- Cross-links -->
+  <section class="section-wrap section-divider" aria-label="Other studios">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;max-width:640px">
+      <a href="#" onclick="showPage('sanur');return false" style="
+        background:#111;border:1px solid #1e1e1e;border-radius:3px;
+        padding:1.25rem 1.5rem;text-decoration:none;
+        transition:border-color 0.15s;display:block
+      " onmouseover="this.style.borderColor='#333'" onmouseout="this.style.borderColor='#1e1e1e'">
+        <p style="font-size:0.65rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--brand-red);margin-bottom:0.35rem">Also in Sanur</p>
+        <p style="font-family:var(--font-display);font-size:0.95rem;color:#EFEFEF;margin-bottom:0.3rem">Dance Studio, Sanur →</p>
+        <p style="font-size:0.78rem;color:#666">Our flagship, head office location.</p>
+      </a>
+      <a href="/classes" style="
+        background:#111;border:1px solid #1e1e1e;border-radius:3px;
+        padding:1.25rem 1.5rem;text-decoration:none;
+        transition:border-color 0.15s;display:block
+      " onmouseover="this.style.borderColor='#333'" onmouseout="this.style.borderColor='#1e1e1e'">
+        <p style="font-size:0.65rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--brand-red);margin-bottom:0.35rem">Explore classes</p>
+        <p style="font-family:var(--font-display);font-size:0.95rem;color:#EFEFEF;margin-bottom:0.3rem">All 9 class types →</p>
+        <p style="font-size:0.78rem;color:#666">Ballet, Hip-Hop, K-Pop & more.</p>
+      </a>
+    </div>
+  </section>
+
+  <div style="text-align:center;padding:3rem 0 4rem">
+    <a href="/" style="font-size:0.8rem;color:#444;text-decoration:none">← Back to homepage</a>
+  </div>
+
+</div><!-- /page-canggu -->
+
+<script>
+// ── Data ─────────────────────────────────────────────────────────────────────
+
+// Lucide SVG paths — viewBox="0 0 24 24", stroke="currentColor", fill="none"
+const ICONS = {
+  "hip-hop": `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="cls-icon"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>`,
+  "ballet": `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="cls-icon"><path d="M12 2a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/><path d="M12 4v6l-4 4m4-4 4 4"/><path d="M8 14l-2 6m10-6 2 6"/></svg>`,
+  "singing": `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="cls-icon"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="8"  y1="22" x2="16" y2="22"/></svg>`,
+  "kpop-dance": `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="cls-icon"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`,
+  "jazz-dance": `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="cls-icon"><circle cx="12" cy="12" r="2"/><path d="M12 2v4m0 12v4M2 12h4m12 0h4"/><path d="m4.93 4.93 2.83 2.83m8.48 8.48 2.83 2.83M19.07 4.93l-2.83 2.83M7.76 16.24l-2.83 2.83"/></svg>`,
+  "drama-musical-theatre": `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="cls-icon"><path d="M2 10s3-3 3-8h14c0 5 3 8 3 8"/><path d="M6 17s1.5 2 6 2 6-2 6-2"/><path d="M22 10H2"/><path d="M12 10v9"/><line x1="8" y1="10" x2="8" y2="14"/><line x1="16" y1="10" x2="16" y2="14"/></svg>`,
+  "modeling": `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="cls-icon"><circle cx="12" cy="4" r="2"/><path d="M12 6v6l-3 3m3-3 3 3"/><path d="M9 18l1 4m4-4-1 4"/></svg>`,
+  "breakdance": `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="cls-icon"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>`,
+};
+
+const CLASSES_SANUR = [
+  { slug:"hip-hop",               name:"Hip-Hop",                ages:"3–16 yrs" },
+  { slug:"ballet",                name:"Ballet",                  ages:"3–16 yrs" },
+  { slug:"singing",               name:"Singing",                 ages:"3–16 yrs" },
+  { slug:"kpop-dance",            name:"K-Pop Dance",             ages:"6–16 yrs" },
+  { slug:"jazz-dance",            name:"Jazz Dance",              ages:"3–9 yrs"  },
+  { slug:"drama-musical-theatre", name:"Drama & Musical Theatre", ages:"6–16 yrs" },
+  { slug:"modeling",              name:"Modeling",                ages:"3–16 yrs" },
+];
+
+const CLASSES_CANGGU = [
+  { slug:"hip-hop",               name:"Hip-Hop",                ages:"3–16 yrs" },
+  { slug:"ballet",                name:"Ballet",                  ages:"3–16 yrs" },
+  { slug:"singing",               name:"Singing",                 ages:"3–16 yrs" },
+  { slug:"kpop-dance",            name:"K-Pop Dance",             ages:"6–16 yrs" },
+  { slug:"breakdance",            name:"Breakdance",              ages:"6–16 yrs" },
+  { slug:"modeling",              name:"Modeling",                ages:"3–16 yrs" },
+];
+
+const SCHEDULE_SANUR = [
+  { day:"Monday",    cls:"TOTS BALLET",      time:"15:00–15:45", coach:"Coach Eva" },
+  { day:"Monday",    cls:"JUNIOR HIPHOP",    time:"16:00–17:00", coach:"Coach Eva" },
+  { day:"Tuesday",   cls:"SINGING TOTS",     time:"15:00–15:45", coach:"Coach Maya" },
+  { day:"Wednesday", cls:"JUNIOR BALLET",    time:"15:00–16:00", coach:"Coach Eva" },
+  { day:"Wednesday", cls:"TEEN KPOP",        time:"16:30–17:30", coach:"Coach Rina" },
+  { day:"Thursday",  cls:"JUNIOR SINGING",   time:"15:00–16:00", coach:"Coach Maya" },
+  { day:"Thursday",  cls:"DRAMA JUNIOR",     time:"16:15–17:15", coach:"Coach Eva" },
+  { day:"Saturday",  cls:"TOTS HIPHOP",      time:"08:30–09:15", coach:"Coach Eva" },
+  { day:"Saturday",  cls:"JUNIOR KPOP",      time:"09:30–10:30", coach:"Coach Rina" },
+  { day:"Saturday",  cls:"MODELING JUNIOR",  time:"10:45–11:45", coach:"Coach Eva" },
+];
+
+const SCHEDULE_CANGGU = [
+  { day:"Monday",    cls:"TOTS BALLET",      time:"15:30–16:15", coach:"Coach Sari" },
+  { day:"Tuesday",   cls:"JUNIOR HIPHOP",    time:"15:00–16:00", coach:"Coach Sari" },
+  { day:"Wednesday", cls:"KPOP JUNIOR",      time:"15:30–16:30", coach:"Coach Rina" },
+  { day:"Friday",    cls:"BREAKDANCE JR",    time:"15:00–16:00", coach:"Coach Andi" },
+  { day:"Saturday",  cls:"TOTS HIPHOP",      time:"09:00–09:45", coach:"Coach Sari" },
+  { day:"Saturday",  cls:"TEEN KPOP",        time:"10:00–11:00", coach:"Coach Rina" },
+  { day:"Saturday",  cls:"MODELING JUNIOR",  time:"11:15–12:15", coach:"Coach Sari" },
+];
+
+const PRICING = [
+  { tier:"4× / month",  price:"180,000",  note:"per session",  highlight:false },
+  { tier:"8× / month",  price:"140,000",  note:"per session",  highlight:true  },
+  { tier:"12× / month", price:"110,000",  note:"per session",  highlight:false },
+];
+
+const TESTIMONIALS_SANUR = [
+  {
+    quote:"My daughter has been dancing here for two years and her confidence has completely transformed. The coaches are incredibly warm and professional.",
+    author:"Parent, Sanur",
+    avatar:"S",
+  },
+  {
+    quote:"We tried three studios before finding ESTS. The teaching quality and the end-of-term concerts are just on another level.",
+    author:"Parent, South Denpasar",
+    avatar:"A",
+  },
+  {
+    quote:"The Sanur studio is so easy to get to from Renon, and the schedule fits perfectly around school. Highly recommend the Ballet programme.",
+    author:"Parent, Renon",
+    avatar:"M",
+  },
+];
+
+const TESTIMONIALS_CANGGU = [
+  {
+    quote:"As an expat family in Canggu, finding quality performing arts classes for our son was a priority. ESTS exceeded every expectation.",
+    author:"Expat parent, Berawa",
+    avatar:"E",
+  },
+  {
+    quote:"My kids do Hip-Hop and K-Pop here every week. The energy in the Canggu studio is amazing and the coaches really know how to connect with kids.",
+    author:"Parent, Echo Beach",
+    avatar:"J",
+  },
+  {
+    quote:"The free trial made it easy to commit — we were sold after the very first session. My daughter hasn't missed a Saturday since.",
+    author:"Parent, Seminyak",
+    avatar:"L",
+  },
+];
+
+const FAQS_SANUR = [
+  { q:"Where exactly is the Sanur studio?",         a:"Our Sanur studio is located at Jl. Bypass Ngurah Rai No.88A, Sanur, Denpasar Selatan. There is on-site parking and it's easy to reach from Sanur, Renon, and South Denpasar." },
+  { q:"Is the Sanur studio the main / head office?", a:"Yes — Sanur is our flagship location and head office, home of Eva Scolaro Talent Studio since we opened." },
+  { q:"What age can my child start?",                a:"We welcome children from age 3 upward. Our Tots classes are designed specifically for ages 3–5 with shorter sessions and a nurturing, play-based approach." },
+  { q:"Do I need to bring anything for the first class?", a:"Just wear comfortable clothes and bring a water bottle. Dance shoes are recommended but not required for the first trial class." },
+  { q:"How do I book a free trial at the Sanur studio?", a:"Tap the 'Book a Free Trial' button on this page and our team will confirm your preferred class, day, and time via WhatsApp — usually within a few hours." },
+];
+
+const FAQS_CANGGU = [
+  { q:"Where is the Canggu studio?",                a:"Our Canggu studio is located in the Berawa area — easy to reach from Canggu, Seminyak, and Echo Beach. Full address and directions available on booking confirmation." },
+  { q:"Is parking available?",                      a:"Yes, free parking is available at the Canggu studio." },
+  { q:"What classes run at the Canggu studio?",     a:"We run Hip-Hop, Ballet, K-Pop Dance, Singing, Breakdance, and Modeling at our Canggu location. Check the timetable above for exact days and times." },
+  { q:"How is Canggu different from the Sanur studio?", a:"The class offering is similar but the schedule differs. Sanur is our flagship and has the widest timetable. Both studios have the same quality coaches and facilities." },
+  { q:"How do I book a free trial at the Canggu studio?", a:"Tap 'Book a Free Trial' on this page — our team will reach out via WhatsApp to confirm your preferred class and time." },
+];
+
+// ── Renderers ──────────────────────────────────────────────────────────────────
+
+function renderClassCard(cls) {
+  const icon = ICONS[cls.slug] || ICONS['hip-hop'];
+  return `
+    <a href="/classes/${cls.slug}" class="cls-card" style="
+      background:#111;border:1px solid #1e1e1e;border-radius:3px;
+      padding:1rem 1.1rem;text-decoration:none;display:block;
+      transition:border-color 0.2s,background 0.2s;
+    ">
+      <div style="display:flex;align-items:center;gap:0.7rem;margin-bottom:0.5rem">
+        <span class="cls-icon-wrap" style="
+          width:32px;height:32px;flex-shrink:0;
+          display:flex;align-items:center;justify-content:center;
+          color:#B20001;
+        ">${icon}</span>
+        <span style="font-family:'Archivo Black',sans-serif;font-size:0.85rem;color:#EFEFEF">${cls.name}</span>
+      </div>
+      <p style="font-size:0.72rem;color:#555;margin-bottom:0.5rem">Ages ${cls.ages}</p>
+      <span class="cls-arrow" style="font-size:0.72rem;color:#B20001;font-weight:600;display:inline-block;transition:transform 0.2s">Details →</span>
+    </a>
+  `;
+}
+
+function renderTimetableRows(rows) {
+  let prevDay = "";
+  return rows.map(row => {
+    const isNewDay = row.day !== prevDay;
+    prevDay = row.day;
+    return `
+      <tr style="border-bottom:1px solid #141414;${isNewDay ? "border-top:1px solid #1e1e1e" : ""}">
+        <td style="padding:0.6rem 1rem 0.6rem 0;white-space:nowrap;vertical-align:top">
+          ${isNewDay
+            ? `<span style="font-size:0.72rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#888">${row.day}</span>`
+            : `<span style="color:transparent">-</span>`
+          }
+        </td>
+        <td style="padding:0.6rem 1rem;color:#DDDDDD;font-size:0.82rem">${row.cls}</td>
+        <td style="padding:0.6rem 1rem;color:#AAAAAA;font-size:0.82rem;white-space:nowrap">${row.time}</td>
+        <td style="padding:0.6rem 0 0.6rem 1rem;color:#666;font-size:0.78rem">${row.coach}</td>
+      </tr>
+    `;
+  }).join("");
+}
+
+function renderPricingCards(containerId) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  container.innerHTML = PRICING.map(p => `
+    <div style="
+      background:${p.highlight ? "#1a0000" : "#111"};
+      border:1px solid ${p.highlight ? "#B20001" : "#222"};
+      border-radius:3px;padding:1.25rem 1.5rem;position:relative;
+    ">
+      ${p.highlight ? `<span style="position:absolute;top:-1px;right:1.25rem;background:#B20001;color:#fff;font-size:0.6rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:0.2rem 0.6rem;border-radius:0 0 3px 3px">Most popular</span>` : ""}
+      <p style="font-family:'Archivo Black',sans-serif;font-size:1.5rem;color:#EFEFEF;margin-bottom:0.2rem">
+        IDR ${p.price}
+      </p>
+      <p style="font-size:0.75rem;color:#666;margin-bottom:0.6rem">${p.note}</p>
+      <p style="font-size:0.8rem;font-weight:600;color:#888">${p.tier}</p>
+    </div>
+  `).join("");
+}
+
+function renderTestimonials(containerId, testimonials) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  container.innerHTML = testimonials.map(t => `
+    <div style="background:#111;border:1px solid #1e1e1e;border-radius:3px;padding:1.5rem">
+      <p style="font-size:0.85rem;color:#AAAAAA;line-height:1.7;margin-bottom:1.25rem;font-style:italic">
+        "${t.quote}"
+      </p>
+      <div style="display:flex;align-items:center;gap:0.75rem">
+        <div style="width:32px;height:32px;border-radius:50%;background:#1e1e1e;border:1px solid #2a2a2a;display:flex;align-items:center;justify-content:center;font-size:0.8rem;font-weight:700;color:#666;flex-shrink:0">
+          ${t.avatar}
+        </div>
+        <p style="font-size:0.78rem;color:#555">${t.author}</p>
+      </div>
+    </div>
+  `).join("");
+}
+
+function renderFAQ(containerId, faqs) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  container.innerHTML = faqs.map((faq, i) => `
+    <details style="border-top:${i===0?"1px solid #1e1e1e":"none"};border-bottom:1px solid #1e1e1e" ${i===0?"open":""}>
+      <summary style="
+        padding:1.1rem 0;cursor:pointer;list-style:none;
+        display:flex;justify-content:space-between;align-items:center;gap:1rem;
+        font-size:0.9rem;font-weight:600;color:#EFEFEF;
+      ">
+        ${faq.q}
+        <span style="color:#B20001;font-size:1rem;flex-shrink:0">+</span>
+      </summary>
+      <p style="font-size:0.85rem;color:#999;line-height:1.75;padding-bottom:1.1rem;padding-right:1rem">
+        ${faq.a}
+      </p>
+    </details>
+  `).join("");
+}
+
+// ── Gallery data ──────────────────────────────────────────────────────────────
+// Using real project photos from /public/slideshow/ and /public/classes/
+// In production these resolve via Next.js static serving.
+// In this HTML mockup we reference them as relative paths from the project root —
+// open this file from evascolarotalentstudio/ for images to resolve, or swap to
+// Unsplash placeholders if viewing standalone.
+
+const GALLERY_SANUR = [
+  { src: "https://www.evascolarotalentstudio.com/slideshow/hiphop-junior-eva-scolaro.webp", label: "Hip-Hop",   name: "Junior Hip-Hop" },
+  { src: "https://www.evascolarotalentstudio.com/slideshow/ballet-tots.webp",               label: "Ballet",     name: "Tots Ballet"    },
+  { src: "https://www.evascolarotalentstudio.com/slideshow/singing-junior.webp",            label: "Singing",    name: "Junior Singing" },
+  { src: "https://www.evascolarotalentstudio.com/slideshow/jazz-dance.webp",                label: "Jazz Dance", name: "Jazz Dance"     },
+  { src: "https://www.evascolarotalentstudio.com/slideshow/drama-musical-theatre.webp",     label: "Drama",      name: "Drama & Musical Theatre" },
+  { src: "https://www.evascolarotalentstudio.com/slideshow/modeling-junior.webp",           label: "Modeling",   name: "Junior Modeling" },
+];
+
+const GALLERY_CANGGU = [
+  { src: "https://www.evascolarotalentstudio.com/slideshow/hiphop-junior.webp",  label: "Hip-Hop",  name: "Junior Hip-Hop" },
+  { src: "https://www.evascolarotalentstudio.com/slideshow/kpop-junior.webp",    label: "K-Pop",    name: "K-Pop Junior"   },
+  { src: "https://www.evascolarotalentstudio.com/slideshow/kpop-teen.webp",      label: "K-Pop",    name: "K-Pop Teen"     },
+  { src: "https://www.evascolarotalentstudio.com/slideshow/ballet-junior.webp",  label: "Ballet",   name: "Junior Ballet"  },
+  { src: "https://www.evascolarotalentstudio.com/slideshow/singing-teen.webp",   label: "Singing",  name: "Teen Singing"   },
+  { src: "https://www.evascolarotalentstudio.com/slideshow/singing-tots.webp",   label: "Singing",  name: "Tots Singing"   },
+];
+
+function renderGallery(containerId, panels) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  container.innerHTML = panels.map(p => `
+    <div class="gallery-panel">
+      <img src="${p.src}" alt="${p.name}" loading="lazy" />
+      <div class="gallery-panel-caption">
+        <span class="gallery-caption-label">${p.label}</span>
+        <span class="gallery-caption-name">${p.name}</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ── Page switcher ──────────────────────────────────────────────────────────────
+
+function showPage(id) {
+  document.querySelectorAll('.page-sanur, .page-canggu').forEach(p => p.classList.remove('visible'));
+  document.getElementById('page-' + id).classList.add('visible');
+  document.querySelectorAll('.switcher-btn').forEach((btn, i) => {
+    btn.classList.toggle('active', (i === 0 && id === 'sanur') || (i === 1 && id === 'canggu'));
+  });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ── Init ───────────────────────────────────────────────────────────────────────
+
+document.addEventListener('DOMContentLoaded', () => {
+  // Gallery
+  renderGallery('gallery-sanur',  GALLERY_SANUR);
+  renderGallery('gallery-canggu', GALLERY_CANGGU);
+
+  // Classes grids
+  document.getElementById('classes-sanur').innerHTML  = CLASSES_SANUR.map(renderClassCard).join('');
+  document.getElementById('classes-canggu').innerHTML = CLASSES_CANGGU.map(renderClassCard).join('');
+
+  // Wire up class card hover — stroke redraw + icon bounce
+  document.querySelectorAll('.cls-card').forEach(card => {
+    const icon = card.querySelector('.cls-icon');
+    const poly = icon && icon.querySelector('polygon');
+
+    card.addEventListener('mouseenter', () => {
+      if (!icon) return;
+      if (poly) {
+        // Star: spin via transform already handled by CSS; do stroke redraw
+        poly.style.transition = 'stroke-dashoffset 0.5s ease';
+        poly.style.strokeDasharray = '120';
+        poly.style.strokeDashoffset = '120';
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => { poly.style.strokeDashoffset = '0'; });
+        });
+      } else {
+        // All other icons: stroke draw-on
+        icon.style.strokeDashoffset = '80';
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            icon.style.transition = 'stroke-dashoffset 0.45s ease, transform 0.35s cubic-bezier(0.34,1.56,0.64,1), color 0.2s';
+            icon.style.strokeDashoffset = '0';
+          });
+        });
+      }
+    });
+  });
+
+  // Timetables
+  document.getElementById('sanur-tbody').innerHTML  = renderTimetableRows(SCHEDULE_SANUR);
+  document.getElementById('canggu-tbody').innerHTML = renderTimetableRows(SCHEDULE_CANGGU);
+
+  // Pricing
+  renderPricingCards('pricing-cards');
+  renderPricingCards('pricing-cards-canggu');
+
+  // Testimonials
+  renderTestimonials('testimonials-sanur',  TESTIMONIALS_SANUR);
+  renderTestimonials('testimonials-canggu', TESTIMONIALS_CANGGU);
+
+  // FAQs
+  renderFAQ('faq-sanur',  FAQS_SANUR);
+  renderFAQ('faq-canggu', FAQS_CANGGU);
+});
+</script>
+</body>
+</html>

@@ -39,6 +39,7 @@ function shouldRouteToVercel(pathname) {
   return (
     pathname === "/" ||
     pathname.startsWith("/classes") ||
+    pathname.startsWith("/studio/") ||
     pathname.startsWith("/privacy-notice") ||
     pathname.startsWith("/studio-rental") ||
     pathname.startsWith("/slideshow/") ||

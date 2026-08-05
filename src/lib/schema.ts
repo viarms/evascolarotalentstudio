@@ -228,6 +228,103 @@ export function buildClassPageSchema(cls: ClassData): JsonLdObject {
   };
 }
 
+// ─── Studio Location schema builder ──────────────────────────────────────────
+
+export type StudioLocationSchemaInput = {
+  location: "sanur" | "canggu";
+  faqs: { question: string; answer: string }[];
+};
+
+/**
+ * Returns JSON-LD @graph for a studio location page:
+ *   - LocalBusiness  (per-location, with address/geo/hours)
+ *   - FAQPage        (from the page FAQ section)
+ */
+export function buildStudioLocationSchema({
+  location,
+  faqs,
+}: StudioLocationSchemaInput): JsonLdObject {
+  const isSanur = location === "sanur";
+  const pageUrl = `${SITE_URL}/studio/${location}/`;
+  const businessId = `${SITE_URL}/#${location}-studio`;
+
+  const localBusiness: JsonLdObject = {
+    "@type": ["LocalBusiness", "DanceSchool"],
+    "@id": businessId,
+    name: isSanur
+      ? "Eva Scolaro Talent Studio — Sanur"
+      : "Eva Scolaro Talent Studio — Canggu",
+    url: pageUrl,
+    telephone: "+62821-4628-4464",
+    logo: `${SITE_URL}/ests-logo-white.svg`,
+    image: isSanur
+      ? `${SITE_URL}/slideshow/hiphop-junior-eva-scolaro.webp`
+      : `${SITE_URL}/slideshow/hiphop-junior.webp`,
+    priceRange: "IDR 110,000 – 180,000 per session",
+    currenciesAccepted: "IDR",
+    paymentAccepted: "Cash, Bank Transfer",
+    address: {
+      "@type": "PostalAddress",
+      ...(isSanur
+        ? {
+            streetAddress: "Jl. Bypass Ngurah Rai No.88A",
+            addressLocality: "Sanur",
+            addressRegion: "Denpasar Selatan",
+          }
+        : {
+            // ⚠ Canggu address TBD — update once confirmed by client
+            streetAddress: "Canggu / Berawa area",
+            addressLocality: "Canggu",
+            addressRegion: "Badung",
+          }),
+      addressCountry: "ID",
+    },
+    ...(isSanur && {
+      geo: {
+        "@type": "GeoCoordinates",
+        // ⚠ Approximate — update with exact coords once confirmed
+        latitude: "-8.6875",
+        longitude: "115.2606",
+      },
+      hasMap: "https://maps.app.goo.gl/Esoa9MtswJxsoN3R7",
+    }),
+    openingHoursSpecification: [
+      {
+        "@type": "OpeningHoursSpecification",
+        dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        opens: "14:00",
+        closes: "20:00",
+      },
+      {
+        "@type": "OpeningHoursSpecification",
+        dayOfWeek: ["Saturday"],
+        opens: "08:00",
+        closes: "13:00",
+      },
+    ],
+    sameAs: [
+      "https://www.instagram.com/evascolarotalentstudio",
+      "https://www.facebook.com/evascolarotalentstudio",
+      "https://www.youtube.com/@evascolarotalentstudio",
+    ],
+  };
+
+  const faqPage: JsonLdObject = {
+    "@type": "FAQPage",
+    "@id": `${pageUrl}#faq`,
+    mainEntity: faqs.map((f) => ({
+      "@type": "Question",
+      name: f.question,
+      acceptedAnswer: { "@type": "Answer", text: f.answer },
+    })),
+  };
+
+  return {
+    "@context": "https://schema.org",
+    "@graph": [localBusiness, faqPage],
+  };
+}
+
 // ─── Studio Rental schema builder ────────────────────────────────────────────
 
 /**

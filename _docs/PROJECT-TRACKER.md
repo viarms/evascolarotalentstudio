@@ -1,5 +1,5 @@
 # Project Tracker — Eva Scolaro Talent Studio
-**Last updated:** 24 July 2026 (rev 11)
+**Last updated:** 27 July 2026 (rev 12)
 **Phase:** Homepage live ✅ → Phase 2 (Studio + blog) in progress
 
 ---
@@ -222,7 +222,7 @@ Worker source (`_docs/cloudflare-worker.js`) is already correct — `pathname ==
 
 | # | Task | Notes |
 |---|---|---|
-| **6** | Studio location pages `/studio/canggu/` + `/studio/sanur/` | `PRD-SEO-Eva-Scolaro-Talent-Studio.md` §10 |
+| **6** | SEO location pages `/studio/canggu/` + `/studio/sanur/` | Keyword targets: "dance studio canggu" + "dance studio sanur". See content plan below. |
 | **7** | ACF field group for static content | Migrate `STATIC_CONTENT` from `page.tsx` into WP ACF |
 | **8** | Blog / educational content (min. 8 articles) | `PRD-SEO-Eva-Scolaro-Talent-Studio.md` §6 Phase 2 |
 | **9** | School Partnerships page (`/school-partnerships/`) | Social proof + E-E-A-T |
@@ -348,3 +348,154 @@ _docs/
 2. Set Vercel env vars (`WP_ORIGIN`, `NEXT_PUBLIC_WA_NUMBER`, `NEXT_PUBLIC_GTM_ID`, `NEXT_PUBLIC_GA_ID`, `RESEND_API_KEY`, `RESEND_FROM`, `FORM_CC`, `FORM_RECIPIENT_AGENT2`, `FORM_RECIPIENT_AGENT3`)
 3. Deploy Cloudflare Worker via dashboard
 4. Test staging URL → DNS cutover
+
+---
+
+## Content Plan — SEO Location Pages (P2 #6)
+
+**Added:** 27 July 2026
+
+Two new static pages targeting high-intent local search keywords for Bali's expat/family market.
+
+---
+
+### Page 1 — `/studio/canggu/`
+
+**Primary keyword:** `dance studio canggu`
+**Secondary keywords:** dance class canggu, kids dance canggu, performing arts canggu, ballet canggu, hip hop dance canggu
+
+**URL:** `evascolarotalentstudio.com/studio/canggu/`
+**Route file:** `src/app/studio/canggu/page.tsx` (Static)
+
+**Page title (tag):** `Dance Studio Canggu — Kids & Teen Classes | Eva Scolaro Talent Studio`
+**Meta description:** `Looking for a dance studio in Canggu? Eva Scolaro Talent Studio offers ballet, hip-hop, K-pop, singing & more for kids and teens. Book a free trial today.`
+
+**Content sections (in order):**
+
+1. **Hero / H1**
+   - H1: `Kids Dance Studio in Canggu`
+   - Subheading: Studio address + short tagline ("Bali's leading performing arts studio for children — right in the heart of Canggu")
+   - Hero image: Canggu studio interior or a class in action
+   - CTA: "Book a Free Trial" (opens `BookTrialModal`, prefilled location = Canggu)
+
+2. **About the Canggu Studio**
+   - 2–3 sentences: location details (neighbourhood, parking, easy access for expat families), floor/room description, air-conditioned, sprung floor, mirrors
+   - Opening hours (Mon–Sat typical schedule — pull from timetable data)
+   - Embedded Google Map for the Canggu address
+
+3. **Classes Available at Canggu**
+   - Grid/list of all classes running at Canggu: Ballet, Hip-Hop, K-Pop Dance, Singing, Jazz, Drama & Musical Theatre, Modeling — each card links to `/classes/[slug]`
+   - Each card: class name, age groups, short 1-line description
+
+4. **Weekly Timetable — Canggu**
+   - Live schedule pulled from WP via `fetchScheduleForLocation("canggu")` (filter `event_location` contains "canggu")
+   - Same `ScheduleTabs` component or a simplified day-grouped table
+   - Note: same data already used in homepage HomeTimetable Canggu tab
+
+5. **Pricing**
+   - Brief pricing summary (180K / 140K / 110K per session) with link to homepage `#pricing` anchor
+   - "First trial class is free" callout
+
+6. **Testimonials (Canggu families)**
+   - 2–3 short quotes from parents/students based in or near Canggu (to be sourced from client)
+   - Photo or avatar if available
+
+7. **FAQ — Canggu Studio**
+   - "Where exactly is the Canggu studio?" (address + landmark)
+   - "Is parking available?"
+   - "What age can my child start?"
+   - "Do I need to bring anything for the first class?"
+   - "How do I book a free trial at the Canggu studio?"
+   - Implemented with `FaqAccordion` component + `FAQPage` JSON-LD
+
+9. **Cross-links**
+   - "Also looking for classes in Sanur?" → `/studio/sanur/`
+   - Individual class links: "Explore all Ballet classes →", "Explore Hip-Hop →", etc.
+
+**Structured data:**
+- `LocalBusiness` with name, address, geo coordinates, openingHours, telephone, image for Canggu location
+- `FAQPage` for the FAQ section
+
+---
+
+### Page 2 — `/studio/sanur/`
+
+**Primary keyword:** `dance studio sanur`
+**Secondary keywords:** dance class sanur, kids dance sanur, performing arts sanur, ballet sanur, hip hop dance sanur, dance studio near sanur
+
+**URL:** `evascolarotalentstudio.com/studio/sanur/`
+**Route file:** `src/app/studio/sanur/page.tsx` (Static)
+
+**Page title (tag):** `Dance Studio Sanur — Kids & Teen Classes | Eva Scolaro Talent Studio`
+**Meta description:** `Looking for a dance studio in Sanur? Eva Scolaro Talent Studio — Bali's #1 performing arts studio for kids. Ballet, hip-hop, singing & more. Book your free trial.`
+
+**Content sections (in order):**
+
+1. **Hero / H1**
+   - H1: `Kids Dance Studio in Sanur`
+   - Subheading: "Our flagship studio — home of Eva Scolaro Talent Studio since the beginning"
+   - Hero image: Sanur studio exterior or class photo
+   - CTA: "Book a Free Trial" (opens `BookTrialModal`, prefilled location = Sanur)
+
+2. **About the Sanur Studio**
+   - Sanur is the Head Office / flagship location — lean into that
+   - 2–3 sentences: location, neighbourhood context (family-friendly Sanur, close to international schools), parking, facilities
+   - Opening hours
+   - Embedded Google Map for Sanur address
+
+3. **Classes Available at Sanur**
+   - Same grid/list pattern as Canggu — all classes running at Sanur with links to `/classes/[slug]`
+   - Note: Sanur has a broader class offering than Canggu; if any class is Sanur-only, call it out
+
+4. **Weekly Timetable — Sanur**
+   - Live schedule via `fetchScheduleForLocation("sanur")`
+   - Day-grouped layout
+
+5. **School Partnerships**
+   - Sanur is closer to AIS and Dyatmika — mention these CCA partnerships as social proof
+   - Logos: AIS, Dyatmika, Toki Hub (already in `public/`)
+   - Short copy: "Eva Scolaro Talent Studio is the trusted performing arts partner for [schools]"
+
+6. **Pricing**
+   - Same as Canggu page — brief summary + link to `#pricing`
+
+7. **Testimonials (Sanur families)**
+   - 2–3 parent/student quotes from the Sanur area (to be sourced)
+
+9. **FAQ — Sanur Studio**
+   - "Where is the Sanur studio?" (address + landmark)
+   - "Is the Sanur studio the main studio?"
+   - "What classes run at the Sanur studio?"
+   - "How is Sanur different from the Canggu studio?"
+   - "How do I book a free trial at the Sanur studio?"
+   - `FaqAccordion` + `FAQPage` JSON-LD
+
+10. **Cross-links**
+    - "Also in Canggu?" → `/studio/canggu/`
+    - Individual class links
+
+**Structured data:**
+- `LocalBusiness` for Sanur (separate entry from Canggu — different address/geo)
+- `FAQPage`
+
+---
+
+### Implementation notes
+
+- Both pages are **Static** (`export const revalidate = false` or no revalidate export needed — content is authored, not pulled from WP API). Exception: the timetable section can be ISR (revalidate 1h) if extracted into a server component.
+- Routing: add both to `sitemap.ts` at priority 0.9.
+- Cloudflare Worker: `/studio/*` must be added to the Vercel routing block (currently not listed). Update `_docs/cloudflare-worker.js` and redeploy.
+- Shared component opportunity: extract a `StudioLocationPage` component or a shared layout used by both pages to avoid duplication.
+- Content gaps requiring client input before build: coach names/photos for each location, testimonial quotes, exact Canggu studio address/hours, Google Maps embed URLs.
+
+---
+
+### Content checklist before build
+
+| Item | Canggu | Sanur |
+|---|---|---|
+| Exact address + Google Maps link | ⏳ needed | ⏳ needed |
+| Opening hours | ⏳ needed | ⏳ needed |
+| Studio interior/exterior photo | ⏳ needed | ⏳ needed |
+| 2–3 parent testimonials | ⏳ needed | ⏳ needed |
+| Google Business Profile verified | ⏳ needed | ⏳ needed |
