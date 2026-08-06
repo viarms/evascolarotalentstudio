@@ -624,6 +624,21 @@ function HomeAbout() {
           aria-hidden="true"
         />
 
+        {/* Section heading — visually light, SEO-meaningful h2 */}
+        <h2 style={{
+          fontFamily: "Inter, sans-serif",
+          fontSize: "0.75em",
+          fontWeight: 600,
+          textTransform: "uppercase",
+          letterSpacing: "3px",
+          color: "#888888",
+          margin: "0 0 1.25em 0",
+          position: "relative",
+          zIndex: 2,
+        }}>
+          About Eva Scolaro Talent Studio
+        </h2>
+
         {/* First paragraph — SplitText word-stagger reveal.
             aria-label preserves screen-reader access without a visible duplicate. */}
         <p
@@ -789,7 +804,7 @@ function HomePricing() {
           {PACKS.map((pack) => (
             <div key={pack.name} style={{ flex: "1 1 200px", padding: "0 1em", marginBottom: "20px" }}>
               {/* Pack name */}
-              <h2 style={{
+              <h3 style={{
                 fontFamily: '"Archivo Black", sans-serif',
                 fontSize: "1.5em",
                 fontWeight: 400,
@@ -800,9 +815,9 @@ function HomePricing() {
                 margin: "0 0 5px 0",
               }}>
                 {pack.name}
-              </h2>
+              </h3>
               {/* Price */}
-              <h2 style={{
+              <p style={{
                 fontFamily: '"Archivo Black", sans-serif',
                 fontSize: "2em",
                 fontWeight: 400,
@@ -813,9 +828,9 @@ function HomePricing() {
                 margin: "0",
               }}>
                 {pack.price}
-              </h2>
+              </p>
               {/* /class */}
-              <h2 style={{
+              <p style={{
                 fontFamily: "Roboto, sans-serif",
                 fontSize: "1em",
                 fontWeight: 400,
@@ -825,7 +840,7 @@ function HomePricing() {
                 paddingBottom: "1.5em",
               }}>
                 /class
-              </h2>
+              </p>
               {/* Feature list with dashed separators */}
               <ul style={{ listStyle: "none", margin: 0, padding: 0, textAlign: "center" }}>
                 {pack.features.map((f, i) => (
@@ -1049,9 +1064,9 @@ function HomeTimetable({ schedules }: { schedules: StudioSchedule[] }) {
               {days.map((day) => (
                 <div key={day} style={{ display: "flex", flexDirection: "column" }}>
                   <div style={{ background: "#1a1a1a", border: "1px solid #2a2a2a", padding: "0.6em 0.75em", textAlign: "center" }}>
-                    <h2 style={{ fontFamily: "Inter, sans-serif", fontSize: "0.75em", fontWeight: 600, textTransform: "uppercase", letterSpacing: "2px", color: "#EFEFEF", margin: 0 }}>
+                    <div style={{ fontFamily: "Inter, sans-serif", fontSize: "0.75em", fontWeight: 600, textTransform: "uppercase", letterSpacing: "2px", color: "#EFEFEF", margin: 0 }}>
                       {day}
-                    </h2>
+                    </div>
                   </div>
                   {byDay[day].map((item, i) => (
                     <div key={i} style={{ background: i % 2 === 0 ? "#111111" : "#141414", border: "1px solid #1f1f1f", borderTop: "none", padding: "0.65em 0.75em", display: "flex", flexDirection: "column", gap: "0.3em" }}>
@@ -1071,9 +1086,9 @@ function HomeTimetable({ schedules }: { schedules: StudioSchedule[] }) {
               <div key={day} style={{ border: "1px solid #2a2a2a", borderRadius: "2px", overflow: "hidden" }}>
                 {/* Day header */}
                 <div style={{ background: "#1a1a1a", padding: "0.6em 1em" }}>
-                  <h2 style={{ fontFamily: "Inter, sans-serif", fontSize: "0.75em", fontWeight: 600, textTransform: "uppercase", letterSpacing: "2px", color: "#EFEFEF", margin: 0 }}>
+                  <div style={{ fontFamily: "Inter, sans-serif", fontSize: "0.75em", fontWeight: 600, textTransform: "uppercase", letterSpacing: "2px", color: "#EFEFEF", margin: 0 }}>
                     {day}
-                  </h2>
+                  </div>
                 </div>
                 {/* Class rows — 2-column micro-grid */}
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0" }}>
