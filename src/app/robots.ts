@@ -1,6 +1,11 @@
 // src/app/robots.ts
-// Allows crawling of /classes/* routes served by Next.js.
-// All other paths are proxied to WordPress which manages its own robots rules.
+// Robots rules for the Next.js layer.
+//
+// Next.js owns:  /, /classes/*, /studio/*, /studio-rental/, /privacy-notice/
+// WordPress owns: everything else (its own robots.txt handles those paths)
+//
+// We explicitly disallow API routes and Next.js internals so they are never
+// indexed, and allow all user-facing pages.
 
 import type { MetadataRoute } from "next";
 
@@ -9,7 +14,17 @@ export default function robots(): MetadataRoute.Robots {
     rules: [
       {
         userAgent: "*",
-        allow: "/classes/",
+        allow: [
+          "/",
+          "/classes/",
+          "/studio/",
+          "/studio-rental/",
+          "/privacy-notice/",
+        ],
+        disallow: [
+          "/api/",
+          "/_next/",
+        ],
       },
     ],
     sitemap: "https://www.evascolarotalentstudio.com/sitemap.xml",
