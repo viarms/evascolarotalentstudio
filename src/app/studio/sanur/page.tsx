@@ -19,6 +19,8 @@ export const metadata: Metadata = {
     canonical: "https://www.evascolarotalentstudio.com/studio/sanur/",
   },
   openGraph: {
+    type: "website",
+    siteName: "Eva Scolaro Talent Studio",
     title: "Dance Studio Sanur — Kids & Teen Classes | Eva Scolaro Talent Studio",
     description:
       "Bali's leading performing arts studio for children — right in Sanur. Ballet, Hip-Hop, K-Pop, Singing, Drama & more. First trial class is free.",
