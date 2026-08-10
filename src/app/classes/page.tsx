@@ -10,7 +10,23 @@ export const metadata: Metadata = {
   description:
     "Explore all performing arts classes at Eva Scolaro Talent Studio — ballet, hip-hop, K-Pop dance, singing, drama, modeling, breakdance, and more. Studios in Sanur & Canggu, Bali.",
   alternates: {
-    canonical: "https://www.evascolarotalentstudio.com/classes",
+    canonical: "https://www.evascolarotalentstudio.com/classes/",
+  },
+  openGraph: {
+    type: "website",
+    siteName: "Eva Scolaro Talent Studio",
+    url: "https://www.evascolarotalentstudio.com/classes/",
+    title: "Our Classes | Eva Scolaro Talent Studio",
+    description:
+      "Explore all performing arts classes at Eva Scolaro Talent Studio — ballet, hip-hop, K-Pop dance, singing, drama, modeling, breakdance, and more. Studios in Sanur & Canggu, Bali.",
+    images: [
+      {
+        url: "/og-home.webp",
+        width: 1200,
+        height: 630,
+        alt: "Eva Scolaro Talent Studio — performing arts classes for kids in Bali",
+      },
+    ],
   },
 };
 
