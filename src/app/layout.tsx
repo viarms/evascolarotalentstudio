@@ -73,8 +73,8 @@ export const metadata: Metadata = {
     images: [
       {
         url: "/og-home.webp",
-        width: 1024,
-        height: 682,
+        width: 1200,
+        height: 630,
         alt: "Eva Scolaro Talent Studio — Bali's performing arts studio for kids",
       },
     ],
