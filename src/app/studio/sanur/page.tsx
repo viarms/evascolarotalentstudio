@@ -50,6 +50,29 @@ const PRICING = [
   { tier: "12× / month", price: "110,000", highlight: false },
 ] as const;
 
+const TESTIMONIALS = [
+  {
+    name: "Julia Starkey",
+    text: "We're so happy we found this dance school! Our daughter joined the K-Pop class a couple of weeks ago. We had been looking for a class that was the right fit for a while. The teaching is at a great level, the schedule works perfectly for us and most importantly, she has so much fun. She looks forward to every class. Highly recommended!",
+  },
+  {
+    name: "Chinmai Swamy",
+    text: "Great place for kids. My daughter has been going for singing and dancing since March and she has enjoyed every session and improved. Very impressed with the teachers and facilities. The best part is their planned on-stage performance which I think is a great wow for the kids.",
+  },
+  {
+    name: "Gabrielle Lee",
+    text: "Classes here are very fun for kids. The customer service staff are also very friendly and understanding. They try very hard to help.",
+  },
+  {
+    name: "Dewi Ayu",
+    text: "My daughter newly joined the K-Pop Dance and Modeling class — what I see now is she's always excited for her session. She's still discovering what she likes, but hopefully by joining Eva Studio her confidence will grow more ❤️",
+  },
+  {
+    name: "Conny Gruber",
+    text: "Great studio for different classes. My daughter is always looking forward to her weekly singing class. All the teachers and staff are really kind and encouraging 🩷",
+  },
+] as const;
+
 const SCHOOL_PARTNERS = [
   { name: "Australian International School", logo: "/ais-logo.svg",      slug: "ais"      },
   { name: "Dyatmika School",                 logo: "/dyatmika-logo.svg", slug: "dyatmika" },
@@ -319,6 +342,53 @@ export default async function SanurPage() {
           style={{ display: "inline-block", marginTop: "1rem", fontFamily: "var(--font-inter, sans-serif)", fontSize: "0.8rem", color: "#555555", textDecoration: "none" }}
         >
           View full gallery →
+        </a>
+      </section>
+
+      {/* ── Testimonials ─────────────────────────────────────────────────── */}
+      <section style={{ ...wrap, ...divider }} aria-label="Parent reviews">
+        <span style={s.sectionLabel}>Google Reviews</span>
+        <h2 style={s.h2}>What parents say</h2>
+        <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", marginBottom: "2rem" }}>
+          <span style={{ color: "#f5a623", fontSize: "1rem", letterSpacing: "0.05em" }} aria-label="5 stars">★★★★★</span>
+          <span style={{ fontFamily: "var(--font-inter, sans-serif)", fontSize: "0.8rem", color: "#666666" }}>
+            5.0 · Google Reviews
+          </span>
+        </div>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "1rem" }}>
+          {TESTIMONIALS.map((t) => (
+            <figure
+              key={t.name}
+              style={{
+                background: "#111111", border: "1px solid #1e1e1e", borderRadius: "3px",
+                padding: "1.25rem 1.4rem", margin: 0, display: "flex", flexDirection: "column", gap: "0.75rem",
+              }}
+            >
+              {/* Stars */}
+              <div style={{ color: "#f5a623", fontSize: "0.85rem", letterSpacing: "0.05em" }} aria-label="5 stars">★★★★★</div>
+              {/* Quote */}
+              <blockquote style={{ margin: 0, padding: 0 }}>
+                <p style={{
+                  fontFamily: "var(--font-inter, sans-serif)", fontSize: "0.83rem",
+                  color: "#AAAAAA", lineHeight: 1.7, fontStyle: "italic",
+                }}>
+                  &ldquo;{t.text}&rdquo;
+                </p>
+              </blockquote>
+              {/* Attribution */}
+              <figcaption style={{ marginTop: "auto" }}>
+                <p style={{ fontFamily: "var(--font-inter, sans-serif)", fontSize: "0.8rem", fontWeight: 600, color: "#EFEFEF" }}>{t.name}</p>
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+        <a
+          href="https://www.google.com/search?q=Eva+Scolaro+Talent+Studio+Sanur#lrd=0x2dd241b9b0b02f55:0x68d922d376237253,1,,,,"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ display: "inline-block", marginTop: "1.25rem", fontFamily: "var(--font-inter, sans-serif)", fontSize: "0.8rem", color: "#555555", textDecoration: "none" }}
+        >
+          Read all reviews on Google →
         </a>
       </section>
 

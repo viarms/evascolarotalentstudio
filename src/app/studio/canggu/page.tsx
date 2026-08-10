@@ -48,6 +48,13 @@ const PRICING = [
   { tier: "12× / month", price: "110,000", highlight: false },
 ] as const;
 
+const TESTIMONIALS = [
+  { name: "Lily Schubert" },
+  { name: "Ayu Natalia" },
+  { name: "Kusnadi Kusnadi" },
+  { name: "Marchell Manuputty" },
+] as const;
+
 const FAQS = [
   {
     question: "Where is the Canggu studio?",
@@ -276,6 +283,42 @@ export default async function CangguPage() {
           style={{ display: "inline-block", marginTop: "1rem", fontFamily: "var(--font-inter, sans-serif)", fontSize: "0.8rem", color: "#555555", textDecoration: "none" }}
         >
           View full gallery →
+        </a>
+      </section>
+
+      {/* ── Testimonials ─────────────────────────────────────────────────── */}
+      <section style={{ ...wrap, ...divider }} aria-label="Parent reviews">
+        <span style={s.sectionLabel}>Google Reviews</span>
+        <h2 style={s.h2}>What parents say</h2>
+        <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", marginBottom: "2rem" }}>
+          <span style={{ color: "#f5a623", fontSize: "1rem", letterSpacing: "0.05em" }} aria-label="5 stars">★★★★★</span>
+          <span style={{ fontFamily: "var(--font-inter, sans-serif)", fontSize: "0.8rem", color: "#666666" }}>
+            5.0 · Google Reviews
+          </span>
+        </div>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: "1rem" }}>
+          {TESTIMONIALS.map((t) => (
+            <figure
+              key={t.name}
+              style={{
+                background: "#111111", border: "1px solid #1e1e1e", borderRadius: "3px",
+                padding: "1.25rem 1.4rem", margin: 0, display: "flex", flexDirection: "column", gap: "0.75rem",
+              }}
+            >
+              <div style={{ color: "#f5a623", fontSize: "0.85rem", letterSpacing: "0.05em" }} aria-label="5 stars">★★★★★</div>
+              <figcaption style={{ marginTop: "auto" }}>
+                <p style={{ fontFamily: "var(--font-inter, sans-serif)", fontSize: "0.8rem", fontWeight: 600, color: "#EFEFEF" }}>{t.name}</p>
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+        <a
+          href="https://www.google.com/search?q=Talent+Studio+Canggu+By+Eva+Scolaro#lrd=0x2dd2476bcb7a50eb:0x6f554c7c7591f540,1,,,,"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ display: "inline-block", marginTop: "1.25rem", fontFamily: "var(--font-inter, sans-serif)", fontSize: "0.8rem", color: "#555555", textDecoration: "none" }}
+        >
+          Read all reviews on Google →
         </a>
       </section>
 
