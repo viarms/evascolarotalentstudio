@@ -18,14 +18,16 @@ export const metadata: Metadata = {
   },
   openGraph: {
     url: "https://www.evascolarotalentstudio.com",
+    type: "website",
+    siteName: "Eva Scolaro Talent Studio",
     title: "Bali's #1 Performing Arts Studio for Kids in Sanur & Canggu!",
     description:
       "Dance and performing arts classes for children in Sanur and Canggu, Bali. Ballet, Hip-Hop, K-Pop, Drama, Singing, Modeling and more. Join us now!",
     images: [
       {
         url: "/og-home.webp",
-        width: 1024,
-        height: 682,
+        width: 1200,
+        height: 630,
         alt: "Eva Scolaro Talent Studio — Bali's performing arts studio for kids",
       },
     ],
