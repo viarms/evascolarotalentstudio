@@ -1123,7 +1123,7 @@ function HomeTimetable({ schedules }: { schedules: StudioSchedule[] }) {
 // Flat style, micro-movement on hover.
 // MapPinCheckInsideIcon animation triggered by button hover via imperative ref.
 
-function DirectionButton({ href }: { href: string }) {
+function DirectionButton({ href, title }: { href: string; title: string }) {
   const iconRef = useRef<{ startAnimation: () => void; stopAnimation: () => void }>(null);
 
   return (
@@ -1166,6 +1166,7 @@ function DirectionButton({ href }: { href: string }) {
       `}</style>
       <a
         href={href}
+        title={title}
         target="_blank"
         rel="noopener noreferrer"
         className="relative z-10 dir-btn"
@@ -1190,11 +1191,17 @@ function HomeLocation() {
       name: "Canggu",
       photo: "https://www.evascolarotalentstudio.com/wp-content/uploads/2024/10/photo-2024-studio-11_orig.webp",
       mapsUrl: "https://maps.app.goo.gl/WWUYTzG88ofyuYJ78",
+      mapsTitle: "Get directions to Eva Scolaro Talent Studio – Canggu, Bali",
+      studioUrl: "/studio/canggu",
+      studioTitle: "Eva Scolaro Talent Studio Canggu – Performing Arts Classes in Canggu, Bali",
     },
     {
       name: "Sanur",
       photo: "https://www.evascolarotalentstudio.com/wp-content/uploads/2024/10/studio-sanur-hd_orig.webp",
       mapsUrl: "https://maps.app.goo.gl/Esoa9MtswJxsoN3R7",
+      mapsTitle: "Get directions to Eva Scolaro Talent Studio – Sanur, Bali",
+      studioUrl: "/studio/sanur",
+      studioTitle: "Eva Scolaro Talent Studio Sanur – Performing Arts Classes in Sanur, Bali",
     },
   ];
 
@@ -1268,8 +1275,42 @@ function HomeLocation() {
             {studio.name}
           </h2>
 
-          {/* Direction button */}
-          <DirectionButton href={studio.mapsUrl} />
+          {/* CTA row: studio page + directions */}
+          <div className="relative z-10 flex flex-wrap items-center justify-center gap-3">
+            <a
+              href={studio.studioUrl}
+              title={studio.studioTitle}
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "0.45em",
+                fontFamily: "Inter, sans-serif",
+                fontSize: "0.88em",
+                fontWeight: 600,
+                textTransform: "uppercase",
+                letterSpacing: "2px",
+                color: "#EFEFEF",
+                background: "#B20001",
+                border: "1px solid rgba(178,0,1,0.7)",
+                borderRadius: "2px",
+                padding: "0.5em 1.5em",
+                textDecoration: "none",
+                transition: "background 0.22s ease, border-color 0.22s ease",
+              }}
+              onMouseEnter={e => {
+                (e.currentTarget as HTMLAnchorElement).style.background = "#8f0001";
+                (e.currentTarget as HTMLAnchorElement).style.borderColor = "#8f0001";
+              }}
+              onMouseLeave={e => {
+                (e.currentTarget as HTMLAnchorElement).style.background = "#B20001";
+                (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(178,0,1,0.7)";
+              }}
+            >
+              <CompassIcon size={14} color="#EFEFEF" />
+              Explore Studio
+            </a>
+            <DirectionButton href={studio.mapsUrl} title={studio.mapsTitle} />
+          </div>
         </div>
       ))}
     </section>
