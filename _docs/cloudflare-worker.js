@@ -1,6 +1,9 @@
 /**
  * Cloudflare Worker — Eva Scolaro Talent Studio
  *
+ * 0. Redirects non-www → www (301 permanent)
+ *    evascolarotalentstudio.com/* → https://www.evascolarotalentstudio.com/*
+ *
  * 1. Redirects /class/* → /classes/* (WordPress CPT → Next.js, 301 permanent)
  *
  * 2. Routes to Vercel (evascolarotalentstudio.vercel.app):
@@ -25,6 +28,10 @@
  * ONLY root-level paths (e.g. /og-home.webp) — NOT paths with subdirectories like
  * /wp-content/uploads/photo.png. This prevents WP assets from being incorrectly
  * routed to Vercel.
+ *
+ * DEPLOYMENT: This Worker must be assigned to BOTH routes:
+ *   - evascolarotalentstudio.com/*
+ *   - www.evascolarotalentstudio.com/*
  */
 
 const VERCEL_HOST = "evascolarotalentstudio.vercel.app";
@@ -58,6 +65,12 @@ function shouldRouteToVercel(pathname) {
 export default {
   async fetch(request) {
     const url = new URL(request.url);
+
+    // 0. Redirect non-www → www (301 permanent)
+    if (url.hostname === "evascolarotalentstudio.com") {
+      url.hostname = "www.evascolarotalentstudio.com";
+      return Response.redirect(url.toString(), 301);
+    }
 
     // 1. Redirect /class/* → /classes/* (301 permanent)
     if (url.pathname.startsWith("/class/")) {
