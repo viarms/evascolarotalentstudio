@@ -25,10 +25,20 @@ export const metadata: Metadata = {
     canonical: "https://www.evascolarotalentstudio.com/studio-rental/",
   },
   openGraph: {
+    type: "website",
+    siteName: "Eva Scolaro Talent Studio",
     title: "Dance Studio for Rent in Sanur, Bali | Eva Scolaro Talent Studio",
     description:
       "Professional dance studio rental by the hour in Sanur, Bali. Mirrored walls, sprung floor, sound system. From 250,000 IDR/hour.",
     url: "https://www.evascolarotalentstudio.com/studio-rental/",
+    images: [
+      {
+        url: "/og-home.webp",
+        width: 1200,
+        height: 630,
+        alt: "Dance studio for rent in Sanur, Bali — Eva Scolaro Talent Studio",
+      },
+    ],
   },
 };
 
