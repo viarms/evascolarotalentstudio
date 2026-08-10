@@ -414,7 +414,7 @@ export default async function ClassPage(props: SlugProps) {
             <CoachNote note={cls.coachesNote} />
             <PriceNote note={cls.priceNote} />
             <FaqAccordion items={cls.faq} />
-            <CtaButton label={cls.ctaLabel} waLink={waLink} />
+            <CtaButton label={cls.ctaLabel} />
           </>
         )}
     </main>
