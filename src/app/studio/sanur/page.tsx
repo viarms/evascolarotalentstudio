@@ -186,6 +186,8 @@ export default async function SanurPage() {
   const schema = buildStudioLocationSchema({
     location: "sanur",
     faqs: FAQS.map((f) => ({ question: f.question, answer: f.answer })),
+    reviewCount: TESTIMONIALS.length,
+    ratingValue: 5.0,
   });
 
   return (

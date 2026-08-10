@@ -136,6 +136,8 @@ export default async function CangguPage() {
   const schema = buildStudioLocationSchema({
     location: "canggu",
     faqs: FAQS.map((f) => ({ question: f.question, answer: f.answer })),
+    reviewCount: TESTIMONIALS.length,
+    ratingValue: 5.0,
   });
 
   return (

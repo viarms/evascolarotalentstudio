@@ -235,6 +235,8 @@ export function buildClassPageSchema(cls: ClassData): JsonLdObject {
 export type StudioLocationSchemaInput = {
   location: "sanur" | "canggu";
   faqs: { question: string; answer: string }[];
+  reviewCount: number;
+  ratingValue: number;
 };
 
 /**
@@ -245,6 +247,8 @@ export type StudioLocationSchemaInput = {
 export function buildStudioLocationSchema({
   location,
   faqs,
+  reviewCount,
+  ratingValue,
 }: StudioLocationSchemaInput): JsonLdObject {
   const isSanur = location === "sanur";
   const pageUrl = `${SITE_URL}/studio/${location}/`;
@@ -309,6 +313,13 @@ export function buildStudioLocationSchema({
       "https://www.facebook.com/evascolarotalentstudio",
       "https://www.youtube.com/@evascolarotalentstudio",
     ],
+    aggregateRating: {
+      "@type": "AggregateRating",
+      ratingValue: ratingValue.toString(),
+      bestRating: "5",
+      worstRating: "1",
+      ratingCount: reviewCount.toString(),
+    },
   };
 
   const faqPage: JsonLdObject = {
