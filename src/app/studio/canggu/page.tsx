@@ -18,6 +18,8 @@ export const metadata: Metadata = {
     canonical: "https://www.evascolarotalentstudio.com/studio/canggu/",
   },
   openGraph: {
+    type: "website",
+    siteName: "Eva Scolaro Talent Studio",
     title: "Dance Studio Canggu — Kids & Teen Classes | Eva Scolaro Talent Studio",
     description:
       "Bali's leading performing arts studio for children — right in the heart of Canggu. Ballet, Hip-Hop, K-Pop, Singing & more. First trial class is free.",
