@@ -10,17 +10,17 @@ import HomeClient from "./HomeClient";
 export const revalidate = 3600; // ISR: revalidate every hour
 
 export const metadata: Metadata = {
-  title: "Bali's #1 Performing Arts Studio for Kids in Sanur & Canggu!",
+  title: "Bali's #1 Performing Arts Studio for Kids | Eva Scolaro",
   description:
     "Dance and performing arts classes for children in Sanur and Canggu, Bali. Ballet, Hip-Hop, K-Pop, Drama, Singing, Modeling and more. Join us now!",
   alternates: {
-    canonical: "https://www.evascolarotalentstudio.com",
+    canonical: "https://www.evascolarotalentstudio.com/",
   },
   openGraph: {
-    url: "https://www.evascolarotalentstudio.com",
+    url: "https://www.evascolarotalentstudio.com/",
     type: "website",
     siteName: "Eva Scolaro Talent Studio",
-    title: "Bali's #1 Performing Arts Studio for Kids in Sanur & Canggu!",
+    title: "Bali's #1 Performing Arts Studio for Kids in Sanur & Canggu",
     description:
       "Dance and performing arts classes for children in Sanur and Canggu, Bali. Ballet, Hip-Hop, K-Pop, Drama, Singing, Modeling and more. Join us now!",
     images: [
