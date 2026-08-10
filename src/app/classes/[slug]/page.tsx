@@ -366,7 +366,12 @@ export async function generateMetadata(props: SlugProps): Promise<Metadata> {
       description: yoast?.og_description ?? description,
       ...(ogImage && { images: [ogImage.url] }),
     },
-    alternates: { canonical },
+    alternates: {
+      canonical,
+      languages: {
+        "en": canonical,
+      },
+    },
   };
 }
 

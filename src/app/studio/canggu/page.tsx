@@ -16,6 +16,9 @@ export const metadata: Metadata = {
     "Looking for a dance studio in Canggu? Eva Scolaro Talent Studio offers ballet, hip-hop, K-pop, singing & more for kids and teens. Book a free trial today.",
   alternates: {
     canonical: "https://www.evascolarotalentstudio.com/studio/canggu/",
+    languages: {
+      "en": "https://www.evascolarotalentstudio.com/studio/canggu/",
+    },
   },
   openGraph: {
     type: "website",

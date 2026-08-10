@@ -15,6 +15,9 @@ export const metadata: Metadata = {
     "Dance and performing arts classes for children in Sanur and Canggu, Bali. Ballet, Hip-Hop, K-Pop, Drama, Singing, Modeling and more. Join us now!",
   alternates: {
     canonical: "https://www.evascolarotalentstudio.com/",
+    languages: {
+      "en": "https://www.evascolarotalentstudio.com/",
+    },
   },
   openGraph: {
     url: "https://www.evascolarotalentstudio.com/",

@@ -17,6 +17,9 @@ export const metadata: Metadata = {
     "Looking for a dance studio in Sanur? Eva Scolaro Talent Studio — Bali's #1 performing arts studio for kids. Ballet, hip-hop, singing & more. Book your free trial.",
   alternates: {
     canonical: "https://www.evascolarotalentstudio.com/studio/sanur/",
+    languages: {
+      "en": "https://www.evascolarotalentstudio.com/studio/sanur/",
+    },
   },
   openGraph: {
     type: "website",

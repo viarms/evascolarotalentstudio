@@ -23,6 +23,9 @@ export const metadata: Metadata = {
     "Rent a professional dance studio in Sanur, Bali by the hour. Two floors available — Ground Floor 400k/hr, 2nd Floor 250k/hr. Mon–Fri 10:00–13:00. Book via WhatsApp.",
   alternates: {
     canonical: "https://www.evascolarotalentstudio.com/studio-rental/",
+    languages: {
+      "en": "https://www.evascolarotalentstudio.com/studio-rental/",
+    },
   },
   openGraph: {
     type: "website",

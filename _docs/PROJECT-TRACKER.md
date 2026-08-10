@@ -1,23 +1,25 @@
 # Project Tracker — Eva Scolaro Talent Studio
-**Last updated:** 27 July 2026 (rev 12)
-**Phase:** Homepage live ✅ → Phase 2 (Studio + blog) in progress
+**Last updated:** 10 August 2026 (rev 13)
+**Phase:** Studio location pages built ✅ → Bilingual (EN/ID) next
 
 ---
 
 ## Overall Status
 
 ```
-Phase 1 (9 class pages)  ████████████████████  100% done ✅
-Homepage (Next.js)       ████████████████████  100% done ✅
-Phase 2 (Studio + blog)  ░░░░░░░░░░░░░░░░░░░░  not started
-Full migration           ░░░░░░░░░░░░░░░░░░░░  not started
+Phase 1 (9 class pages)         ████████████████████  100% done ✅
+Homepage (Next.js)              ████████████████████  100% done ✅
+Phase 2a (Studio location pgs)  ████████████████████  100% done ✅
+Phase 2b (Bilingual EN/ID)      ░░░░░░░░░░░░░░░░░░░░  not started
+Phase 2c (Concert page)         ░░░░░░░░░░░░░░░░░░░░  not started
+Full migration                  ░░░░░░░░░░░░░░░░░░░░  not started
 ```
 
 ---
 
 ## Build Status
 
-✅ `npm run build` — clean on 24 Jul 2026 (22 routes).
+✅ `npm run build` — clean on 5 Aug 2026 (26 routes).
 
 ```
 /classes/[slug]   ISR (revalidate 5m / expire 1y)
@@ -25,6 +27,8 @@ Full migration           ░░░░░░░░░░░░░░░░░░�
 /                 Static (client component, GSAP + live schedule)
 /privacy-notice   Static ✅ (added 24 Jul 2026)
 /studio-rental    Static ✅ (added 24 Jul 2026)
+/studio/sanur/    Static ✅ (added 5 Aug 2026)
+/studio/canggu/   Static ✅ (added 5 Aug 2026)
 /robots.txt       Static
 /sitemap.xml      Static
 ```
@@ -95,7 +99,7 @@ Full migration           ░░░░░░░░░░░░░░░░░░�
 - [x] `src/app/privacy-notice/page.tsx` — Privacy Notice (Static, dark-themed, 11 sections)
 - [x] `src/app/studio-rental/page.tsx` — Dance Studio for Rent (Static, 1F 400k/hr · 2F 250k/hr · Mon–Fri 10–13)
 
-### Homepage (`src/app/page.tsx`) — 80% complete ⚠️
+### Homepage (`src/app/page.tsx`) — ✅ complete
 - [x] `"use client"` — GSAP + SplitText animations, crossfade carousel
 - [x] `HomeHero` — video background (WP hosted .webm), 85% black overlay, ESTS logo, SplitText word-mask reveal on h1, Join Us CTA button (opens `JoinUsModal`)
 - [x] `HomeAbout` — about copy, studio intro, crossfade photo carousel (`public/slideshow/`), WebGL shader (AboutEvaShader)
@@ -107,12 +111,28 @@ Full migration           ░░░░░░░░░░░░░░░░░░�
 - [x] Cloudflare Worker already routes `pathname === "/"` to Vercel
 - [x] `public/og-home.webp` exists (1024×682)
 - ✅ **Schedule: live WP data via `fetchAllSchedules()`** — 4 tabs: Sanur · Canggu · AIS (9) · Dyatmika (4). `MOCK_SCHEDULE` retained as graceful fallback.
-- ⚠️ **`sitemap.ts`** — does not include `/` yet
+- ✅ **`sitemap.ts`** — `/` included at priority 1.0
 - ⚠️ **No `generateMetadata()` or `LocalBusiness` JSON-LD** — page is `"use client"`, metadata lives in root `layout.tsx`
 - ⚠️ **`revalidate` export missing** — page is client component, ISR not applicable; root layout metadata used instead
 
+### Studio location pages — ✅ complete (added 5 Aug 2026)
+- [x] `src/app/studio/sanur/page.tsx` — Static SEO page targeting "dance studio sanur"
+  - `HeroCTAs.tsx` — "use client" CTA buttons, opens BookTrialModal prefilled Sanur
+  - `BookTrialButton.tsx` — "use client" WA button
+  - `GalleryStrip.tsx` — photo strip component
+  - Sections: Hero, About the Studio, Classes Available, Timetable, School Partnerships (AIS/Dyatmika/Toki Hub logos), Pricing, FAQ, Cross-links
+  - `LocalBusiness` + `FAQPage` JSON-LD for Sanur
+- [x] `src/app/studio/canggu/page.tsx` — Static SEO page targeting "dance studio canggu"
+  - `HeroCTAs.tsx` — "use client" CTA buttons, opens BookTrialModal prefilled Canggu
+  - `BookTrialButton.tsx` — "use client" WA button
+  - `GalleryStrip.tsx` — photo strip component
+  - Sections: Hero, About the Studio, Classes Available, Timetable, Pricing, FAQ, Cross-links
+  - `LocalBusiness` + `FAQPage` JSON-LD for Canggu
+- [x] `sitemap.ts` updated — `/studio/sanur/` and `/studio/canggu/` at priority 0.9
+- [x] Cloudflare Worker — ⚠️ needs `/studio/*` routes added and redeployed (see P0 below)
+
 ### SEO files
-- [x] `src/app/sitemap.ts` — all 9 `/classes/*` slugs; ⚠️ `/` not yet included
+- [x] `src/app/sitemap.ts` — `/` (priority 1.0), `/studio/sanur/` + `/studio/canggu/` (priority 0.9), `/studio-rental/` (0.7), all 9 `/classes/*` slugs (0.8 / 0.6 for public-speaking)
 - [x] `src/app/robots.ts` — allows `/classes/`, points to sitemap
 
 ### Public assets
@@ -150,88 +170,83 @@ Full migration           ░░░░░░░░░░░░░░░░░░�
 - [x] **22 Jul 2026** — **DNS cutover complete.** `www.evascolarotalentstudio.com` CNAME pointed to Vercel. Site live on Next.js.
 - [x] **24 Jul 2026** — `src/app/privacy-notice/page.tsx` built (Static, 11 sections: data collected, usage, retention, children's privacy, rights, security, third-party links). Cookie banner `/privacy-notice/` link no longer 404s. Footer updated with Privacy Notice link (internal `<Link>`). Build clean at 21 routes.
 - [x] **24 Jul 2026** — `src/app/studio-rental/page.tsx` built (Static). Two-floor rental: 1F 400k/hr · 2F 250k/hr · Mon–Fri 10:00–13:00 · Sanur. WA booking CTA, availability grid, 6-question FAQ, ESTS cross-link. Header nav + Footer + sitemap updated. Build clean at 22 routes.
+- [x] **5 Aug 2026** — `src/app/studio/sanur/page.tsx` built (Static, P2 #6). SEO target: "dance studio sanur". Sections: Hero, About, Classes grid, Timetable, School Partnerships (AIS/Dyatmika/Toki Hub), Pricing, FAQ, cross-links. `LocalBusiness` + `FAQPage` JSON-LD. HeroCTAs + BookTrialButton + GalleryStrip co-located.
+- [x] **5 Aug 2026** — `src/app/studio/canggu/page.tsx` built (Static, P2 #6). SEO target: "dance studio canggu". Same structure as Sanur page. Separate `LocalBusiness` JSON-LD for Canggu address/geo.
+- [x] **5 Aug 2026** — `sitemap.ts` updated: `/studio/sanur/` + `/studio/canggu/` added at priority 0.9. Build clean at 26 routes.
+- [x] **10 Aug 2026** — Cloudflare Worker updated: `pathname.startsWith("/studio/")` added to `shouldRouteToVercel()`. `/studio/sanur/` and `/studio/canggu/` now live in production.
 
 ---
 
 ## What's Remaining ⏳
 
-### P0 — Needed before DNS cutover
+---
 
-| # | Task | Where | Est. |
-|---|---|---|---|
-| **1** | **`fetchAllSchedules()` → wire into homepage** | `src/lib/queries/classQueries.ts` + `src/app/page.tsx` | 1h |
-| **2** | **Add `/` to `sitemap.ts`** | `src/app/sitemap.ts` | 5 min |
-| **3** | **`npm run build` — verify clean** | Terminal | 5 min |
-| **4** | **Add Watzap script** | `src/app/layout.tsx` | 10 min |
-| **5** | **Deploy Cloudflare Worker** | Cloudflare dashboard | ✅ Done |
-| **6** | **Staging test: all routes** | Vercel preview URL | ✅ Done |
-| **7** | **DNS cutover** | Vercel / registrar | ✅ Done — 22 Jul 2026 |
+## What's Remaining ⏳
 
-### P0 detail
+### P0 — Cloudflare Worker ✅ done
 
-**Task 1 — `fetchAllSchedules()`**
+| # | Task | Status |
+|---|---|---|
+| **1** | **Add `/studio/*` to Vercel routing block in Worker** | ✅ Done — 10 Aug 2026 |
 
-First, audit exact WP location strings:
-```bash
-curl "https://www.evascolarotalentstudio.com/wp-json/wp/v2/event?per_page=100&_fields=acf" | \
-  jq '[.[].acf.event_location] | unique'
-```
-Then add to `src/lib/queries/classQueries.ts`:
-```ts
-// Returns ALL events grouped by location (no keyword filter).
-// Used by the homepage timetable.
-export async function fetchAllSchedules(): Promise<StudioSchedule[]>
-```
-Then convert `page.tsx` from `"use client"` to a server component that calls `fetchAllSchedules()` at build time — or keep it client and fetch via `useEffect`. **Preferred:** extract the timetable into its own server component, keep the rest of the page client-side for GSAP animations.
-
-**Task 2 — Sitemap**
-```ts
-// Add to sitemap() return array:
-{ url: `${BASE}/`, lastModified: new Date(), changeFrequency: "weekly", priority: 1.0 }
-```
-
-**Task 4 — Watzap**
-Add to `src/app/layout.tsx` (inside `<body>`, after `</SmoothScrollProvider>`):
-```tsx
-import Script from "next/script";
-<Script
-  src="https://cdn.watzap.id/widget-api.js"
-  data-watzapkey="rAMU1787"
-  strategy="lazyOnload"
-/>
-```
-
-**Task 5 — Cloudflare Worker**
-Worker source (`_docs/cloudflare-worker.js`) is already correct — `pathname === "/"` is in. Just needs to be deployed via Cloudflare dashboard (Workers → Create → paste → Deploy).
+`pathname.startsWith("/studio/")` added to `shouldRouteToVercel()`. Worker redeployed. `/studio/sanur/` and `/studio/canggu/` now route to Vercel in production.
 
 ---
 
-### P1 — Important but not hard blockers
+### P1 — Bilingual site (EN/ID) — `EVA-SCOLARO-BILINGUAL-PRD.md`
 
 | # | Task | Notes |
 |---|---|---|
-| **1** | **Cookie consent banner** | ✅ Done (`CookieConsent.tsx` built, imported in layout, links to `/privacy-notice/`) |
-| **2** | **Mobile QA** | 375px / 390px / 428px. Focus: ScheduleTabs horizontal scroll, hero video scaling, Footer partner logos, timetable tabs. |
-| **3** | **Lighthouse audit** | Target ≥ 90 mobile per class page. Run after DNS (real CDN matters). |
-| **4** | **Business decision: Public Speaking** | One-line flip: `status: "active"` in `STATIC_CONTENT["public-speaking"]` in `classes/[slug]/page.tsx`. Schedule auto-loads from WP. |
-| **5** | **Enable Yoast custom title write on `class` CPT** | Workaround in `generateMetadata()` is correct. Permanent fix: `wp-content/mu-plugins/yoast-rest-meta.php` (snippet unchanged from rev 7). |
+| **1** | **`next-intl` setup** | Install + configure App Router routing for `/en/` + `/id/`. `next.config.ts` changes. |
+| **2** | **Language switcher in Header** | Persistent cookie, no forced auto-redirect for returning visitors |
+| **3** | **Translation files** | JSON/TS files for all UI strings (nav, buttons, form labels, pricing labels) |
+| **4** | **Translate already-migrated pages** | Homepage, 9 class pages, Studio Rental, Privacy Notice, Studio Sanur, Studio Canggu |
+| **5** | **Fix `og:locale` bug** | Currently `og:locale` set to `id_ID` on English-only pages — fix in root layout metadata |
+| **6** | **`hreflang` tags on all pages** | `en`, `id`, `x-default` per page |
+| **7** | **Bilingual sitemap entries** | Per-locale URLs in `sitemap.ts` |
+| **8** | **ID keyword research** | Independent ID meta titles/descriptions — not literal translation of EN metadata |
+| **9** | **ACF bilingual fields** | `_en` / `_id` field pairs on WP post types for editorial content (class descriptions etc.) |
+
+**Prerequisite for bilingual:** shared glossary + style guide agreed with client before translation begins (which terms stay EN, tone, location name handling).
 
 ---
 
-### P2 — After homepage go-live
+### P2 — Concert page (`/concert/`)
 
 | # | Task | Notes |
 |---|---|---|
-| **6** | SEO location pages `/studio/canggu/` + `/studio/sanur/` | Keyword targets: "dance studio canggu" + "dance studio sanur". See content plan below. |
-| **7** | ACF field group for static content | Migrate `STATIC_CONTENT` from `page.tsx` into WP ACF |
-| **8** | Blog / educational content (min. 8 articles) | `PRD-SEO-Eva-Scolaro-Talent-Studio.md` §6 Phase 2 |
-| **9** | School Partnerships page (`/school-partnerships/`) | Social proof + E-E-A-T |
-| **10** | Breakdance Sanur — open if demand grows | Add events in WP only; no code change |
-| **11** | `classMock.ts` cleanup | Superseded by `STATIC_CONTENT`. Safe to delete. |
-| **12** | ~~**Privacy Notice page** (`/privacy-notice/`)~~ | ✅ Done 24 Jul 2026 — Static page, 11 sections, Footer link added |
-| **13** | ~~**Dance Studio for Rent** (`/studio-rental/`)~~ | ✅ Done 24 Jul 2026 — Static page, 2-floor pricing, availability, FAQ, WA CTA |
-| **14** | **Concert page** (`/concert/`) | Content TBD |
-| **15** | Full WordPress → Next.js migration | Gallery, Practice, Dancewear, News, Contact, T&C; WP moves to `cms.evascolarotalentstudio.com` |
+| **1** | **Content brief from client** | TBD — what goes on this page? |
+| **2** | **Build `/concert/page.tsx`** | Static or ISR depending on content |
+| **3** | **Add to sitemap + Cloudflare Worker** | Same pattern as studio pages |
+
+---
+
+### P3 — SEO / quality tasks
+
+| # | Task | Notes |
+|---|---|---|
+| **1** | **Mobile QA** | 375px / 390px / 428px. Focus: studio pages (new), ScheduleTabs horizontal scroll, timetable tabs, Footer partner logos. |
+| **2** | **Lighthouse audit** | Run on `/studio/sanur/` and `/studio/canggu/` (new). Target ≥ 90 mobile. |
+| **3** | **Google Business Profile** | Verify profiles for Sanur + Canggu locations — needed for LocalBusiness schema to have full impact |
+| **4** | **Testimonials for studio pages** | 2–3 parent quotes per location needed from client (currently placeholder sections) |
+| **5** | **Studio photos for location pages** | Interior/exterior photos for Sanur + Canggu (currently using class photos as placeholders) |
+| **6** | **Exact addresses + Google Maps embed URLs** | Client to confirm Canggu studio address + both Maps embed URLs |
+| **7** | **Submit bilingual sitemap to GSC** | After bilingual launch (Phase 2b) |
+
+---
+
+### P4 — Post-migration / long tail
+
+| # | Task | Notes |
+|---|---|---|
+| **1** | Blog / educational content (min. 8 articles) | `PRD-SEO-Eva-Scolaro-Talent-Studio.md` §6 Phase 2 |
+| **2** | School Partnerships page (`/school-partnerships/`) | Social proof + E-E-A-T |
+| **3** | ACF field group for static content | Migrate `STATIC_CONTENT` from `page.tsx` into WP ACF |
+| **4** | Breakdance Sanur — open if demand grows | Add events in WP only; no code change |
+| **5** | `classMock.ts` cleanup | Superseded by `STATIC_CONTENT`. Safe to delete. |
+| **6** | Public Speaking activation | One-line: `status: "active"` in `STATIC_CONTENT["public-speaking"]` in `classes/[slug]/page.tsx` |
+| **7** | Full WP → Next.js migration | Gallery, Dancewear, News/Blog, Contact, T&C; WP moves to `cms.evascolarotalentstudio.com` |
+| **8** | Enable Yoast custom title write on `class` CPT | Permanent fix: `mu-plugins/yoast-rest-meta.php` (snippet in rev 7) |
 
 ---
 
@@ -240,12 +255,13 @@ Worker source (`_docs/cloudflare-worker.js`) is already correct — `pathname ==
 | Issue | Status | Detail |
 |---|---|---|
 | Homepage uses `MOCK_SCHEDULE` as fallback | ✅ Live data active | `fetchAllSchedules()` wired. MOCK_SCHEDULE kept as graceful fallback if API fails. |
-| `/` not in `sitemap.ts` | ⚠️ Active | 5-min fix. Task P0 #2. |
-| Cloudflare Worker not deployed to production | ✅ Deployed 22 Jul 2026 | Live. `/class/* → /classes/*` redirects active. `pathname === "/"` routes to Vercel. |
-| `page.tsx` is `"use client"` — no ISR / `generateMetadata` | ℹ️ By design | Homepage metadata lives in root `layout.tsx`. OG image is set. Acceptable for now; can refactor to server component after launch. |
-| Watzap widget not showing | ✅ Fixed 22 Jul 2026 | Plain `<script async data-watzapkey="rAMU1787">` placed in `<head>` (between `<html>` and `<body>` in App Router layout). Works in production — `document.currentScript` requires a real HTTP environment, not Next.js dev server. |
-| Yoast custom title write blocked on `class` CPT | ⚠️ Workaround active | `generateMetadata()` handles correctly. Fix via `mu-plugins/yoast-rest-meta.php`. |
-| `classMock.ts` is dead code | ℹ️ Low priority | P2 #11. |
+| `/studio/*` not routed to Vercel in Cloudflare Worker | ✅ Fixed 10 Aug 2026 | `pathname.startsWith("/studio/")` added to `shouldRouteToVercel()`. Redeployed. |
+| `page.tsx` is `"use client"` — no ISR / `generateMetadata` | ℹ️ By design | Homepage metadata lives in root `layout.tsx`. OG image is set. Acceptable for now. |
+| `og:locale` set to `id_ID` on English-only pages | ⚠️ Active | Bug in root layout metadata. Fix as part of bilingual setup (P1 #5). |
+| Watzap widget not showing | ✅ Fixed 22 Jul 2026 | Plain `<script async data-watzapkey="rAMU1787">` in `<head>`. Works in production. |
+| Yoast custom title write blocked on `class` CPT | ⚠️ Workaround active | `generateMetadata()` handles correctly. Permanent fix: `mu-plugins/yoast-rest-meta.php`. |
+| `classMock.ts` is dead code | ℹ️ Low priority | P4. Safe to delete. |
+| Studio location pages — content placeholders | ⚠️ Active | Testimonials, exact addresses, studio photos, Google Maps embed URLs needed from client. P3 #3–6. |
 
 ---
 
@@ -258,6 +274,17 @@ src/
 │   │   ├── layout.tsx             ← ✅ white card wrapper (moved from root layout — done)
 │   │   ├── page.tsx               ← ✅ /classes index
 │   │   └── [slug]/page.tsx        ← ✅ all 9 class pages
+│   ├── studio/
+│   │   ├── sanur/
+│   │   │   ├── page.tsx           ← ✅ /studio/sanur/ (Static, LocalBusiness JSON-LD)
+│   │   │   ├── HeroCTAs.tsx       ← ✅ "use client" CTA buttons
+│   │   │   ├── BookTrialButton.tsx← ✅ "use client" WA button
+│   │   │   └── GalleryStrip.tsx   ← ✅ photo strip
+│   │   └── canggu/
+│   │       ├── page.tsx           ← ✅ /studio/canggu/ (Static, LocalBusiness JSON-LD)
+│   │       ├── HeroCTAs.tsx       ← ✅ "use client" CTA buttons
+│   │       ├── BookTrialButton.tsx← ✅ "use client" WA button
+│   │       └── GalleryStrip.tsx   ← ✅ photo strip
 │   ├── privacy-notice/
 │   │   ├── page.tsx               ← ✅ /privacy-notice (Static, 11 sections)
 │   │   └── FeedbackButton.tsx     ← ✅ "use client" modal trigger
@@ -269,9 +296,9 @@ src/
 │   │   ├── book-trial/route.ts    ← ✅ Free Trial form → Resend
 │   │   └── feedback/route.ts      ← ✅ Feedback form → Resend
 │   ├── layout.tsx                 ← ✅ fonts, GTM/GA, Header, Footer, SmoothScrollProvider, 3 modals
-│   ├── page.tsx                   ← ✅ homepage (client component, mock schedule ⚠️)
+│   ├── page.tsx                   ← ✅ homepage (client component, live schedule)
 │   ├── globals.css                ← ✅ brand tokens, keyframes
-│   ├── sitemap.ts                 ← ✅ /classes/* — ⚠️ add / (P0 #2)
+│   ├── sitemap.ts                 ← ✅ / + /studio/* + /classes/* + /studio-rental/
 │   └── robots.ts                  ← ✅
 ├── components/
 │   ├── layout/
@@ -302,9 +329,9 @@ src/
 ├── lib/
 │   ├── email.ts                   ← ✅ Resend sendEmail() utility
 │   ├── apollo-client.ts           ← ✅
-│   ├── queries/classQueries.ts    ← ✅ 3 fetchers — ⚠️ fetchAllSchedules() not yet added
+│   ├── queries/classQueries.ts    ← ✅ fetchScheduleForClass, fetchAllSchedules, fetchYoastMeta, fetchFeaturedImage
 │   ├── schema.ts                  ← ✅ Course + FAQPage JSON-LD
-│   ├── mock/classMock.ts          ← superseded, P2 cleanup
+│   ├── mock/classMock.ts          ← superseded, P4 cleanup
 │   └── types/class.ts             ← ✅
 public/
 ├── logo.svg, logo-white.svg, ests-logo-white.svg  ← ✅
@@ -316,8 +343,9 @@ public/
 scripts/
 └── seed-classes.mjs               ← ✅
 _docs/
-├── PROJECT-TRACKER.md             ← this file (rev 8, 22 Jul 2026)
-├── cloudflare-worker.js           ← ✅ deployed to production (22 Jul 2026)
+├── PROJECT-TRACKER.md             ← this file (rev 13, 10 Aug 2026)
+├── EVA-SCOLARO-BILINGUAL-PRD.md   ← ✅ bilingual PRD (Phase 2b spec)
+├── cloudflare-worker.js           ← ✅ deployed (10 Aug 2026) — /studio/* routing added
 ├── Plan-Homepage-Nextjs.md
 ├── Plan-Forms-Modal-Resend.md
 ├── class-pages-seo.md
@@ -332,170 +360,11 @@ _docs/
 
 ## Next Steps Right Now
 
-**Three tasks tonight (in order, ~90 min total):**
+### 1. Start bilingual (EN/ID) — Phase 2b
+See `_docs/EVA-SCOLARO-BILINGUAL-PRD.md` for full spec. First step: `npm install next-intl`, then configure App Router i18n routing. Prerequisite: agree glossary + tone guide with client before any translation.
 
-### 1. `fetchAllSchedules()` + wire into homepage (1h)
-1. Audit WP location strings: `curl ".../wp/v2/event?per_page=100&_fields=acf" | jq '[.[].acf.event_location] | unique'`
-2. Add `fetchAllSchedules()` to `classQueries.ts` (no keyword filter, no location filter — returns all)
-3. Convert `MOCK_SCHEDULE` in `page.tsx` to live data — either via `useEffect` fetch (stays client) or extract `HomeTimetable` as a server component (preferred for ISR)
-
-### 2. Sitemap + build check (10 min)
-1. Add `{ url: BASE + "/", ... priority: 1.0 }` to `sitemap.ts`
-2. `npm run build` — confirm clean
-
-### 3. Watzap + deploy (20 min)
-1. Add `<Script src="https://cdn.watzap.id/widget-api.js" data-watzapkey="rAMU1787" strategy="lazyOnload" />` to `layout.tsx`
-2. Set Vercel env vars (`WP_ORIGIN`, `NEXT_PUBLIC_WA_NUMBER`, `NEXT_PUBLIC_GTM_ID`, `NEXT_PUBLIC_GA_ID`, `RESEND_API_KEY`, `RESEND_FROM`, `FORM_CC`, `FORM_RECIPIENT_AGENT2`, `FORM_RECIPIENT_AGENT3`)
-3. Deploy Cloudflare Worker via dashboard
-4. Test staging URL → DNS cutover
-
----
-
-## Content Plan — SEO Location Pages (P2 #6)
-
-**Added:** 27 July 2026
-
-Two new static pages targeting high-intent local search keywords for Bali's expat/family market.
-
----
-
-### Page 1 — `/studio/canggu/`
-
-**Primary keyword:** `dance studio canggu`
-**Secondary keywords:** dance class canggu, kids dance canggu, performing arts canggu, ballet canggu, hip hop dance canggu
-
-**URL:** `evascolarotalentstudio.com/studio/canggu/`
-**Route file:** `src/app/studio/canggu/page.tsx` (Static)
-
-**Page title (tag):** `Dance Studio Canggu — Kids & Teen Classes | Eva Scolaro Talent Studio`
-**Meta description:** `Looking for a dance studio in Canggu? Eva Scolaro Talent Studio offers ballet, hip-hop, K-pop, singing & more for kids and teens. Book a free trial today.`
-
-**Content sections (in order):**
-
-1. **Hero / H1**
-   - H1: `Kids Dance Studio in Canggu`
-   - Subheading: Studio address + short tagline ("Bali's leading performing arts studio for children — right in the heart of Canggu")
-   - Hero image: Canggu studio interior or a class in action
-   - CTA: "Book a Free Trial" (opens `BookTrialModal`, prefilled location = Canggu)
-
-2. **About the Canggu Studio**
-   - 2–3 sentences: location details (neighbourhood, parking, easy access for expat families), floor/room description, air-conditioned, sprung floor, mirrors
-   - Opening hours (Mon–Sat typical schedule — pull from timetable data)
-   - Embedded Google Map for the Canggu address
-
-3. **Classes Available at Canggu**
-   - Grid/list of all classes running at Canggu: Ballet, Hip-Hop, K-Pop Dance, Singing, Jazz, Drama & Musical Theatre, Modeling — each card links to `/classes/[slug]`
-   - Each card: class name, age groups, short 1-line description
-
-4. **Weekly Timetable — Canggu**
-   - Live schedule pulled from WP via `fetchScheduleForLocation("canggu")` (filter `event_location` contains "canggu")
-   - Same `ScheduleTabs` component or a simplified day-grouped table
-   - Note: same data already used in homepage HomeTimetable Canggu tab
-
-5. **Pricing**
-   - Brief pricing summary (180K / 140K / 110K per session) with link to homepage `#pricing` anchor
-   - "First trial class is free" callout
-
-6. **Testimonials (Canggu families)**
-   - 2–3 short quotes from parents/students based in or near Canggu (to be sourced from client)
-   - Photo or avatar if available
-
-7. **FAQ — Canggu Studio**
-   - "Where exactly is the Canggu studio?" (address + landmark)
-   - "Is parking available?"
-   - "What age can my child start?"
-   - "Do I need to bring anything for the first class?"
-   - "How do I book a free trial at the Canggu studio?"
-   - Implemented with `FaqAccordion` component + `FAQPage` JSON-LD
-
-9. **Cross-links**
-   - "Also looking for classes in Sanur?" → `/studio/sanur/`
-   - Individual class links: "Explore all Ballet classes →", "Explore Hip-Hop →", etc.
-
-**Structured data:**
-- `LocalBusiness` with name, address, geo coordinates, openingHours, telephone, image for Canggu location
-- `FAQPage` for the FAQ section
-
----
-
-### Page 2 — `/studio/sanur/`
-
-**Primary keyword:** `dance studio sanur`
-**Secondary keywords:** dance class sanur, kids dance sanur, performing arts sanur, ballet sanur, hip hop dance sanur, dance studio near sanur
-
-**URL:** `evascolarotalentstudio.com/studio/sanur/`
-**Route file:** `src/app/studio/sanur/page.tsx` (Static)
-
-**Page title (tag):** `Dance Studio Sanur — Kids & Teen Classes | Eva Scolaro Talent Studio`
-**Meta description:** `Looking for a dance studio in Sanur? Eva Scolaro Talent Studio — Bali's #1 performing arts studio for kids. Ballet, hip-hop, singing & more. Book your free trial.`
-
-**Content sections (in order):**
-
-1. **Hero / H1**
-   - H1: `Kids Dance Studio in Sanur`
-   - Subheading: "Our flagship studio — home of Eva Scolaro Talent Studio since the beginning"
-   - Hero image: Sanur studio exterior or class photo
-   - CTA: "Book a Free Trial" (opens `BookTrialModal`, prefilled location = Sanur)
-
-2. **About the Sanur Studio**
-   - Sanur is the Head Office / flagship location — lean into that
-   - 2–3 sentences: location, neighbourhood context (family-friendly Sanur, close to international schools), parking, facilities
-   - Opening hours
-   - Embedded Google Map for Sanur address
-
-3. **Classes Available at Sanur**
-   - Same grid/list pattern as Canggu — all classes running at Sanur with links to `/classes/[slug]`
-   - Note: Sanur has a broader class offering than Canggu; if any class is Sanur-only, call it out
-
-4. **Weekly Timetable — Sanur**
-   - Live schedule via `fetchScheduleForLocation("sanur")`
-   - Day-grouped layout
-
-5. **School Partnerships**
-   - Sanur is closer to AIS and Dyatmika — mention these CCA partnerships as social proof
-   - Logos: AIS, Dyatmika, Toki Hub (already in `public/`)
-   - Short copy: "Eva Scolaro Talent Studio is the trusted performing arts partner for [schools]"
-
-6. **Pricing**
-   - Same as Canggu page — brief summary + link to `#pricing`
-
-7. **Testimonials (Sanur families)**
-   - 2–3 parent/student quotes from the Sanur area (to be sourced)
-
-9. **FAQ — Sanur Studio**
-   - "Where is the Sanur studio?" (address + landmark)
-   - "Is the Sanur studio the main studio?"
-   - "What classes run at the Sanur studio?"
-   - "How is Sanur different from the Canggu studio?"
-   - "How do I book a free trial at the Sanur studio?"
-   - `FaqAccordion` + `FAQPage` JSON-LD
-
-10. **Cross-links**
-    - "Also in Canggu?" → `/studio/canggu/`
-    - Individual class links
-
-**Structured data:**
-- `LocalBusiness` for Sanur (separate entry from Canggu — different address/geo)
-- `FAQPage`
-
----
-
-### Implementation notes
-
-- Both pages are **Static** (`export const revalidate = false` or no revalidate export needed — content is authored, not pulled from WP API). Exception: the timetable section can be ISR (revalidate 1h) if extracted into a server component.
-- Routing: add both to `sitemap.ts` at priority 0.9.
-- Cloudflare Worker: `/studio/*` must be added to the Vercel routing block (currently not listed). Update `_docs/cloudflare-worker.js` and redeploy.
-- Shared component opportunity: extract a `StudioLocationPage` component or a shared layout used by both pages to avoid duplication.
-- Content gaps requiring client input before build: coach names/photos for each location, testimonial quotes, exact Canggu studio address/hours, Google Maps embed URLs.
-
----
-
-### Content checklist before build
-
-| Item | Canggu | Sanur |
-|---|---|---|
-| Exact address + Google Maps link | ⏳ needed | ⏳ needed |
-| Opening hours | ⏳ needed | ⏳ needed |
-| Studio interior/exterior photo | ⏳ needed | ⏳ needed |
-| 2–3 parent testimonials | ⏳ needed | ⏳ needed |
-| Google Business Profile verified | ⏳ needed | ⏳ needed |
+### 2. Gather content from client (unblocks studio pages and bilingual)
+- Exact Canggu studio address + opening hours
+- Google Maps embed URLs for Sanur + Canggu
+- 2–3 parent testimonial quotes per location
+- Interior/exterior studio photos for both locations

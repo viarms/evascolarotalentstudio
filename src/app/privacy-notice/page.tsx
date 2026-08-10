@@ -19,6 +19,9 @@ export const metadata: Metadata = {
     "How Eva Scolaro Talent Studio collects, uses, and protects your personal information. Covers registration forms, WhatsApp, cookies, and Google Analytics.",
   alternates: {
     canonical: "https://www.evascolarotalentstudio.com/privacy-notice/",
+    languages: {
+      "en": "https://www.evascolarotalentstudio.com/privacy-notice/",
+    },
   },
   robots: { index: true, follow: true },
 };
