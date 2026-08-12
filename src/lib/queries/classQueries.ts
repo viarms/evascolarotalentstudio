@@ -74,7 +74,8 @@ const SLUG_TO_KEYWORDS: Record<string, string[]> = {
   "singing":               ["SINGING"],
   "kpop-dance":            ["KPOP", "K-POP"],
   "jazz-dance":            ["JAZZ"],
-  "drama-musical-theatre": ["DRAMA", "MUSICAL THEATRE", "MUSICAL THEATER"],
+  "drama":            ["DRAMA"],
+  "musical-theatre":  ["MUSICAL THEATRE", "MUSICAL THEATER"],
   "modeling":              ["MODELING", "MODELLING"],
   "breakdance":            ["BREAKDANCE", "BREAK DANCE"],
   "public-speaking":       ["PUBLIC SPEAKING"],
@@ -131,11 +132,16 @@ export async function fetchYoastMeta(slug: string): Promise<YoastMeta | null> {
 /**
  * Fetches the featured image URL for a class post by slug.
  * Returns null if no featured image is set.
+ *
+ * Strategy:
+ * 1. Fetch the class post with _embed to get the featured media inline.
+ * 2. If _embed doesn't return the image (WP server config), fall back to
+ *    fetching the media endpoint directly using the featured_media ID.
  */
 export async function fetchFeaturedImage(slug: string): Promise<string | null> {
   const res = await fetch(
-    `${WP_BASE}/class?slug=${encodeURIComponent(slug)}&_embed`,
-    { next: { revalidate: 300 } }   // 5 min — short so WP image changes appear quickly
+    `${WP_BASE}/class?slug=${encodeURIComponent(slug)}&_embed&_fields=id,slug,featured_media,_embedded`,
+    { next: { revalidate: 300 } }
   );
   if (!res.ok) return null;
 
@@ -143,12 +149,30 @@ export async function fetchFeaturedImage(slug: string): Promise<string | null> {
   const post = data?.[0];
   if (!post) return null;
 
+  // ── Try embedded media first ──────────────────────────────────────────────
   const media = post._embedded?.["wp:featuredmedia"]?.[0];
-  if (!media || media.code === "rest_post_invalid_id") return null;
+  if (media && media.code !== "rest_post_invalid_id") {
+    const url =
+      media.media_details?.sizes?.full?.source_url ??
+      media.source_url ??
+      null;
+    if (url) return url;
+  }
 
+  // ── Fall back: fetch media by ID directly ─────────────────────────────────
+  const mediaId = post.featured_media;
+  if (!mediaId) return null;
+
+  const mediaRes = await fetch(
+    `${WP_BASE}/media/${mediaId}?_fields=source_url,media_details`,
+    { next: { revalidate: 300 } }
+  );
+  if (!mediaRes.ok) return null;
+
+  const mediaData = await mediaRes.json();
   return (
-    media.media_details?.sizes?.full?.source_url ??
-    media.source_url ??
+    mediaData.media_details?.sizes?.full?.source_url ??
+    mediaData.source_url ??
     null
   );
 }

@@ -27,7 +27,7 @@ All 9 class pages are implemented and build successfully. Content status by laye
 **H1:** Hip-Hop Classes for Kids in Sanur & Canggu
 
 **Intro:**
-Hip-hop is one of the most popular classes at Eva Scolaro Talent Studio. Kids learn energetic choreography, musical rhythm, and urban dance style in a fun and supportive environment — perfect for beginners and confident performers alike.
+Fun, high-energy dance that helps kids feel the beat, move with confidence, and light up on stage. Our hip-hop class in Sanur and Canggu is where that energy turns into real moves.
 
 **Why join this class:**
 - Builds coordination, rhythm, and physical strength
@@ -85,7 +85,7 @@ Hip-hop is one of the most popular classes at Eva Scolaro Talent Studio. Kids le
 **H1:** Ballet Classes for Kids in Sanur & Canggu
 
 **Intro:**
-Our ballet classes introduce the fundamentals of classical technique in a fun and engaging way — building posture, flexibility, discipline, and graceful movement from an early age.
+From their very first steps at the barre to their moment on stage, our ballet classes help children grow stronger, more graceful, and more confident, all at their own pace. Our kids' ballet class in Bali welcomes every child, whether it's their first time in ballet shoes or they already love to dance.
 
 **Why join this class:**
 - A strong technical dance foundation applicable to any style later on
@@ -121,7 +121,7 @@ Our ballet classes introduce the fundamentals of classical technique in a fun an
 **Pricing:** Starting from Rp110,000/class — packages include the option of a Tutu Ballet uniform.
 
 **FAQ:**
-- *What age can children start ballet?* Tots classes accept children from around age 3.
+- *What age can children start ballet?* Our classes accept children aged 3-16.
 - *Are special ballet shoes required?* Yes, they are recommended; ask for details at the trial class or see the [dancewear page](#).
 
 **CTA:** Book Free Trial Class — WhatsApp +62 821 4628 4464
@@ -137,7 +137,7 @@ Our ballet classes introduce the fundamentals of classical technique in a fun an
 **H1:** Singing (Vocal) Classes for Kids in Sanur & Canggu
 
 **Intro:**
-Singing classes help children find their voice — literally and figuratively. From basic breathing technique to solo performances on stage, kids learn to sing with confidence.
+Big voice or barely a whisper, every child starts somewhere, and this is the place to begin. At our kids' singing classes in Bali, we help children find their voice through breathing, pitch, and plenty of encouragement, watching them grow from nervous first notes to standing tall for a solo on stage.
 
 **Why join this class:**
 - Trains foundational vocal technique (breathing, pitch, voice control)
@@ -190,7 +190,7 @@ Singing classes help children find their voice — literally and figuratively. F
 **H1:** K-Pop Dance Classes for Kids & Teens in Sanur & Canggu
 
 **Intro:**
-The favorite class for K-Pop fans! Children and teenagers learn the latest K-Pop-style choreography, training their stamina, formation teamwork, and idol-worthy stage presence.
+Got a kid who knows every move to their favorite group's latest comeback? Our kids K-Pop dance class in Sanur and Canggu is made for them. Bright lights, big energy, and the songs they already love, K-Pop class brings idol-level choreography to life, teaching sharp moves, formation teamwork, and how to command a stage, all while having an absolute blast.
 
 **Why join this class:**
 - Choreography follows the latest K-Pop song trends

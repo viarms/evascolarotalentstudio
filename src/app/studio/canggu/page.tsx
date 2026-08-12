@@ -34,12 +34,14 @@ export const metadata: Metadata = {
 // ─── Static content ───────────────────────────────────────────────────────────
 
 const CLASSES = [
-  { slug: "hip-hop",    name: "Hip-Hop",    ages: "3–16 yrs" },
-  { slug: "ballet",     name: "Ballet",     ages: "3–16 yrs" },
-  { slug: "singing",    name: "Singing",    ages: "3–16 yrs" },
-  { slug: "kpop-dance", name: "K-Pop Dance", ages: "6–16 yrs" },
-  { slug: "breakdance", name: "Breakdance", ages: "6–16 yrs" },
-  { slug: "modeling",   name: "Modeling",   ages: "3–16 yrs" },
+  { slug: "hip-hop",         name: "Hip-Hop",          ages: "3–16 yrs" },
+  { slug: "ballet",          name: "Ballet",            ages: "3–16 yrs" },
+  { slug: "singing",         name: "Singing",           ages: "3–16 yrs" },
+  { slug: "kpop-dance",      name: "K-Pop Dance",       ages: "6–16 yrs" },
+  { slug: "drama",           name: "Drama",             ages: "6–16 yrs" },
+  { slug: "musical-theatre", name: "Musical Theatre",   ages: "6–16 yrs" },
+  { slug: "breakdance",      name: "Breakdance",        ages: "6–16 yrs" },
+  { slug: "modeling",        name: "Modeling",          ages: "3–16 yrs" },
 ] as const;
 
 const PRICING = [

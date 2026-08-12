@@ -87,12 +87,20 @@ const CLASSES: ClassCard[] = [
     icon: "🎷",
   },
   {
-    slug: "drama-musical-theatre",
-    name: "Drama & Musical Theatre",
-    tagline: "Acting, singing, and movement combined into one transformative class.",
+    slug: "drama",
+    name: "Drama",
+    tagline: "Acting, imagination, and the courage to step into a character.",
     ages: "6–16 years",
     status: "active",
     icon: "🎭",
+  },
+  {
+    slug: "musical-theatre",
+    name: "Musical Theatre",
+    tagline: "Singing, dancing, and acting combined into one performance.",
+    ages: "6–16 years",
+    status: "active",
+    icon: "🎶",
   },
   {
     slug: "modeling",
@@ -137,9 +145,7 @@ export default function ClassesIndexPage() {
           Our Classes
         </h1>
         <p className="text-base md:text-lg text-gray-600 max-w-2xl leading-relaxed">
-          Nine performing arts classes for children aged 3–16. Every class ends the
-          term with a stage performance — because real confidence comes from doing it
-          in front of an audience.
+          Nine classes for kids aged 3-16, made to help them learn, grow, and shine, all leading up to a real stage performance at the end of every term.
         </p>
       </header>
 

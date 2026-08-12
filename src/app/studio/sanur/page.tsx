@@ -40,7 +40,8 @@ const CLASSES = [
   { slug: "singing",               name: "Singing",                 ages: "3–16 yrs" },
   { slug: "kpop-dance",            name: "K-Pop Dance",             ages: "6–16 yrs" },
   { slug: "jazz-dance",            name: "Jazz Dance",              ages: "3–9 yrs"  },
-  { slug: "drama-musical-theatre", name: "Drama & Musical Theatre", ages: "6–16 yrs" },
+  { slug: "drama",            name: "Drama",            ages: "6–16 yrs" },
+  { slug: "musical-theatre", name: "Musical Theatre",  ages: "6–16 yrs" },
   { slug: "modeling",              name: "Modeling",                ages: "3–16 yrs" },
 ] as const;
 
