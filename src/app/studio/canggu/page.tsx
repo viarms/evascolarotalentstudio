@@ -70,7 +70,7 @@ const FAQS = [
   {
     question: "What classes run at the Canggu studio?",
     answer:
-      "We run Hip-Hop, Ballet, K-Pop Dance, Singing, Breakdance, and Modeling at our Canggu location. Check the timetable above for exact days and times.",
+      "We run Hip-Hop, Ballet, K-Pop Dance, Singing, Drama, Musical Theatre, Breakdance, and Modeling at our Canggu location. Check the timetable above for exact days and times.",
   },
   {
     question: "How is Canggu different from the Sanur studio?",

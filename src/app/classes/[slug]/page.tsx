@@ -229,7 +229,7 @@ const STATIC_CONTENT: Record<ClassSlug, StaticContent> = {
       { level: "Teen",   ageRange: "10–16 years", focus: "Musical theatre, character acting, stage vocal work" },
     ],
     coachesNote: "Musical theater asks a lot of a kid: sing here, act there, and hit the choreography, and that's exactly why we love it. There's nothing like watching a child pull all three together and realize they can do it. Whether they're a natural triple threat or just starting out, there's a place for them here.",
-    priceNote: "Starting from Rp110,000/class.",
+    priceNote: "Starting from Rp110,000/class. Currently only available at Canggu Studio — contact us via WhatsApp if you're in Sanur.",
     faq: [
       { question: "Does my child need to already sing or dance to join?", answer: "Not at all — musical theatre welcomes beginners. We build all three skills together from day one." },
     ],
