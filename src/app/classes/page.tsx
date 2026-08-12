@@ -49,7 +49,7 @@ const CLASSES: ClassCard[] = [
   {
     slug: "hip-hop",
     name: "Hip-Hop",
-    tagline: "Energetic urban choreography — rhythm, confidence, and stage presence.",
+    tagline: "Fun, high-energy dance that helps kids feel the beat, move with confidence, and light up on stage.",
     ages: "3–16 years",
     status: "active",
     icon: "🎤",
@@ -57,7 +57,7 @@ const CLASSES: ClassCard[] = [
   {
     slug: "ballet",
     name: "Ballet",
-    tagline: "Classical technique that builds posture, flexibility, and grace.",
+    tagline: "Ballet classes help children grow stronger, more graceful, and more confident, all at their own pace.",
     ages: "3–16 years",
     status: "active",
     icon: "🩰",
@@ -65,7 +65,7 @@ const CLASSES: ClassCard[] = [
   {
     slug: "singing",
     name: "Singing",
-    tagline: "Find your voice — breathing, pitch, and solo stage performance.",
+    tagline: "Big voice or barely a whisper, every child starts somewhere, and this is the place to begin.",
     ages: "3–16 years",
     status: "active",
     icon: "🎵",
@@ -105,7 +105,7 @@ const CLASSES: ClassCard[] = [
   {
     slug: "modeling",
     name: "Modeling",
-    tagline: "Posture, catwalk, and camera confidence — skills for life.",
+    tagline: "Modeling is where that spark turns into real confidence.",
     ages: "3–16 years",
     status: "active",
     icon: "👑",
@@ -113,7 +113,7 @@ const CLASSES: ClassCard[] = [
   {
     slug: "breakdance",
     name: "Breakdance",
-    tagline: "Breaking fundamentals — footwork, freezes, and freestyle strength.",
+    tagline: "Breakdance teaches kids real footwork, freezes, and freestyle strength.",
     ages: "6–16 years",
     status: "active",
     icon: "🔥",
