@@ -6,15 +6,6 @@ import type { NextConfig } from "next";
 const WP_ORIGIN = process.env.WP_ORIGIN;
 
 const nextConfig: NextConfig = {
-  async redirects() {
-    return [
-      {
-        source: "/event/:path*",
-        destination: "/classes/",
-        permanent: true, // 301 redirect
-      },
-    ];
-  },
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "www.evascolarotalentstudio.com" },
