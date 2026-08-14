@@ -7,7 +7,7 @@
 // Nav font: Archivo Black, 0.9em, uppercase, letter-spacing 1px.
 // Social icons: IG + FB + YT, white fill, 17px, accent on hover.
 // Join Us button: semi-transparent black, Archivo Black 1.2em, thin border.
-// Gallery has dropdown: Photo | Concerts Documentary.
+// Gallery has dropdown: Photo | Concerts Documentary | Practice | Dancewear.
 // Classes has dropdown: all 9 class pages.
 
 import { useState } from "react";
@@ -42,9 +42,9 @@ const NAV_LINKS = [
       { label: "Photo",                 href: "/gallery/" },
       { label: "Concerts Documentary",  href: "/concerts-documentary/" },
       { label: "Practice",              href: "/practice/" },
+      { label: "Dancewear",             href: "/dancewear/" },
     ],
   },
-  { label: "Dancewear", href: "/dancewear/" },
   { label: "Studio Rental", href: "/studio-rental/" },
 ] as const;
 
