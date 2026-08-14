@@ -1,6 +1,6 @@
 # Project Tracker — Eva Scolaro Talent Studio
-**Last updated:** 10 August 2026 (rev 13)
-**Phase:** Studio location pages built ✅ → Bilingual (EN/ID) next
+**Last updated:** 14 August 2026 (rev 14)
+**Phase:** Articles (blog) section built ✅ → Bilingual (EN/ID) next
 
 ---
 
@@ -10,6 +10,7 @@
 Phase 1 (9 class pages)         ████████████████████  100% done ✅
 Homepage (Next.js)              ████████████████████  100% done ✅
 Phase 2a (Studio location pgs)  ████████████████████  100% done ✅
+Articles / blog section         ████████████████████  100% done ✅
 Phase 2b (Bilingual EN/ID)      ░░░░░░░░░░░░░░░░░░░░  not started
 Phase 2c (Concert page)         ░░░░░░░░░░░░░░░░░░░░  not started
 Full migration                  ░░░░░░░░░░░░░░░░░░░░  not started
@@ -19,18 +20,20 @@ Full migration                  ░░░░░░░░░░░░░░░░
 
 ## Build Status
 
-✅ `npm run build` — clean on 5 Aug 2026 (26 routes).
+✅ `npm run build` — clean on 5 Aug 2026 (26 routes). Articles added 14 Aug 2026.
 
 ```
-/classes/[slug]   ISR (revalidate 5m / expire 1y)
+/classes/[slug]   ISR (revalidate 1h)
 /classes          Static (class index page)
+/articles         ISR (revalidate 1h) ← new
+/articles/[slug]  ISR (revalidate 1h) ← new
 /                 Static (client component, GSAP + live schedule)
 /privacy-notice   Static ✅ (added 24 Jul 2026)
 /studio-rental    Static ✅ (added 24 Jul 2026)
 /studio/sanur/    Static ✅ (added 5 Aug 2026)
 /studio/canggu/   Static ✅ (added 5 Aug 2026)
 /robots.txt       Static
-/sitemap.xml      Static
+/sitemap.xml      ISR (now async — fetches article slugs)
 ```
 
 ---
@@ -79,10 +82,15 @@ Full migration                  ░░░░░░░░░░░░░░░░
 
 ### Data layer
 - [x] `src/lib/types/class.ts` — TypeScript types
+- [x] `src/lib/types/article.ts` — TypeScript types for `article` CPT ← new
 - [x] `src/lib/queries/classQueries.ts`:
   - `fetchScheduleForClass(slug)` — WP REST API, Sanur + Canggu only, keyword-matched
   - `fetchYoastMeta(slug)` — Yoast SEO head JSON
   - `fetchFeaturedImage(slug)` — featured image URL
+- [x] `src/lib/queries/articleQueries.ts` ← new:
+  - `fetchArticles(perPage)` — listing page, `_embed` for images + terms
+  - `fetchArticleBySlug(slug)` — full post + Yoast meta
+  - `fetchAllArticleSlugs()` — for `generateStaticParams`
 - [x] `src/lib/schema.ts` — `Course` + `FAQPage` JSON-LD builders
 - [x] `src/lib/email.ts` — Resend utility (`sendEmail()`), FROM + CC from env vars
 - [x] `src/lib/apollo-client.ts` — Apollo client (ready for WPGraphQL)
@@ -131,8 +139,22 @@ Full migration                  ░░░░░░░░░░░░░░░░
 - [x] `sitemap.ts` updated — `/studio/sanur/` and `/studio/canggu/` at priority 0.9
 - [x] Cloudflare Worker — ⚠️ needs `/studio/*` routes added and redeployed (see P0 below)
 
+### Article pages — ✅ complete (added 14 Aug 2026)
+- [x] `src/lib/types/article.ts` — `ArticleListItem`, `ArticleSingle`, `YoastArticleMeta`
+- [x] `src/lib/queries/articleQueries.ts` — WP REST `/wp/v2/article` (rest_base: `article`, singular)
+- [x] `src/app/articles/page.tsx` — Archive/listing, ISR 1h, 3-col card grid, featured image + categories + excerpt + date
+- [x] `src/app/articles/[slug]/page.tsx` — Single post, ISR 1h
+  - `generateStaticParams()` — pre-builds all slugs at deploy
+  - `generateMetadata()` — Yoast values priority, same auto-title guard as class pages
+  - `BlogPosting` JSON-LD structured data (Google recommended)
+  - Breadcrumb nav, `<time dateTime>` for publish + modified dates
+  - WP block HTML rendered with Tailwind `prose` typography
+- [x] `sitemap.ts` — now async; fetches article slugs; `/articles/` + all `/articles/[slug]/` included
+- [x] Header nav — `Articles` link added (between Timetable and Gallery)
+- ⚠️ **Cloudflare Worker** — needs `/articles/` and `/articles/*` added to `shouldRouteToVercel()` before deploying
+
 ### SEO files
-- [x] `src/app/sitemap.ts` — `/` (priority 1.0), `/studio/sanur/` + `/studio/canggu/` (priority 0.9), `/studio-rental/` (0.7), all 9 `/classes/*` slugs (0.8 / 0.6 for public-speaking)
+- [x] `src/app/sitemap.ts` — `/` (priority 1.0), `/studio/sanur/` + `/studio/canggu/` (0.9), `/articles/` (0.8), `/studio-rental/` (0.7), all 9 `/classes/*` (0.8 / 0.6), all `/articles/[slug]/` (0.7)
 - [x] `src/app/robots.ts` — allows `/classes/`, points to sitemap
 
 ### Public assets
@@ -174,6 +196,7 @@ Full migration                  ░░░░░░░░░░░░░░░░
 - [x] **5 Aug 2026** — `src/app/studio/canggu/page.tsx` built (Static, P2 #6). SEO target: "dance studio canggu". Same structure as Sanur page. Separate `LocalBusiness` JSON-LD for Canggu address/geo.
 - [x] **5 Aug 2026** — `sitemap.ts` updated: `/studio/sanur/` + `/studio/canggu/` added at priority 0.9. Build clean at 26 routes.
 - [x] **10 Aug 2026** — Cloudflare Worker updated: `pathname.startsWith("/studio/")` added to `shouldRouteToVercel()`. `/studio/sanur/` and `/studio/canggu/` now live in production.
+- [x] **14 Aug 2026** — Articles (blog) section built. `article` CPT (WP REST base: `article` singular). Archive `/articles/` + single `/articles/[slug]/` — both ISR 1h, server-side rendered, Yoast SEO connected, `BlogPosting` JSON-LD. `sitemap.ts` now async and includes all article URLs. Header nav updated with Articles link. TypeScript clean.
 
 ---
 
@@ -183,13 +206,16 @@ Full migration                  ░░░░░░░░░░░░░░░░
 
 ## What's Remaining ⏳
 
-### P0 — Cloudflare Worker ✅ done
+### P0 — Cloudflare Worker
 
 | # | Task | Status |
 |---|---|---|
 | **1** | **Add `/studio/*` to Vercel routing block in Worker** | ✅ Done — 10 Aug 2026 |
+| **2** | **Add `/articles/` and `/articles/*` to Vercel routing block** | ⏳ Pending |
 
 `pathname.startsWith("/studio/")` added to `shouldRouteToVercel()`. Worker redeployed. `/studio/sanur/` and `/studio/canggu/` now route to Vercel in production.
+
+For articles: add `pathname.startsWith("/articles/")` to `shouldRouteToVercel()` in `_docs/cloudflare-worker.js` and redeploy.
 
 ---
 
@@ -239,7 +265,7 @@ Full migration                  ░░░░░░░░░░░░░░░░
 
 | # | Task | Notes |
 |---|---|---|
-| **1** | Blog / educational content (min. 8 articles) | `PRD-SEO-Eva-Scolaro-Talent-Studio.md` §6 Phase 2 |
+| **1** | Blog / educational content (min. 8 articles) | `PRD-SEO-Eva-Scolaro-Talent-Studio.md` §6 Phase 2 — **section built ✅, content from client needed** |
 | **2** | School Partnerships page (`/school-partnerships/`) | Social proof + E-E-A-T |
 | **3** | ACF field group for static content | Migrate `STATIC_CONTENT` from `page.tsx` into WP ACF |
 | **4** | Breakdance Sanur — open if demand grows | Add events in WP only; no code change |
@@ -254,6 +280,7 @@ Full migration                  ░░░░░░░░░░░░░░░░
 
 | Issue | Status | Detail |
 |---|---|---|
+| `/articles/*` not routed to Vercel in Cloudflare Worker | ⚠️ Active — P0 #2 | Add `pathname.startsWith("/articles/")` to `shouldRouteToVercel()`, redeploy Worker |
 | Homepage uses `MOCK_SCHEDULE` as fallback | ✅ Live data active | `fetchAllSchedules()` wired. MOCK_SCHEDULE kept as graceful fallback if API fails. |
 | `/studio/*` not routed to Vercel in Cloudflare Worker | ✅ Fixed 10 Aug 2026 | `pathname.startsWith("/studio/")` added to `shouldRouteToVercel()`. Redeployed. |
 | `page.tsx` is `"use client"` — no ISR / `generateMetadata` | ℹ️ By design | Homepage metadata lives in root `layout.tsx`. OG image is set. Acceptable for now. |
@@ -274,6 +301,9 @@ src/
 │   │   ├── layout.tsx             ← ✅ white card wrapper (moved from root layout — done)
 │   │   ├── page.tsx               ← ✅ /classes index
 │   │   └── [slug]/page.tsx        ← ✅ all 9 class pages
+│   ├── articles/
+│   │   ├── page.tsx               ← ✅ /articles archive (ISR 1h, card grid)
+│   │   └── [slug]/page.tsx        ← ✅ /articles/[slug] single post (ISR 1h, BlogPosting JSON-LD)
 │   ├── studio/
 │   │   ├── sanur/
 │   │   │   ├── page.tsx           ← ✅ /studio/sanur/ (Static, LocalBusiness JSON-LD)
@@ -330,9 +360,12 @@ src/
 │   ├── email.ts                   ← ✅ Resend sendEmail() utility
 │   ├── apollo-client.ts           ← ✅
 │   ├── queries/classQueries.ts    ← ✅ fetchScheduleForClass, fetchAllSchedules, fetchYoastMeta, fetchFeaturedImage
+│   ├── queries/articleQueries.ts  ← ✅ fetchArticles, fetchArticleBySlug, fetchAllArticleSlugs
 │   ├── schema.ts                  ← ✅ Course + FAQPage JSON-LD
+│   ├── email.ts                   ← ✅ Resend sendEmail() utility
 │   ├── mock/classMock.ts          ← superseded, P4 cleanup
-│   └── types/class.ts             ← ✅
+│   ├── types/class.ts             ← ✅
+│   └── types/article.ts           ← ✅
 public/
 ├── logo.svg, logo-white.svg, ests-logo-white.svg  ← ✅
 ├── ais-logo.svg, secana-logo.svg, dyatmika-logo.svg  ← ✅
@@ -360,10 +393,16 @@ _docs/
 
 ## Next Steps Right Now
 
-### 1. Start bilingual (EN/ID) — Phase 2b
+### 1. Update Cloudflare Worker — P0 #2 (BLOCKING for articles in production)
+Add `pathname.startsWith("/articles/")` to `shouldRouteToVercel()` in `_docs/cloudflare-worker.js`, then redeploy the Worker. Without this, `/articles/*` requests will passthrough to WordPress and 404.
+
+### 2. Publish articles in WordPress
+The frontend is ready. Go to WP Admin → Articles (CPT) → Add New. Assign a featured image, categories, and fill in the Yoast SEO fields (title + meta description). The Next.js frontend will pick them up on the next revalidation (1 hour) or via the `/api/revalidate` webhook.
+
+### 3. Start bilingual (EN/ID) — Phase 2b
 See `_docs/EVA-SCOLARO-BILINGUAL-PRD.md` for full spec. First step: `npm install next-intl`, then configure App Router i18n routing. Prerequisite: agree glossary + tone guide with client before any translation.
 
-### 2. Gather content from client (unblocks studio pages and bilingual)
+### 4. Gather content from client (unblocks studio pages and bilingual)
 - Exact Canggu studio address + opening hours
 - Google Maps embed URLs for Sanur + Canggu
 - 2–3 parent testimonial quotes per location

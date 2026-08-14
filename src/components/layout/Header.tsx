@@ -34,6 +34,7 @@ const NAV_LINKS = [
     ],
   },
   { label: "Timetable", href: "/#timetable" },
+  { label: "Articles",  href: "/articles/" },
   {
     label: "Gallery",
     href: "/#",
