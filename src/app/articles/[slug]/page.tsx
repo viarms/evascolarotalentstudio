@@ -45,19 +45,23 @@ export async function generateMetadata(props: PageProps): Promise<Metadata> {
   const canonical = article.yoast?.canonical ?? `${BASE}/articles/${slug}/`;
   const yoast = article.yoast;
 
-  const YOAST_AUTO_TITLE_RE = /^[^|–—]+\s[-–—]\s+Eva Scolaro Talent Studio\s*$/;
-  const yoastTitleIsCustom = yoast?.title && !YOAST_AUTO_TITLE_RE.test(yoast.title);
-
-  const title       = (yoastTitleIsCustom ? yoast!.title : null) ?? article.title;
+  // Use Yoast title/description directly when present — they are the SEO-optimised
+  // values set in the WP Yoast panel and should always take priority.
+  const title       = yoast?.title ?? article.title;
   const description = yoast?.description ?? article.excerpt;
-  const ogTitle     = (yoastTitleIsCustom ? yoast?.og_title : null) ?? title;
+  const ogTitle     = yoast?.og_title ?? title;
   const ogImage     = yoast?.og_image?.[0] ?? (article.featuredImage ? { url: article.featuredImage } : null);
 
   const robotsIndex  = yoast?.robots?.index  ?? "index";
   const robotsFollow = yoast?.robots?.follow ?? "follow";
 
+  // Yoast title already includes the site name; only append it for the fallback.
+  const metaTitle = yoast?.title
+    ? { absolute: title }
+    : { absolute: `${title} | Eva Scolaro Talent Studio` };
+
   return {
-    title: { absolute: `${title} | Eva Scolaro Talent Studio` },
+    title: metaTitle,
     description,
     robots: {
       index:  robotsIndex  === "index",
