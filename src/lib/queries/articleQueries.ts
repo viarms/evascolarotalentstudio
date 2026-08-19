@@ -27,16 +27,28 @@ function stripHtml(html: string): string {
  */
 function decodeEntities(str: string): string {
   return str
-    .replace(/&#8217;/g, "\u2019") // '
-    .replace(/&#8216;/g, "\u2018") // '
-    .replace(/&#8220;/g, "\u201C") // "
-    .replace(/&#8221;/g, "\u201D") // "
-    .replace(/&#8211;/g, "\u2013") // –
-    .replace(/&#8212;/g, "\u2014") // —
-    .replace(/&#038;|&amp;/g, "&")
+    // Named entities WordPress commonly emits
+    .replace(/&hellip;/g, "\u2026")  // …
+    .replace(/&amp;/g, "&")
+    .replace(/&#038;/g, "&")
     .replace(/&lt;/g, "<")
     .replace(/&gt;/g, ">")
     .replace(/&quot;/g, '"')
+    .replace(/&apos;/g, "'")
+    .replace(/&ndash;/g, "\u2013")   // –
+    .replace(/&mdash;/g, "\u2014")   // —
+    .replace(/&lsquo;/g, "\u2018")   // '
+    .replace(/&rsquo;/g, "\u2019")   // '
+    .replace(/&ldquo;/g, "\u201C")   // "
+    .replace(/&rdquo;/g, "\u201D")   // "
+    // Numeric entities WordPress commonly emits
+    .replace(/&#8217;/g, "\u2019")
+    .replace(/&#8216;/g, "\u2018")
+    .replace(/&#8220;/g, "\u201C")
+    .replace(/&#8221;/g, "\u201D")
+    .replace(/&#8211;/g, "\u2013")
+    .replace(/&#8212;/g, "\u2014")
+    // Catch-all numeric entities
     .replace(/&#(\d+);/g, (_, code) => String.fromCharCode(Number(code)));
 }
 
