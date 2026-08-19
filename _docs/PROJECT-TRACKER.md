@@ -1,5 +1,5 @@
 # Project Tracker — Eva Scolaro Talent Studio
-**Last updated:** 14 August 2026 (rev 14)
+**Last updated:** 19 August 2026 (rev 15)
 **Phase:** Articles (blog) section built ✅ → Bilingual (EN/ID) next
 
 ---
@@ -139,19 +139,60 @@ Full migration                  ░░░░░░░░░░░░░░░░
 - [x] `sitemap.ts` updated — `/studio/sanur/` and `/studio/canggu/` at priority 0.9
 - [x] Cloudflare Worker — ⚠️ needs `/studio/*` routes added and redeployed (see P0 below)
 
-### Article pages — ✅ complete (added 14 Aug 2026)
-- [x] `src/lib/types/article.ts` — `ArticleListItem`, `ArticleSingle`, `YoastArticleMeta`
-- [x] `src/lib/queries/articleQueries.ts` — WP REST `/wp/v2/article` (rest_base: `article`, singular)
-- [x] `src/app/articles/page.tsx` — Archive/listing, ISR 1h, 3-col card grid, featured image + categories + excerpt + date
+### Article pages — ✅ complete (added 14 Aug 2026, updated 19 Aug 2026)
+- [x] `src/lib/types/article.ts` — `ArticleListItem` (with `yoastTitle`, `yoastDescription`, `yoastSlug`), `ArticleSingle`, `YoastArticleMeta`
+- [x] `src/lib/queries/articleQueries.ts` — WP REST `/wp/v2/article`
+  - `fetchArticles()` — tagged `"articles"` for on-demand revalidation; maps Yoast title/desc/slug; HTML entities decoded
+  - `fetchArticleBySlug(slug)` — tagged `"articles"` + `"article-{slug}"`; Yoast meta mapped
+  - `fetchAllArticleSlugs()` — for `generateStaticParams`
+  - `decodeEntities()` — decodes WP/Yoast HTML entities to plain text
+- [x] `src/app/articles/page.tsx` — Archive/listing, ISR 1h, 3-col card grid. Cards use `yoastTitle` / `yoastDescription` / `yoastSlug` with WP fallbacks.
 - [x] `src/app/articles/[slug]/page.tsx` — Single post, ISR 1h
   - `generateStaticParams()` — pre-builds all slugs at deploy
-  - `generateMetadata()` — Yoast values priority, same auto-title guard as class pages
-  - `BlogPosting` JSON-LD structured data (Google recommended)
+  - `generateMetadata()` — Yoast title/desc used directly (no broken regex filter); site-name suffix skipped when Yoast title already contains it
+  - `BlogPosting` JSON-LD structured data
   - Breadcrumb nav, `<time dateTime>` for publish + modified dates
-  - WP block HTML rendered with Tailwind `prose` typography
-- [x] `sitemap.ts` — now async; fetches article slugs; `/articles/` + all `/articles/[slug]/` included
-- [x] Header nav — `Articles` link added (between Timetable and Gallery)
-- ⚠️ **Cloudflare Worker** — needs `/articles/` and `/articles/*` added to `shouldRouteToVercel()` before deploying
+- [x] `src/app/api/revalidate/route.ts` — on-demand ISR revalidation (see below)
+- [x] `sitemap.ts` — async; includes `/articles/` + all `/articles/[slug]/`
+- [x] Header nav — `Articles` link added
+- ⚠️ **Cloudflare Worker** — needs `/articles/` and `/articles/*` added to `shouldRouteToVercel()` before deploying (P0 #2)
+
+### On-demand revalidation — ✅ wired (19 Aug 2026)
+
+`POST /api/revalidate` with header `x-revalidate-secret: <REVALIDATE_SECRET>`
+
+**Revalidate a specific article (use after publishing/updating a post in WP):**
+```json
+{ "type": "article", "slug": "my-post-slug" }
+```
+Busts: `"articles"` tag, `"article-my-post-slug"` tag, `/articles/` path, `/articles/my-post-slug/` path.
+
+**Revalidate all articles (listing only):**
+```json
+{ "type": "article" }
+```
+
+**Revalidate arbitrary paths (e.g. homepage after a schedule change):**
+```json
+{ "paths": ["/"] }
+```
+
+**WordPress webhook setup (WP Webhooks plugin):**
+- URL: `https://www.evascolarotalentstudio.com/api/revalidate`
+- Method: POST
+- Header: `x-revalidate-secret: <REVALIDATE_SECRET>`
+- Trigger: Save Post (article CPT)
+- Body: `{"type":"article","slug":"{{post_slug}}"}`
+
+**Manual curl (from terminal):**
+```bash
+curl -X POST https://www.evascolarotalentstudio.com/api/revalidate \
+  -H "Content-Type: application/json" \
+  -H "x-revalidate-secret: <REVALIDATE_SECRET>" \
+  -d '{"type":"article","slug":"my-post-slug"}'
+```
+
+Response includes `revalidatedTags`, `revalidatedPaths`, `timestamp`.
 
 ### SEO files
 - [x] `src/app/sitemap.ts` — `/` (priority 1.0), `/studio/sanur/` + `/studio/canggu/` (0.9), `/articles/` (0.8), `/studio-rental/` (0.7), all 9 `/classes/*` (0.8 / 0.6), all `/articles/[slug]/` (0.7)
@@ -197,6 +238,13 @@ Full migration                  ░░░░░░░░░░░░░░░░
 - [x] **5 Aug 2026** — `sitemap.ts` updated: `/studio/sanur/` + `/studio/canggu/` added at priority 0.9. Build clean at 26 routes.
 - [x] **10 Aug 2026** — Cloudflare Worker updated: `pathname.startsWith("/studio/")` added to `shouldRouteToVercel()`. `/studio/sanur/` and `/studio/canggu/` now live in production.
 - [x] **14 Aug 2026** — Articles (blog) section built. `article` CPT (WP REST base: `article` singular). Archive `/articles/` + single `/articles/[slug]/` — both ISR 1h, server-side rendered, Yoast SEO connected, `BlogPosting` JSON-LD. `sitemap.ts` now async and includes all article URLs. Header nav updated with Articles link. TypeScript clean.
+- [x] **19 Aug 2026** — Article Yoast SEO bugs fixed. Three issues resolved:
+  - `generateMetadata()` in `articles/[slug]/page.tsx` was discarding the Yoast title on every post due to a faulty regex (`YOAST_AUTO_TITLE_RE` always matched, so `yoastTitleIsCustom` was always `false`). Fix: use `yoast.title` directly when present.
+  - `title: { absolute: ... }` was appending ` | Eva Scolaro Talent Studio` even when Yoast title already included the site name, doubling it. Fix: skip the suffix when `yoast.title` is present.
+  - Commits: `eeddead` (title/desc fix), `0a3fab0` (listing page Yoast), `dd50fcd` (HTML entity decode), `c1f8c74` (on-demand revalidation).
+- [x] **19 Aug 2026** — `/articles` listing page now uses Yoast title, Yoast description, and Yoast canonical slug for each card. `ArticleListItem` type gains `yoastTitle`, `yoastDescription`, `yoastSlug` fields. `fetchArticles()` maps all three. Card title no longer uses `dangerouslySetInnerHTML`.
+- [x] **19 Aug 2026** — HTML entity decoding added. `decodeEntities()` helper in `articleQueries.ts` decodes `&#8217;`, `&#8220;`, `&#8221;`, `&#8211;`, `&#8212;`, `&amp;`, `&lt;`, `&gt;`, `&quot;`, and any `&#NNN;` numeric entities. Applied to `excerpt`, `yoastTitle`, `yoastDescription` in both `fetchArticles()` and `fetchArticleBySlug()`.
+- [x] **19 Aug 2026** — On-demand ISR revalidation wired for articles. `fetchArticles()` fetch tagged `"articles"`; `fetchArticleBySlug()` tagged `"articles"` + `"article-{slug}"`. `/api/revalidate` updated to accept `{ type: "article", slug?: string }` payload — calls `revalidateTag("articles", "max")`, `revalidateTag("article-{slug}", "max")`, and `revalidatePath("/articles/")` + `"/articles/{slug}/"`. See **On-demand revalidation** section below.
 
 ---
 
@@ -281,6 +329,10 @@ For articles: add `pathname.startsWith("/articles/")` to `shouldRouteToVercel()`
 | Issue | Status | Detail |
 |---|---|---|
 | `/articles/*` not routed to Vercel in Cloudflare Worker | ⚠️ Active — P0 #2 | Add `pathname.startsWith("/articles/")` to `shouldRouteToVercel()`, redeploy Worker |
+| Article Yoast title discarded by faulty regex | ✅ Fixed 19 Aug 2026 | `YOAST_AUTO_TITLE_RE` always matched → `yoastTitleIsCustom` always `false`. Removed. `yoast.title` now used directly. Commit `eeddead`. |
+| Article meta title doubled site name | ✅ Fixed 19 Aug 2026 | `\| Eva Scolaro Talent Studio` suffix now skipped when Yoast title is present. Commit `eeddead`. |
+| HTML entities in article titles/excerpts | ✅ Fixed 19 Aug 2026 | `decodeEntities()` added to `articleQueries.ts`. Commit `dd50fcd`. |
+| Article listing used WP title/excerpt, not Yoast | ✅ Fixed 19 Aug 2026 | `/articles` cards now use `yoastTitle`, `yoastDescription`, `yoastSlug`. Commit `0a3fab0`. |
 | Homepage uses `MOCK_SCHEDULE` as fallback | ✅ Live data active | `fetchAllSchedules()` wired. MOCK_SCHEDULE kept as graceful fallback if API fails. |
 | `/studio/*` not routed to Vercel in Cloudflare Worker | ✅ Fixed 10 Aug 2026 | `pathname.startsWith("/studio/")` added to `shouldRouteToVercel()`. Redeployed. |
 | `page.tsx` is `"use client"` — no ISR / `generateMetadata` | ℹ️ By design | Homepage metadata lives in root `layout.tsx`. OG image is set. Acceptable for now. |
