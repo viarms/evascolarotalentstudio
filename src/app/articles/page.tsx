@@ -80,10 +80,14 @@ export default async function ArticlesPage() {
             </p>
           ) : (
             <ul className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 list-none p-0 m-0">
-              {articles.map((article) => (
+              {articles.map((article) => {
+                const cardTitle   = article.yoastTitle       ?? article.title;
+                const cardExcerpt = article.yoastDescription ?? article.excerpt;
+                const cardSlug    = article.yoastSlug        ?? article.slug;
+                return (
                 <li key={article.id}>
                   <Link
-                    href={`/articles/${article.slug}/`}
+                    href={`/articles/${cardSlug}/`}
                     className="group flex flex-col bg-white rounded-sm shadow-sm overflow-hidden hover:shadow-md transition-shadow"
                   >
                     {/* Thumbnail */}
@@ -91,7 +95,7 @@ export default async function ArticlesPage() {
                       {article.featuredImage ? (
                         <Image
                           src={article.featuredImage}
-                          alt={article.title}
+                          alt={cardTitle}
                           fill
                           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                           className="object-cover group-hover:scale-[1.03] transition-transform duration-300"
@@ -119,17 +123,17 @@ export default async function ArticlesPage() {
                       <h2
                         className="text-gray-900 text-base font-semibold leading-snug mb-2 group-hover:text-[#c49a6c] transition-colors"
                         style={{ fontFamily: "var(--font-archivo-black)" }}
-                        /* eslint-disable-next-line react/no-danger */
-                        dangerouslySetInnerHTML={{ __html: article.title }}
-                      />
+                      >
+                        {cardTitle}
+                      </h2>
 
                       {/* Excerpt */}
-                      {article.excerpt && (
+                      {cardExcerpt && (
                         <p
                           className="text-gray-600 text-sm leading-relaxed line-clamp-3 flex-1"
                           style={{ fontFamily: "var(--font-inter)" }}
                         >
-                          {article.excerpt}
+                          {cardExcerpt}
                         </p>
                       )}
 
@@ -144,7 +148,8 @@ export default async function ArticlesPage() {
                     </div>
                   </Link>
                 </li>
-              ))}
+                );
+              })}
             </ul>
           )}
         </div>

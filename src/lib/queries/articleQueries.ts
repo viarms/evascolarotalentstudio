@@ -83,6 +83,22 @@ function extractCategories(post: WpArticleRaw): string[] {
 // ─── Public API ───────────────────────────────────────────────────────────────
 
 /**
+ * Parses the slug out of a Yoast canonical URL.
+ * e.g. "https://example.com/articles/my-post/" → "my-post"
+ * Returns null if the URL can't be parsed or yields an empty segment.
+ */
+function slugFromCanonical(canonical: string | undefined): string | null {
+  if (!canonical) return null;
+  try {
+    const parts = new URL(canonical).pathname.replace(/\/$/, "").split("/");
+    const last = parts[parts.length - 1];
+    return last || null;
+  } catch {
+    return null;
+  }
+}
+
+/**
  * Fetches the latest articles for the archive/listing page.
  * Returns up to `perPage` posts (default 12) ordered by date descending.
  */
@@ -102,15 +118,22 @@ export async function fetchArticles(perPage = 12): Promise<ArticleListItem[]> {
 
   const posts: WpArticleRaw[] = await res.json();
 
-  return posts.map((p) => ({
-    id:            p.id,
-    slug:          p.slug,
-    title:         p.title.rendered,
-    excerpt:       stripHtml(p.excerpt.rendered),
-    date:          p.date,
-    featuredImage: extractFeaturedImage(p),
-    categories:    extractCategories(p),
-  }));
+  return posts.map((p) => {
+    const yoast = p.yoast_head_json;
+    const canonical = yoast?.canonical as string | undefined;
+    return {
+      id:               p.id,
+      slug:             p.slug,
+      title:            p.title.rendered,
+      excerpt:          stripHtml(p.excerpt.rendered),
+      date:             p.date,
+      featuredImage:    extractFeaturedImage(p),
+      categories:       extractCategories(p),
+      yoastTitle:       (yoast?.title as string | undefined) ?? null,
+      yoastDescription: ((yoast?.og_description ?? yoast?.description) as string | undefined) ?? null,
+      yoastSlug:        slugFromCanonical(canonical),
+    };
+  });
 }
 
 /**
@@ -134,16 +157,19 @@ export async function fetchArticleBySlug(slug: string): Promise<ArticleSingle | 
   if (!p) return null;
 
   return {
-    id:            p.id,
-    slug:          p.slug,
-    title:         p.title.rendered,
-    excerpt:       stripHtml(p.excerpt.rendered),
-    content:       p.content.rendered,
-    date:          p.date,
-    modifiedDate:  p.modified,
-    featuredImage: extractFeaturedImage(p),
-    categories:    extractCategories(p),
-    yoast:         mapYoast(p.yoast_head_json),
+    id:               p.id,
+    slug:             p.slug,
+    title:            p.title.rendered,
+    excerpt:          stripHtml(p.excerpt.rendered),
+    content:          p.content.rendered,
+    date:             p.date,
+    modifiedDate:     p.modified,
+    featuredImage:    extractFeaturedImage(p),
+    categories:       extractCategories(p),
+    yoast:            mapYoast(p.yoast_head_json),
+    yoastTitle:       (p.yoast_head_json?.title as string | undefined) ?? null,
+    yoastDescription: ((p.yoast_head_json?.og_description ?? p.yoast_head_json?.description) as string | undefined) ?? null,
+    yoastSlug:        slugFromCanonical(p.yoast_head_json?.canonical as string | undefined),
   };
 }
 

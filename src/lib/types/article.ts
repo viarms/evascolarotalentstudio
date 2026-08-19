@@ -3,12 +3,16 @@
 
 export type ArticleListItem = {
   id: number;
-  slug: string;
-  title: string;
-  excerpt: string;
+  slug: string;           // WP post slug (used as fallback)
+  title: string;          // WP post title (used as fallback)
+  excerpt: string;        // WP excerpt (used as fallback)
   date: string;           // ISO 8601
   featuredImage: string | null;
   categories: string[];
+  // Yoast SEO fields — preferred over WP fallbacks when present
+  yoastTitle: string | null;
+  yoastDescription: string | null;
+  yoastSlug: string | null; // slug parsed from yoast_head_json.canonical
 };
 
 export type ArticleSingle = ArticleListItem & {
