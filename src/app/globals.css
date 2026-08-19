@@ -109,3 +109,186 @@ h1, h2, h3, h4, h5, h6 {
   white-space: nowrap;
   width: 1px;
 }
+
+/* ─── Article body — dark prose ─────────────────────────────────────────── */
+/* Applied to WP block content on single article pages.                      */
+/* All text must meet WCAG AA 4.5:1 contrast against #0e0e0e background.     */
+
+.article-body {
+  color: #d4d0ca;           /* warm off-white — 10.5:1 on #0e0e0e */
+  font-size: 1.0625rem;     /* 17px */
+  line-height: 1.8;
+}
+
+.article-body p {
+  margin-top: 0;
+  margin-bottom: 1.4em;
+  color: #d4d0ca;
+}
+
+/* Headings */
+.article-body h1,
+.article-body h2,
+.article-body h3,
+.article-body h4,
+.article-body h5,
+.article-body h6 {
+  font-family: var(--font-archivo-black), ui-sans-serif, sans-serif;
+  color: #f0ece6;           /* near-white — 13.5:1 */
+  line-height: 1.25;
+  margin-top: 2em;
+  margin-bottom: 0.6em;
+}
+
+.article-body h2 { font-size: 1.5rem; }
+.article-body h3 { font-size: 1.25rem; }
+.article-body h4 { font-size: 1.1rem; }
+
+/* Links */
+.article-body a {
+  color: #c49a6c;           /* gold brand — 5.1:1 on #0e0e0e */
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.15s;
+}
+.article-body a:hover {
+  color: #d4b07c;
+}
+
+/* Strong / bold */
+.article-body strong,
+.article-body b {
+  color: #f0ece6;
+  font-weight: 700;
+}
+
+/* Emphasis */
+.article-body em,
+.article-body i {
+  color: #c8c4bc;
+}
+
+/* Lists */
+.article-body ul,
+.article-body ol {
+  margin-bottom: 1.4em;
+  padding-left: 1.6em;
+  color: #d4d0ca;
+}
+.article-body ul { list-style-type: disc; }
+.article-body ol { list-style-type: decimal; }
+.article-body li {
+  margin-bottom: 0.4em;
+  line-height: 1.75;
+}
+
+/* Blockquote */
+.article-body blockquote {
+  margin: 1.75em 0;
+  padding: 1em 1.5em;
+  border-left: 3px solid #c49a6c;
+  background: rgba(196, 154, 108, 0.07);
+  border-radius: 0 4px 4px 0;
+  color: #c8c4bc;
+  font-style: italic;
+}
+.article-body blockquote p { margin-bottom: 0; color: inherit; }
+
+/* Code */
+.article-body code {
+  background: #1c1c1c;
+  color: #c49a6c;
+  padding: 0.15em 0.45em;
+  border-radius: 3px;
+  font-size: 0.875em;
+}
+.article-body pre {
+  background: #1a1a1a;
+  border: 1px solid #2a2a2a;
+  border-radius: 6px;
+  padding: 1.25em 1.5em;
+  overflow-x: auto;
+  margin-bottom: 1.4em;
+}
+.article-body pre code {
+  background: none;
+  padding: 0;
+  color: #d4d0ca;
+}
+
+/* Horizontal rule */
+.article-body hr {
+  border: none;
+  border-top: 1px solid #2a2a2a;
+  margin: 2.5em 0;
+}
+
+/* Images */
+.article-body img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+  margin-top: 0.5em;
+  margin-bottom: 1.4em;
+  display: block;
+}
+
+/* Figure / caption (WP core block) */
+.article-body figure { margin: 1.5em 0; }
+.article-body figcaption {
+  font-size: 0.8125rem;
+  color: #666;
+  text-align: center;
+  margin-top: 0.5em;
+  font-style: italic;
+}
+
+/* WP core table */
+.article-body table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1.4em;
+  font-size: 0.9375rem;
+}
+.article-body th {
+  background: #1a1a1a;
+  color: #f0ece6;
+  font-family: var(--font-archivo-black), sans-serif;
+  padding: 0.65em 1em;
+  text-align: left;
+  border-bottom: 2px solid #2a2a2a;
+}
+.article-body td {
+  color: #c8c4bc;
+  padding: 0.65em 1em;
+  border-bottom: 1px solid #1e1e1e;
+}
+.article-body tr:last-child td { border-bottom: none; }
+
+/* WP core pullquote block */
+.article-body .wp-block-pullquote {
+  border-top: 3px solid #c49a6c;
+  border-bottom: 3px solid #c49a6c;
+  padding: 1.5em 1em;
+  margin: 2em 0;
+  text-align: center;
+  font-size: 1.1em;
+  color: #c8c4bc;
+  font-style: italic;
+}
+
+/* WP core separator block */
+.article-body .wp-block-separator { border-color: #2a2a2a; }
+
+/* WP core image block alignment */
+.article-body .wp-block-image { margin: 1.5em 0; }
+.article-body .wp-block-image.aligncenter img { margin-left: auto; margin-right: auto; }
+.article-body .wp-block-image.alignright { float: right; margin: 0 0 1em 1.5em; max-width: 50%; }
+.article-body .wp-block-image.alignleft  { float: left;  margin: 0 1.5em 1em 0; max-width: 50%; }
+
+/* Clearfix for floated images */
+.article-body::after {
+  content: "";
+  display: table;
+  clear: both;
+}

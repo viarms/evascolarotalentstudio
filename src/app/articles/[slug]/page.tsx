@@ -45,8 +45,6 @@ export async function generateMetadata(props: PageProps): Promise<Metadata> {
   const canonical = article.yoast?.canonical ?? `${BASE}/articles/${slug}/`;
   const yoast = article.yoast;
 
-  // Detect auto-generated Yoast titles ("Post Name - Site Name") and ignore them
-  // in favour of the actual post title, same guard as classQueries.ts.
   const YOAST_AUTO_TITLE_RE = /^[^|–—]+\s[-–—]\s+Eva Scolaro Talent Studio\s*$/;
   const yoastTitleIsCustom = yoast?.title && !YOAST_AUTO_TITLE_RE.test(yoast.title);
 
@@ -86,9 +84,7 @@ export async function generateMetadata(props: PageProps): Promise<Metadata> {
       description: yoast?.og_description ?? description,
       ...(ogImage && { images: [ogImage.url] }),
     },
-    alternates: {
-      canonical,
-    },
+    alternates: { canonical },
   };
 }
 
@@ -112,16 +108,10 @@ function buildArticleSchema(article: Awaited<ReturnType<typeof fetchArticleBySlu
       "@type": "Organization",
       name: "Eva Scolaro Talent Studio",
       url: BASE,
-      logo: {
-        "@type": "ImageObject",
-        url: `${BASE}/logo.svg`,
-      },
+      logo: { "@type": "ImageObject", url: `${BASE}/logo.svg` },
     },
     ...(article.featuredImage && {
-      image: {
-        "@type": "ImageObject",
-        url: article.featuredImage,
-      },
+      image: { "@type": "ImageObject", url: article.featuredImage },
     }),
     mainEntityOfPage: {
       "@type": "WebPage",
@@ -139,71 +129,122 @@ export default async function ArticlePage(props: PageProps) {
   const jsonLd = buildArticleSchema(article);
 
   return (
-    <main>
+    <main className="bg-[#0e0e0e] min-h-screen">
       {/* Structured data */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      {/* ── Hero / featured image ──────────────────────────────────────── */}
-      {article.featuredImage && (
-        <div className="relative w-full aspect-[21/9] bg-[#121212] overflow-hidden">
-          <Image
-            src={article.featuredImage}
-            alt={article.title}
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover opacity-80"
+      {/* ── Full-bleed hero ─────────────────────────────────────────────── */}
+      <div className="relative w-full" style={{ aspectRatio: "21/9", minHeight: "280px", maxHeight: "520px" }}>
+        {article.featuredImage ? (
+          <>
+            <Image
+              src={article.featuredImage}
+              alt={article.title}
+              fill
+              priority
+              sizes="100vw"
+              className="object-cover"
+            />
+            {/* Multi-stop gradient: transparent top → heavy dark bottom */}
+            <div
+              className="absolute inset-0"
+              style={{
+                background:
+                  "linear-gradient(to bottom, rgba(14,14,14,0.15) 0%, rgba(14,14,14,0.35) 50%, rgba(14,14,14,0.85) 80%, rgba(14,14,14,1) 100%)",
+              }}
+            />
+          </>
+        ) : (
+          /* No image — decorative dark gradient placeholder */
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                "linear-gradient(135deg, #1a1a1a 0%, #111 50%, #0e0e0e 100%)",
+            }}
           />
-          {/* Dark gradient overlay so the title is readable if placed here */}
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[rgba(0,0,0,0.55)]" />
-        </div>
-      )}
+        )}
 
-      {/* ── White content card ─────────────────────────────────────────── */}
-      <div
-        className={article.featuredImage ? "bg-[#f5f4f2]" : "bg-[#121212] pt-10"}
-      >
-        <div className="max-w-[720px] mx-auto px-4 sm:px-6 py-10">
-          <article className="bg-white rounded-sm shadow-sm px-6 py-10 sm:px-10 md:px-14 md:py-12">
-
-            {/* Breadcrumb */}
-            <nav aria-label="breadcrumb" className="mb-6">
-              <ol className="flex items-center gap-1.5 text-xs text-gray-400 list-none p-0 m-0"
-                  style={{ fontFamily: "var(--font-inter)" }}>
-                <li><Link href="/" className="hover:text-gray-600 transition-colors">Home</Link></li>
-                <li aria-hidden>›</li>
-                <li><Link href="/articles/" className="hover:text-gray-600 transition-colors">Articles</Link></li>
-                <li aria-hidden>›</li>
-                <li className="text-gray-600 truncate max-w-[200px]" aria-current="page"
-                    dangerouslySetInnerHTML={{ __html: article.title }} />
-              </ol>
-            </nav>
-
+        {/* Title block pinned to bottom of hero */}
+        <div className="absolute bottom-0 left-0 right-0 px-4 sm:px-8 pb-8 sm:pb-10">
+          <div className="max-w-[760px] mx-auto">
             {/* Categories */}
             {article.categories.length > 0 && (
               <p
-                className="text-[#c49a6c] uppercase tracking-widest text-xs mb-3"
+                className="text-[#c49a6c] uppercase tracking-[0.2em] text-xs mb-3"
                 style={{ fontFamily: "var(--font-inter)" }}
               >
                 {article.categories.join(" · ")}
               </p>
             )}
-
             {/* Title */}
             <h1
-              className="text-gray-900 text-2xl sm:text-3xl leading-tight mb-4"
-              style={{ fontFamily: "var(--font-archivo-black)" }}
+              className="text-white text-2xl sm:text-3xl md:text-4xl leading-tight"
+              style={{
+                fontFamily: "var(--font-archivo-black)",
+                textShadow: "0 2px 16px rgba(0,0,0,0.5)",
+              }}
               dangerouslySetInnerHTML={{ __html: article.title }}
             />
+          </div>
+        </div>
+      </div>
 
-            {/* Meta */}
-            <p
-              className="text-gray-400 text-xs mb-8 border-b border-gray-100 pb-6"
-              style={{ fontFamily: "var(--font-inter)" }}
+      {/* ── Article body ────────────────────────────────────────────────── */}
+      <div className="max-w-[760px] mx-auto px-4 sm:px-8 pt-8 pb-20">
+
+        {/* Breadcrumb */}
+        <nav aria-label="breadcrumb" className="mb-6">
+          <ol
+            className="flex items-center flex-wrap gap-1.5 list-none p-0 m-0"
+            style={{ fontFamily: "var(--font-inter)", fontSize: "0.75rem" }}
+          >
+            <li>
+              <Link href="/" className="text-[#666] hover:text-[#c49a6c] transition-colors">
+                Home
+              </Link>
+            </li>
+            <li aria-hidden className="text-[#444]">›</li>
+            <li>
+              <Link href="/articles/" className="text-[#666] hover:text-[#c49a6c] transition-colors">
+                Articles
+              </Link>
+            </li>
+            <li aria-hidden className="text-[#444]">›</li>
+            <li
+              className="text-[#888] truncate max-w-[220px]"
+              aria-current="page"
+              dangerouslySetInnerHTML={{ __html: article.title }}
+            />
+          </ol>
+        </nav>
+
+        {/* Byline */}
+        <div
+          className="flex items-center gap-3 mb-8 pb-6"
+          style={{ borderBottom: "1px solid #222" }}
+        >
+          {/* Studio avatar dot */}
+          <div
+            className="w-8 h-8 rounded-full flex-shrink-0 flex items-center justify-center"
+            style={{ background: "linear-gradient(135deg, #c49a6c, #8a6a42)" }}
+            aria-hidden
+          >
+            <span
+              className="text-white text-xs font-bold select-none"
+              style={{ fontFamily: "var(--font-archivo-black)" }}
             >
+              E
+            </span>
+          </div>
+          <div style={{ fontFamily: "var(--font-inter)" }}>
+            <p className="text-[#DDDDDD] text-xs font-medium leading-tight">
+              Eva Scolaro Talent Studio
+            </p>
+            <p className="text-[#666] text-xs leading-tight mt-0.5">
               <time dateTime={article.date}>{formatDate(article.date)}</time>
               {article.modifiedDate !== article.date && (
                 <>
@@ -212,29 +253,35 @@ export default async function ArticlePage(props: PageProps) {
                 </>
               )}
             </p>
+          </div>
+        </div>
 
-            {/* Body — WP block content */}
-            <div
-              className="prose prose-gray prose-sm sm:prose-base max-w-none
-                         prose-headings:font-[var(--font-archivo-black)]
-                         prose-a:text-[#c49a6c] prose-a:no-underline hover:prose-a:underline
-                         prose-img:rounded-sm prose-img:shadow-sm"
-              style={{ fontFamily: "var(--font-inter)" }}
-              dangerouslySetInnerHTML={{ __html: article.content }}
-            />
+        {/* ── WP content — custom dark prose styles ── */}
+        <div
+          className="article-body"
+          style={{ fontFamily: "var(--font-inter)" }}
+          dangerouslySetInnerHTML={{ __html: article.content }}
+        />
 
-            {/* Back link */}
-            <div className="mt-12 pt-8 border-t border-gray-100">
-              <Link
-                href="/articles/"
-                className="inline-flex items-center gap-2 text-sm text-[#c49a6c] hover:underline"
-                style={{ fontFamily: "var(--font-inter)" }}
-              >
-                <span aria-hidden>←</span> Back to Articles
-              </Link>
-            </div>
-
-          </article>
+        {/* ── Back link ───────────────────────────────────────────────── */}
+        <div
+          className="mt-14 pt-8 flex items-center justify-between"
+          style={{ borderTop: "1px solid #222" }}
+        >
+          <Link
+            href="/articles/"
+            className="inline-flex items-center gap-2 text-sm text-[#c49a6c] hover:text-[#d4b07c] transition-colors"
+            style={{ fontFamily: "var(--font-inter)" }}
+          >
+            <span aria-hidden>←</span> All Articles
+          </Link>
+          {/* Subtle studio credit */}
+          <p
+            className="text-[#444] text-xs hidden sm:block"
+            style={{ fontFamily: "var(--font-inter)" }}
+          >
+            Eva Scolaro Talent Studio · Bali
+          </p>
         </div>
       </div>
     </main>

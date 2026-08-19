@@ -94,7 +94,7 @@ export async function fetchArticles(perPage = 12): Promise<ArticleListItem[]> {
   url.searchParams.set("_embed", "1");
   url.searchParams.set(
     "_fields",
-    "id,slug,date,title,excerpt,featured_media,_embedded,yoast_head_json"
+    "id,slug,date,title,excerpt,featured_media,_links,_embedded,yoast_head_json"
   );
 
   const res = await fetch(url.toString(), { next: { revalidate: 3600 } });
@@ -123,7 +123,7 @@ export async function fetchArticleBySlug(slug: string): Promise<ArticleSingle | 
   url.searchParams.set("_embed", "1");
   url.searchParams.set(
     "_fields",
-    "id,slug,date,modified,title,excerpt,content,featured_media,_embedded,yoast_head_json"
+    "id,slug,date,modified,title,excerpt,content,featured_media,_links,_embedded,yoast_head_json"
   );
 
   const res = await fetch(url.toString(), { next: { revalidate: 3600 } });

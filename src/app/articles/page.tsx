@@ -64,7 +64,7 @@ export default async function ArticlesPage() {
           className="text-[#AAAAAA] mt-4 text-base max-w-xl mx-auto"
           style={{ fontFamily: "var(--font-inter)" }}
         >
-          News, tips, and stories from the studio.
+          Tips, updates, and stories from the studio.
         </p>
       </section>
 
