@@ -132,7 +132,9 @@ export async function fetchArticles(perPage = 12): Promise<ArticleListItem[]> {
     "id,slug,date,title,excerpt,featured_media,_links,_embedded,yoast_head_json"
   );
 
-  const res = await fetch(url.toString(), { next: { revalidate: 3600 } });
+  const res = await fetch(url.toString(), {
+    next: { revalidate: 3600, tags: ["articles"] },
+  });
   if (!res.ok) return [];
 
   const posts: WpArticleRaw[] = await res.json();
@@ -168,7 +170,9 @@ export async function fetchArticleBySlug(slug: string): Promise<ArticleSingle | 
     "id,slug,date,modified,title,excerpt,content,featured_media,_links,_embedded,yoast_head_json"
   );
 
-  const res = await fetch(url.toString(), { next: { revalidate: 3600 } });
+  const res = await fetch(url.toString(), {
+    next: { revalidate: 3600, tags: ["articles", `article-${slug}`] },
+  });
   if (!res.ok) return null;
 
   const posts: WpArticleRaw[] = await res.json();

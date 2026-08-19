@@ -1,19 +1,35 @@
 // src/app/api/revalidate/route.ts
 // On-demand ISR revalidation endpoint.
-// Called by a WordPress webhook whenever schedule/class data is saved.
 //
-// WordPress setup:
-//   Plugin: WP Webhooks (free) or any "Save Post" webhook plugin.
-//   URL:    https://www.evascolarotalentstudio.com/api/revalidate
-//   Method: POST
-//   Header: x-revalidate-secret: <REVALIDATE_SECRET>
-//   Body:   JSON — { "paths": ["/"] }  (optional, defaults to ["/"])
+// ── WordPress webhook setup ───────────────────────────────────────────────────
+// Plugin: WP Webhooks (free) or any "Save Post" hook.
+// URL:    https://www.evascolarotalentstudio.com/api/revalidate
+// Method: POST
+// Header: x-revalidate-secret: <REVALIDATE_SECRET>
 //
-// Environment variable required:
+// Payload for a new/updated article post:
+//   { "type": "article", "slug": "my-post-slug" }
+//
+// Payload to revalidate specific paths:
+//   { "paths": ["/", "/articles/"] }
+//
+// Payload to revalidate everything article-related:
+//   { "type": "article" }
+//
+// ── Environment variable required ─────────────────────────────────────────────
 //   REVALIDATE_SECRET=<long random string>  (set in Vercel + .env.local)
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
+
+type RevalidateBody = {
+  /** Revalidate a content type. "article" busts the articles fetch cache. */
+  type?: "article";
+  /** Specific post slug — revalidates that post's fetch cache entry. */
+  slug?: string;
+  /** Explicit path list — revalidates those Next.js page routes. */
+  paths?: string[];
+};
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
   // ── Auth ──────────────────────────────────────────────────────────────────
@@ -28,27 +44,54 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  // ── Parse body (optional) ────────────────────────────────────────────────
-  let paths: string[] = ["/"];
+  // ── Parse body ────────────────────────────────────────────────────────────
+  let body: RevalidateBody = {};
   try {
-    const body = await req.json() as { paths?: string[] };
-    if (Array.isArray(body.paths) && body.paths.length > 0) {
-      paths = body.paths;
-    }
+    body = (await req.json()) as RevalidateBody;
   } catch {
-    // No body or invalid JSON — fall back to revalidating "/"
+    // No body — fall through to defaults
   }
 
-  // ── Revalidate ────────────────────────────────────────────────────────────
-  const revalidated: string[] = [];
-  for (const p of paths) {
-    revalidatePath(p);
-    revalidated.push(p);
+  const revalidatedTags: string[]  = [];
+  const revalidatedPaths: string[] = [];
+
+  // ── Tag-based cache busting (fetch cache) ─────────────────────────────────
+  if (body.type === "article" || (!body.type && !body.paths)) {
+    // Bust the articles listing fetch cache
+    revalidateTag("articles", "max");
+    revalidatedTags.push("articles");
+
+    // Bust a specific post's fetch cache if slug is provided
+    if (body.slug) {
+      revalidateTag(`article-${body.slug}`, "max");
+      revalidatedTags.push(`article-${body.slug}`);
+    }
   }
 
-  console.log("[revalidate] Revalidated paths:", revalidated);
+  // ── Path-based page revalidation ──────────────────────────────────────────
+  // Always revalidate the articles listing page when an article changes
+  if (body.type === "article" || (!body.type && !body.paths)) {
+    revalidatePath("/articles/");
+    revalidatedPaths.push("/articles/");
 
-  return NextResponse.json({ revalidated, timestamp: new Date().toISOString() });
+    if (body.slug) {
+      revalidatePath(`/articles/${body.slug}/`);
+      revalidatedPaths.push(`/articles/${body.slug}/`);
+    }
+  }
+
+  // Additional explicit paths (e.g. homepage after a class/schedule update)
+  if (Array.isArray(body.paths) && body.paths.length > 0) {
+    for (const p of body.paths) {
+      revalidatePath(p);
+      revalidatedPaths.push(p);
+    }
+  }
+
+  const result = { revalidatedTags, revalidatedPaths, timestamp: new Date().toISOString() };
+  console.log("[revalidate]", result);
+
+  return NextResponse.json(result);
 }
 
 // Reject non-POST methods
