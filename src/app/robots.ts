@@ -1,7 +1,8 @@
 // src/app/robots.ts
 // Robots rules for the Next.js layer.
 //
-// Next.js owns:  /, /classes/*, /studio/*, /studio-rental/, /privacy-notice/
+// Next.js owns:  /, /classes/*, /studio/*, /studio-rental/, /privacy-notice/,
+//                /articles/*
 // WordPress owns: everything else (its own robots.txt handles those paths)
 //
 // We explicitly disallow API routes and Next.js internals so they are never
@@ -20,6 +21,7 @@ export default function robots(): MetadataRoute.Robots {
           "/studio/",
           "/studio-rental/",
           "/privacy-notice/",
+          "/articles/",
         ],
         disallow: [
           "/api/",
