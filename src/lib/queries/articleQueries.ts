@@ -21,6 +21,25 @@ function stripHtml(html: string): string {
   return html.replace(/<[^>]+>/g, "").trim();
 }
 
+/**
+ * Decode common HTML entities to plain-text characters.
+ * Covers the set WordPress / Yoast typically emit in titles and descriptions.
+ */
+function decodeEntities(str: string): string {
+  return str
+    .replace(/&#8217;/g, "\u2019") // '
+    .replace(/&#8216;/g, "\u2018") // '
+    .replace(/&#8220;/g, "\u201C") // "
+    .replace(/&#8221;/g, "\u201D") // "
+    .replace(/&#8211;/g, "\u2013") // –
+    .replace(/&#8212;/g, "\u2014") // —
+    .replace(/&#038;|&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&quot;/g, '"')
+    .replace(/&#(\d+);/g, (_, code) => String.fromCharCode(Number(code)));
+}
+
 /** Pull Yoast fields we care about out of the raw yoast_head_json object. */
 function mapYoast(raw: Record<string, unknown> | null | undefined): YoastArticleMeta | null {
   if (!raw) return null;
@@ -125,12 +144,12 @@ export async function fetchArticles(perPage = 12): Promise<ArticleListItem[]> {
       id:               p.id,
       slug:             p.slug,
       title:            p.title.rendered,
-      excerpt:          stripHtml(p.excerpt.rendered),
+      excerpt:          decodeEntities(stripHtml(p.excerpt.rendered)),
       date:             p.date,
       featuredImage:    extractFeaturedImage(p),
       categories:       extractCategories(p),
-      yoastTitle:       (yoast?.title as string | undefined) ?? null,
-      yoastDescription: ((yoast?.og_description ?? yoast?.description) as string | undefined) ?? null,
+      yoastTitle:       yoast?.title ? decodeEntities(yoast.title as string) : null,
+      yoastDescription: yoast ? decodeEntities(((yoast.og_description ?? yoast.description) as string | undefined) ?? "") || null : null,
       yoastSlug:        slugFromCanonical(canonical),
     };
   });
@@ -160,15 +179,17 @@ export async function fetchArticleBySlug(slug: string): Promise<ArticleSingle | 
     id:               p.id,
     slug:             p.slug,
     title:            p.title.rendered,
-    excerpt:          stripHtml(p.excerpt.rendered),
+    excerpt:          decodeEntities(stripHtml(p.excerpt.rendered)),
     content:          p.content.rendered,
     date:             p.date,
     modifiedDate:     p.modified,
     featuredImage:    extractFeaturedImage(p),
     categories:       extractCategories(p),
     yoast:            mapYoast(p.yoast_head_json),
-    yoastTitle:       (p.yoast_head_json?.title as string | undefined) ?? null,
-    yoastDescription: ((p.yoast_head_json?.og_description ?? p.yoast_head_json?.description) as string | undefined) ?? null,
+    yoastTitle:       (p.yoast_head_json?.title as string | undefined) ? decodeEntities(p.yoast_head_json!.title as string) : null,
+    yoastDescription: ((p.yoast_head_json?.og_description ?? p.yoast_head_json?.description) as string | undefined)
+                        ? decodeEntities((p.yoast_head_json?.og_description ?? p.yoast_head_json?.description) as string)
+                        : null,
     yoastSlug:        slugFromCanonical(p.yoast_head_json?.canonical as string | undefined),
   };
 }
